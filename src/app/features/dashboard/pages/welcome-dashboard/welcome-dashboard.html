@@ -1,0 +1,71 @@
+<div class="welcome-container">
+
+  <header class="welcome-header-card">
+    <h1 class="welcome-main-title">¡Bienvenido al Panel de Control de Fátima Conecta!</h1>
+    <p class="welcome-main-subtitle">Ecosistema Digital Institucional de la I.E. N.° 20395 "Nuestra Señora de Fátima"</p>
+    <div class="title-accent-bar"></div>
+  </header>
+
+  @if (currentRole() === 'Docente') {
+    <section class="role-intro-section">
+      <h2 class="role-section-title">Módulos de Gestión Académica y Acompañamiento (MP02)</h2>
+      <p class="role-section-desc">Seleccione una de las siguientes tarjetas funcionales para iniciar las actividades de seguimiento pedagógico:</p>
+    </section>
+
+    <div class="dashboard-cards-grid">
+
+      <article class="box-card" routerLink="/dashboard/contexto-estudiante">
+        <div class="card-icon-box">📁</div>
+        <div class="card-info">
+          <h3>Contexto del Estudiante</h3>
+          <p>Apertura del registro formativo cualitativo. Permite buscar al alumno y seleccionar el periodo escolar para iniciar el acompañamiento.</p>
+        </div>
+      </article>
+
+      <article class="box-card" routerLink="/dashboard/registro-evidencias">
+        <div class="card-icon-box">➕</div>
+        <div class="card-info">
+          <h3>Registro de Evidencias</h3>
+          <p>Sustente documental y visual de los avances del aula. Adjunte fotografías, videos o archivos PDF que evidencien logros o dificultades.</p>
+        </div>
+      </article>
+
+      <article class="box-card" routerLink="/dashboard/evaluacion-progreso">
+        <div class="card-icon-box">📝</div>
+        <div class="card-info">
+          <h3>Evaluación y Progreso</h3>
+          <p>Módulo de redacción cualitativa. Registre de forma descriptiva los logros alcanzados y los puntos de mejora detectados en el progreso.</p>
+        </div>
+      </article>
+
+      <article class="box-card" routerLink="/dashboard/retroalimentacion">
+        <div class="card-icon-box">💬</div>
+        <div class="card-info">
+          <h3>Retroalimentación</h3>
+          <p>Emisión de recomendaciones y compromisos personalizados orientados a fortalecer el apoyo formativo desde el entorno familiar.</p>
+        </div>
+      </article>
+
+    </div>
+  }
+
+  @if (currentRole() === 'Padre de Familia') {
+    <section class="role-intro-section">
+      <h2 class="role-section-title">Portal de Acompañamiento Familiar (MP02)</h2>
+      <p class="role-section-desc">Bienvenido al espacio de consulta. Revise el avance escolar de sus hijos en la institución:</p>
+    </section>
+
+    <div class="dashboard-cards-grid single-card-center">
+      
+      <article class="box-card family-card-wide" routerLink="/dashboard/consulta-progreso">
+        <div class="card-icon-box">👪</div>
+        <div class="card-info">
+          <h3>Consulta del Progreso</h3>
+          <p>Visualice de forma permanente el historial cronológico de observaciones cualitativas, evidencias multimedia y recomendaciones emitidas exclusivamente para sus hijos.</p>
+        </div>
+      </article>
+
+    </div>
+  }
+
+</div>

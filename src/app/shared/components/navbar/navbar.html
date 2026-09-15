@@ -1,0 +1,25 @@
+<header class="navbar-container">
+  <div class="navbar-logo-section" routerLink="/home">
+    <div class="logo-shield">M</div>
+    <div class="logo-text">
+      <span class="title-main">FÁTIMA DIGITAL 2035</span>
+      <span class="subtitle-sub">Ecosistema Digital Institucional</span>
+    </div>
+  </div>
+
+  <nav class="navbar-links">
+    <a routerLink="/home" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+    <a routerLink="/noticias" routerLinkActive="active-link">Noticias</a>
+    <a routerLink="/institucion" routerLinkActive="active-link">Institución</a>
+    <a routerLink="/recursos" routerLinkActive="active-link">Recursos</a>
+    <a routerLink="/innovacion" routerLinkActive="active-link">Innovación</a>
+    <a routerLink="/actividades" routerLinkActive="active-link">Actividades</a>
+  </nav>
+
+  <div class="navbar-actions">
+    <button class="btn-login" routerLink="/login">
+      <span class="user-icon"></span>
+      Ingresar
+    </button>
+  </div>
+</header>

@@ -1,1 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   ESTILOS GLOBALES Y VARIABLES INSTITUCIONALES (CSS 3 PURO)
+   ========================================================================== */
+
+:root {
+  /* Paleta de colores oficiales de la institución educativa */
+  --color-primary-dark: #0b2545;  /* Azul marino profundo (usado en Navbar y Footer) */
+  --color-secondary-blue: #1346af; /* Azul vibrante (usado en botones de acción principal) */
+  --color-accent-blue: #134074;    /* Azul intermedio (usado para estados hover) */
+  --color-background-light: #f4f5f7; /* Gris claro (usado para el fondo de la página) */
+  --color-text-dark: #1f2937;      /* Gris oscuro para textos (alta legibilidad) */
+  --color-text-muted: #4b5563;     /* Gris medio para descripciones y subtítulos */
+  --color-white: #ffffff;          /* Blanco puro */
+  
+  /* Tipo de letra oficial para todo el sistema web */
+  --font-main: 'Calibri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Reset básico: elimina márgenes por defecto de los navegadores */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Asegura que los tamaños de cajas sean exactos */
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--color-text-dark);
+  background-color: var(--color-white);
+  line-height: 1.5;
+  overflow-x: hidden; /* Evita que la pantalla tenga scroll horizontal molesto */
+}
+
+/* Enlaces limpios sin subrayados por defecto */
+a {
+  text-decoration: none;
+  color: inherit;
+}
