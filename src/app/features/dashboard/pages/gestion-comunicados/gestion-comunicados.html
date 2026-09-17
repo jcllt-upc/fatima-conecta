@@ -141,6 +141,17 @@
         </button>
       }
 
+      @if (
+            nuevoComunicado.estado === 'Pendiente' ||
+            nuevoComunicado.estado === 'Aprobado'
+    ) {
+        <a
+            routerLink="/dashboard/comunicados/editar/nuevo"
+            class="btn-accion">
+            Editar
+        </a>
+      }
+
       @if (nuevoComunicado.estado === 'Publicado') {
         <a
             [routerLink]="['/comunicados/detalle', nuevoComunicado.id]"

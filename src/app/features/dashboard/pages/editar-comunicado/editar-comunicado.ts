@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-editar-comunicado',
@@ -10,7 +10,15 @@ import { Router } from '@angular/router';
 })
 export class EditarComunicado {
 
-  constructor(private router: Router) {}
+  constructor(
+  private router: Router,
+  private route: ActivatedRoute
+) {}
+
+nuevoComunicado: any = null;
+esComunicadoNuevo: boolean = false;
+
+
 
   formularioComunicado = new FormGroup({
     titulo: new FormControl(
@@ -34,6 +42,27 @@ export class EditarComunicado {
     )
   });
 
+ngOnInit(): void {
+  const id = this.route.snapshot.paramMap.get('id');
+
+  if (id === 'nuevo') {
+    const comunicadoGuardado = localStorage.getItem('nuevo_comunicado_mp01');
+
+    if (comunicadoGuardado) {
+      this.nuevoComunicado = JSON.parse(comunicadoGuardado);
+      this.esComunicadoNuevo = true;
+
+      this.formularioComunicado.patchValue({
+        titulo: this.nuevoComunicado.titulo,
+        tipo: this.nuevoComunicado.tipo,
+        descripcion: this.nuevoComunicado.descripcion,
+        contenido: this.nuevoComunicado.contenido
+      });
+    }
+  }
+}
+
+
 mensajeExito: string = '';
 
   guardarCambios(): void {
@@ -42,6 +71,26 @@ mensajeExito: string = '';
       this.formularioComunicado.markAllAsTouched();
       return;
     }
+
+    if (this.esComunicadoNuevo && this.nuevoComunicado) {
+
+  this.nuevoComunicado.titulo =
+    this.formularioComunicado.value.titulo;
+
+  this.nuevoComunicado.tipo =
+    this.formularioComunicado.value.tipo;
+
+  this.nuevoComunicado.descripcion =
+    this.formularioComunicado.value.descripcion;
+
+  this.nuevoComunicado.contenido =
+    this.formularioComunicado.value.contenido;
+
+  localStorage.setItem(
+    'nuevo_comunicado_mp01',
+    JSON.stringify(this.nuevoComunicado)
+  );
+}
 
     this.mensajeExito = 'Comunicado actualizado correctamente.';
 
