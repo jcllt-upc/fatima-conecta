@@ -45,10 +45,41 @@ export class ComunicadoDetalle {
 
 
   constructor(private route: ActivatedRoute) {
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.comunicado = this.comunicados.find(
-      comunicado => comunicado.id === Number(this.id)
-    );
+  this.id = this.route.snapshot.paramMap.get('id');
+
+  this.comunicado = this.comunicados.find(
+    comunicado => comunicado.id === Number(this.id)
+  );
+
+  if (!this.comunicado) {
+    const comunicadoGuardado = localStorage.getItem('nuevo_comunicado_mp01');
+
+    if (comunicadoGuardado) {
+      const nuevoComunicado = JSON.parse(comunicadoGuardado);
+
+      if (
+        nuevoComunicado.estado === 'Publicado' &&
+        nuevoComunicado.id === Number(this.id)
+      ) {
+        const fecha = nuevoComunicado.fechaPublicacion
+          ? new Date(nuevoComunicado.fechaPublicacion)
+          : new Date();
+
+        this.comunicado = {
+          id: nuevoComunicado.id,
+          dia: fecha.getDate().toString().padStart(2, '0'),
+          mes: fecha
+            .toLocaleString('es-PE', { month: 'short' })
+            .replace('.', '')
+            .toUpperCase(),
+          tipo: nuevoComunicado.tipo.toUpperCase(),
+          titulo: nuevoComunicado.titulo,
+          descripcion: nuevoComunicado.descripcion,
+          contenido: nuevoComunicado.contenido
+        };
+      }
+    }
   }
+}
 
 }

@@ -10,26 +10,24 @@
 
     <div class="dato">
       <label>Título</label>
-      <p>Reunión general de padres de familia</p>
+      <p>{{ nuevoComunicado?.titulo || 'Reunión general de padres de familia' }}</p>
     </div>
 
     <div class="dato">
       <label>Tipo</label>
-      <p>Institucional</p>
+      <p>{{ nuevoComunicado?.tipo || 'Institucional' }}</p>
     </div>
 
     <div class="dato">
       <label>Descripción breve</label>
-      <p>Información institucional para padres y apoderados.</p>
+      <p>{{ nuevoComunicado?.descripcion || 'Información institucional para padres y apoderados.' }}</p>
     </div>
 
     <div class="dato">
       <label>Contenido</label>
       <p>
-        La Dirección de la I.E. N.° 20395 Nuestra Señora de Fátima
-        comunica a los padres de familia que se realizará una reunión
-        general con la finalidad de informar sobre las actividades
-        académicas e institucionales del presente periodo.
+  {{ nuevoComunicado?.contenido ||
+     'La Dirección de la I.E. N.° 20395 Nuestra Señora de Fátima comunica a los padres de familia que se realizará una reunión general con la finalidad de informar sobre las actividades académicas e institucionales del presente periodo.' }}
       </p>
     </div>
 

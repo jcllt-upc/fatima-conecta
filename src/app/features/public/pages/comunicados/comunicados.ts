@@ -36,4 +36,30 @@ export class Comunicados {
   }
   ];
 
+  ngOnInit(): void {
+  const comunicadoGuardado = localStorage.getItem('nuevo_comunicado_mp01');
+
+  if (comunicadoGuardado) {
+    const nuevoComunicado = JSON.parse(comunicadoGuardado);
+
+    if (nuevoComunicado.estado === 'Publicado') {
+      const fecha = nuevoComunicado.fechaPublicacion
+        ? new Date(nuevoComunicado.fechaPublicacion)
+        : new Date();
+
+      this.comunicados.unshift({
+        id: nuevoComunicado.id,
+        dia: fecha.getDate().toString().padStart(2, '0'),
+        mes: fecha
+          .toLocaleString('es-PE', { month: 'short' })
+          .replace('.', '')
+          .toUpperCase(),
+        tipo: nuevoComunicado.tipo.toUpperCase(),
+        titulo: nuevoComunicado.titulo,
+        descripcion: nuevoComunicado.descripcion
+      });
+    }
+  }
+}
+
 }

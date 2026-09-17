@@ -106,7 +106,52 @@
         <button class="btn-accion">Ver</button>
       </div>
     </div>
+        @if (nuevoComunicado) {
+  <div class="tabla-fila">
 
+    <div>
+      <strong>{{ nuevoComunicado.titulo }}</strong>
+      <p>{{ nuevoComunicado.descripcion }}</p>
+    </div>
+
+    <div>
+      <span
+        class="estado"
+        [class.pendiente]="nuevoComunicado.estado === 'Pendiente'"
+        [class.aprobado]="nuevoComunicado.estado === 'Aprobado'"
+        [class.publicado]="nuevoComunicado.estado === 'Publicado'">
+        {{ nuevoComunicado.estado }}
+      </span>
+    </div>
+
+    <div class="acciones">
+      @if (nuevoComunicado.estado === 'Pendiente') {
+        <a
+            routerLink="/dashboard/comunicados/revisar/nuevo"
+            class="btn-accion">
+            Revisar
+        </a>
+      }
+
+      @if (nuevoComunicado.estado === 'Aprobado') {
+        <button
+            class="btn-accion"
+            (click)="publicarNuevoComunicado()">
+            Publicar
+        </button>
+      }
+
+      @if (nuevoComunicado.estado === 'Publicado') {
+        <a
+            [routerLink]="['/comunicados/detalle', nuevoComunicado.id]"
+            class="btn-accion">
+            Ver
+        </a>
+    }
+    </div>
+
+  </div>
+      }
   </div>
 
 </section>

@@ -10,12 +10,19 @@ import { RouterLink } from '@angular/router';
 export class GestionComunicados {
 
   estadoComunicado1: string = 'Pendiente';
+  nuevoComunicado: any = null;
 
   ngOnInit(): void {
     const estadoGuardado = localStorage.getItem('estado_comunicado_1');
 
     if (estadoGuardado) {
       this.estadoComunicado1 = estadoGuardado;
+    }
+
+    const comunicadoGuardado = localStorage.getItem('nuevo_comunicado_mp01');
+
+    if (comunicadoGuardado) {
+      this.nuevoComunicado = JSON.parse(comunicadoGuardado);
     }
   }
 
@@ -24,6 +31,22 @@ export class GestionComunicados {
 
     localStorage.setItem('estado_comunicado_1', 'Publicado');
   }
+
+  publicarNuevoComunicado(): void {
+  if (!this.nuevoComunicado) {
+    return;
+  }
+
+  this.nuevoComunicado.estado = 'Publicado';
+  this.nuevoComunicado.fechaPublicacion = new Date().toISOString();
+
+  localStorage.setItem(
+    'nuevo_comunicado_mp01',
+    JSON.stringify(this.nuevoComunicado)
+  );
+}
+
+
 
 }
 

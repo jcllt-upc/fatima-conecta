@@ -48,12 +48,25 @@ validarArchivo(event: Event): void {
     return;
   }
 
-  console.log(this.formularioComunicado.value);
+  const nuevoComunicado = {
+    id: Date.now(),
+    titulo: this.formularioComunicado.value.titulo,
+    tipo: this.formularioComunicado.value.tipo,
+    descripcion: this.formularioComunicado.value.descripcion,
+    contenido: this.formularioComunicado.value.contenido,
+    estado: 'Pendiente',
+    fechaCreacion: new Date().toISOString()
+  };
+
+  localStorage.setItem(
+    'nuevo_comunicado_mp01',
+    JSON.stringify(nuevoComunicado)
+  );
+
+  console.log(nuevoComunicado);
 
   this.mensajeExito =
     'Comunicado registrado correctamente. Estado: Pendiente de revisión.';
-
-
 }
 
 }
