@@ -40,6 +40,11 @@
       }
 
       @if (currentUserRole() === 'Director') {
+        <div class="menu-group-label">Gestión Institucional (MP01)</div>
+
+        <a routerLink="/dashboard/comunicados" routerLinkActive="active-menu">
+          <i class="menu-icon"></i> Gestión de Comunicados
+        </a>
         <div class="menu-group-label">Administración General</div>
         <a routerLink="/dashboard/usuarios" routerLinkActive="active-menu">
           <i class="menu-icon users"></i> Control de Usuarios

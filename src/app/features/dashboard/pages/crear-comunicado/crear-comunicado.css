@@ -1,0 +1,134 @@
+.crear-comunicado {
+  padding: 40px;
+  max-width: 1000px;
+}
+
+.crear-header {
+  margin-bottom: 30px;
+}
+
+.crear-header span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1d4ed8;
+  letter-spacing: 1px;
+}
+
+.crear-header h1 {
+  font-size: 32px;
+  color: #0f2747;
+  margin: 8px 0;
+}
+
+.crear-header p {
+  color: #64748b;
+  margin: 0;
+}
+
+.formulario-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+}
+
+.campo label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: #1d4ed8;
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.acciones button {
+  padding: 11px 20px;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: white;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-guardar {
+  background: #1d4ed8;
+  color: white;
+  border: 1px solid #1d4ed8;
+}
+
+.btn-guardar:hover {
+  background: #1e40af;
+}
+
+@media (max-width: 768px) {
+  .crear-comunicado {
+    padding: 25px 20px;
+  }
+
+  .formulario-card {
+    padding: 20px;
+  }
+
+  .acciones {
+    flex-direction: column;
+  }
+
+  .acciones button {
+    width: 100%;
+  }
+}
+
+.error {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.mensaje-exito {
+  margin-top: 20px;
+  padding: 14px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 7px;
+  color: #166534;
+  font-weight: 600;
+}

@@ -1,0 +1,75 @@
+<section class="revisar-comunicado">
+
+  <div class="revision-header">
+    <span>GESTIÓN INSTITUCIONAL (MP01)</span>
+    <h1>Revisar comunicado</h1>
+    <p>Revise la información antes de aprobar o rechazar el comunicado.</p>
+  </div>
+
+  <div class="revision-card">
+
+    <div class="dato">
+      <label>Título</label>
+      <p>Reunión general de padres de familia</p>
+    </div>
+
+    <div class="dato">
+      <label>Tipo</label>
+      <p>Institucional</p>
+    </div>
+
+    <div class="dato">
+      <label>Descripción breve</label>
+      <p>Información institucional para padres y apoderados.</p>
+    </div>
+
+    <div class="dato">
+      <label>Contenido</label>
+      <p>
+        La Dirección de la I.E. N.° 20395 Nuestra Señora de Fátima
+        comunica a los padres de familia que se realizará una reunión
+        general con la finalidad de informar sobre las actividades
+        académicas e institucionales del presente periodo.
+      </p>
+    </div>
+
+    <div class="dato">
+      <label>Archivo adjunto</label>
+      <p>No se adjuntó ningún archivo.</p>
+    </div>
+
+    <div class="estado-actual">
+      Estado actual: <strong>{{ estado }}</strong>
+    </div>
+
+
+    
+    @if (estado === 'Pendiente de revisión') {
+  <div class="acciones-revision">
+
+    <button
+      type="button"
+      class="btn-rechazar"
+      (click)="rechazarComunicado()">
+      Rechazar
+    </button>
+
+    <button
+      type="button"
+      class="btn-aprobar"
+      (click)="aprobarComunicado()">
+      Aprobar
+    </button>
+
+  </div>
+}
+
+@if (mensaje) {
+  <div class="mensaje-resultado">
+    {{ mensaje }}
+  </div>
+}
+
+  </div>
+
+</section>

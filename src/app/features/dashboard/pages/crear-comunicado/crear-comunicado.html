@@ -1,0 +1,106 @@
+<section class="crear-comunicado">
+
+  <div class="crear-header">
+    <span>GESTIÓN INSTITUCIONAL (MP01)</span>
+    <h1>Crear comunicado</h1>
+    <p>Registre la información del nuevo comunicado institucional.</p>
+  </div>
+
+  <div class="formulario-card">
+
+    <form
+        [formGroup]="formularioComunicado"
+        (ngSubmit)="guardarComunicado()">
+
+      <div class="campo">
+        <label for="titulo">Título del comunicado</label>
+        <input
+          type="text"
+          id="titulo"
+          formControlName="titulo"
+          placeholder="Ingrese el título">
+
+          @if (formularioComunicado.controls.titulo.touched &&
+              formularioComunicado.controls.titulo.invalid) {
+            <small class="error">El título es obligatorio.</small>
+            }
+      </div>
+
+      <div class="campo">
+        <label for="tipo">Tipo de comunicado</label>
+        <select id="tipo" formControlName="tipo">
+          <option value="">Seleccione una opción</option>
+          <option value="Institucional">Institucional</option>
+          <option value="Academico">Académico</option>
+          <option value="Actividades">Actividades</option>
+        </select>
+        @if (formularioComunicado.controls.tipo.touched &&
+            formularioComunicado.controls.tipo.invalid) {
+            <small class="error">Debe seleccionar un tipo de comunicado.</small>
+            }
+      </div>
+
+      <div class="campo">
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          rows="3"
+          formControlName="descripcion"
+          placeholder="Ingrese un resumen breve del comunicado">
+        </textarea>
+        @if (formularioComunicado.controls.descripcion.touched &&
+            formularioComunicado.controls.descripcion.invalid) {
+            <small class="error">La descripción es obligatoria.</small>
+            }
+      </div>
+
+      <div class="campo">
+        <label for="contenido">Contenido del comunicado</label>
+        <textarea
+            id="contenido"
+            formControlName="contenido"
+            rows="7"
+            placeholder="Ingrese el contenido completo del comunicado">      
+        </textarea>
+        @if (formularioComunicado.controls.contenido.touched &&
+            formularioComunicado.controls.contenido.invalid) {
+            <small class="error">El contenido es obligatorio.</small>
+            }
+      </div>
+
+      <div class="campo">
+        <label for="archivo">Imagen o archivo adjunto (opcional)</label>
+
+        <input
+            type="file"
+            id="archivo"
+            accept=".jpg,.jpeg,.png,.pdf"
+            (change)="validarArchivo($event)">
+
+            @if (archivoError) {
+        <small class="error">{{ archivoError }}</small>
+        }
+    </div>
+
+      <div class="acciones">
+        <button type="button" class="btn-cancelar">
+          Cancelar
+        </button>
+
+        <button type="submit" class="btn-guardar">
+          Guardar comunicado
+        </button>
+      </div>
+
+    </form>
+
+     @if (mensajeExito) {
+    <div class="mensaje-exito">
+      {{ mensajeExito }}
+    </div>
+  }
+
+
+  </div>
+
+</section>

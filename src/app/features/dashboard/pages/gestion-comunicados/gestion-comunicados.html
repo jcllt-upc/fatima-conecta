@@ -1,0 +1,112 @@
+<section class="gestion-comunicados">
+
+  <div class="gestion-header">
+    <div>
+      <span>GESTIÓN INSTITUCIONAL (MP01)</span>
+      <h1>Gestión de Comunicados</h1>
+      <p>Administre los comunicados institucionales y su estado de publicación.</p>
+    </div>
+
+    <a routerLink="/dashboard/comunicados/nuevo" class="btn-nuevo">
+      + Nuevo comunicado
+    </a>
+  </div>
+
+  <div class="tabla-card">
+
+    <div class="tabla-header">
+      <span>Comunicado</span>
+      <span>Estado</span>
+      <span>Acciones</span>
+    </div>
+
+    <div class="tabla-fila">
+      <div>
+        <strong>Reunión general de padres de familia</strong>
+        <p>Información institucional para padres y apoderados.</p>
+      </div>
+
+      <div>
+        <span
+            class="estado"
+            [class.pendiente]="estadoComunicado1 === 'Pendiente'"
+            [class.aprobado]="estadoComunicado1 === 'Aprobado'"
+            [class.publicado]="estadoComunicado1 === 'Publicado'">
+                {{ estadoComunicado1 }}
+        </span>
+      </div>
+
+
+        <div class="acciones">
+
+        @if (estadoComunicado1 === 'Pendiente') {
+            <a
+            routerLink="/dashboard/comunicados/revisar/1"
+            class="btn-accion">
+            Revisar
+            </a>
+        }
+
+        @if (estadoComunicado1 === 'Aprobado') {
+            <button
+            class="btn-accion"
+            (click)="publicarComunicado1()">
+            Publicar
+            </button>
+        }
+
+        @if (estadoComunicado1 === 'Publicado') {
+            <a
+            routerLink="/comunicados/detalle/1"
+            class="btn-accion">
+            Ver
+            </a>
+        }
+
+        @if (estadoComunicado1 !== 'Publicado') {
+            <button class="btn-accion">
+            Editar
+            </button>
+        }
+
+        </div>
+        </div>
+    <div class="tabla-fila">
+      <div>
+        <strong>Entrega de reportes de progreso</strong>
+        <p>Información correspondiente al periodo académico.</p>
+      </div>
+
+      <div>
+        <span class="estado aprobado">Aprobado</span>
+      </div>
+
+      <div class="acciones">
+        <button class="btn-accion">Publicar</button>
+
+        <a
+            routerLink="/dashboard/comunicados/editar/2"
+            class="btn-accion">
+            Editar
+        </a>
+      </div>
+    </div>
+
+    <div class="tabla-fila">
+      <div>
+        <strong>Jornada deportiva institucional</strong>
+        <p>Actividad deportiva dirigida a los estudiantes.</p>
+      </div>
+
+      <div>
+        <span class="estado publicado">Publicado</span>
+      </div>
+
+      <div class="acciones">
+        <button class="btn-accion">Ver</button>
+      </div>
+    </div>
+
+  </div>
+
+</section>
