@@ -1,0 +1,42 @@
+<section class="historico-section">
+
+  <div class="historico-header">
+    <span class="historico-etiqueta">COMUNICACIÓN INSTITUCIONAL</span>
+    <h1>Histórico de comunicados</h1>
+    <p>
+      Consulta los comunicados publicados anteriormente por nuestra institución educativa.
+    </p>
+  </div>
+
+  <div class="historico-lista">
+
+    @for (comunicado of comunicadosHistoricos; track comunicado.titulo) {
+
+      <article class="historico-card">
+
+        <div class="historico-fecha">
+          <span>{{ comunicado.dia }}</span>
+          <small>{{ comunicado.mes }}</small>
+        </div>
+
+        <div class="historico-contenido">
+
+          <span class="historico-tipo">
+            {{ comunicado.tipo }}
+          </span>
+
+          <h2>{{ comunicado.titulo }}</h2>
+
+          <p>
+            {{ comunicado.descripcion }}
+          </p>
+
+        </div>
+
+      </article>
+
+    }
+
+  </div>
+
+</section>

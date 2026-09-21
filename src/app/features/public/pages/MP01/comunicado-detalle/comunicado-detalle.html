@@ -1,0 +1,29 @@
+<section class="detalle-section">
+
+  @if (comunicado) {
+
+    <div class="detalle-contenido">
+
+      <span class="detalle-tipo">
+        {{ comunicado.tipo }}
+      </span>
+
+      <h1>{{ comunicado.titulo }}</h1>
+
+      <p class="detalle-fecha">
+        {{ comunicado.dia }} {{ comunicado.mes }}
+      </p>
+
+      <p class="detalle-descripcion">
+        {{ comunicado.contenido }}
+      </p>
+
+      <a class="btn-volver" routerLink="/comunicados">
+        ← Volver a comunicados
+        </a>
+
+    </div>
+
+  }
+
+</section>

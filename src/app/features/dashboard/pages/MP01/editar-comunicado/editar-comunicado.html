@@ -1,0 +1,92 @@
+<section class="editar-comunicado">
+
+  <div class="editar-header">
+    <span>GESTIÓN INSTITUCIONAL (MP01)</span>
+    <h1>Editar comunicado</h1>
+    <p>Modifique la información del comunicado seleccionado.</p>
+  </div>
+
+  <div class="formulario-card">
+
+    <form
+        [formGroup]="formularioComunicado"
+        (ngSubmit)="guardarCambios()">
+
+      <div class="campo">
+        <label for="titulo">Título del comunicado</label>
+
+        <input
+          type="text"
+          id="titulo"
+          formControlName="titulo">
+
+        @if (formularioComunicado.controls.titulo.touched &&
+             formularioComunicado.controls.titulo.invalid) {
+          <small class="error">El título es obligatorio.</small>
+        }
+      </div>
+
+      <div class="campo">
+        <label for="tipo">Tipo de comunicado</label>
+
+        <select id="tipo" formControlName="tipo">
+          <option value="Institucional">Institucional</option>
+          <option value="Academico">Académico</option>
+          <option value="Actividades">Actividades</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="descripcion">Descripción breve</label>
+
+        <textarea
+          id="descripcion"
+          rows="3"
+          formControlName="descripcion">
+        </textarea>
+
+        @if (formularioComunicado.controls.descripcion.touched &&
+             formularioComunicado.controls.descripcion.invalid) {
+          <small class="error">La descripción es obligatoria.</small>
+        }
+      </div>
+
+      <div class="campo">
+        <label for="contenido">Contenido del comunicado</label>
+
+        <textarea
+          id="contenido"
+          rows="7"
+          formControlName="contenido">
+        </textarea>
+
+        @if (formularioComunicado.controls.contenido.touched &&
+             formularioComunicado.controls.contenido.invalid) {
+          <small class="error">El contenido es obligatorio.</small>
+        }
+      </div>
+
+      <div class="acciones">
+        <button
+            type="button"
+            class="btn-cancelar"
+            (click)="cancelar()">
+            Cancelar
+        </button>
+
+        <button type="submit" class="btn-guardar">
+          Guardar cambios
+        </button>
+      </div>
+
+    </form>
+
+        @if (mensajeExito) {
+    <div class="mensaje-exito">
+        {{ mensajeExito }}
+    </div>
+    }
+
+  </div>
+
+</section>

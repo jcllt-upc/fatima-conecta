@@ -1,0 +1,136 @@
+.crear-comunicado { /* Contenedor principal de la pantalla Crear comunicado */
+  padding: 40px; /* Espacio interno entre el contenido y los bordes */
+  max-width: 1000px;  /* Limita el ancho máximo del contenido a 1000 píxeles */
+}
+
+.crear-header { /* Cabecera de la pantalla */
+  margin-bottom: 30px; /* Deja 30px de espacio debajo de la cabecera */
+}
+
+.crear-header span { /* Aplica estilos a los <span> que estén dentro de crear-header */
+  font-size: 13px;  /* Tamaño de la letra */
+  font-weight: 700; /* Grosor de la letra: negrita */
+  color: #1d4ed8; /* Color del texto */
+  letter-spacing: 1px;  /* Separación entre las letras */
+}
+
+.crear-header h1 { 
+  font-size: 32px; /* Tamaño de la letra */
+  color: #0f2747; /* Color del texto */
+  margin: 8px 0; /* Margen de 8px arriba/abajo y 0 a los lados */
+}
+
+.crear-header p { /* Aplica estilos al párrafo <p> de crear-header */
+  color: #64748b;
+  margin: 0; /* Elimina los márgenes del párrafo */
+}
+
+.formulario-card { /* Tarjeta que contiene el formulario */
+  background: white; /* Fondo blanco */
+  border: 1px solid #e2e8f0; /* Borde de 1px, sólido y de ese color */
+  border-radius: 12px;  /* Redondea las esquinas */
+  padding: 30px; /* Espacio interno de la tarjeta */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Agrega una sombra suave alrededor de la tarjeta */
+}
+
+.campo { /* Cada grupo de campo del formulario */
+  display: flex; /* Activa Flexbox */
+  flex-direction: column;   /* Coloca los elementos uno debajo del otro */
+  margin-bottom: 22px;    /* Espacio debajo de cada campo */
+}
+
+.campo label { /* Estilo de los label que estén dentro de .campo */
+  font-size: 14px;  /* Tamaño de letra */
+  font-weight: 600; /* Grosor de letra */
+  color: #334155; /* Color del texto */
+  margin-bottom: 8px; /* Espacio entre el label y su campo */
+}
+
+/* Estos estilos se aplican a input, select y textarea dentro de .campo */
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;  /* Ocupa el 100% del ancho disponible */
+  padding: 12px; /* Espacio interno */
+  font-size: 15px; /* Tamaño de letra */
+  border: 1px solid #cbd5e1;  /* Borde */
+  border-radius: 7px; /* Esquinas redondeadas */
+  box-sizing: border-box; /* Hace que padding y borde se incluyan dentro del ancho del elemento */
+  font-family: inherit;  /* Hereda la misma fuente del elemento padre */
+}
+
+/* :focus se activa cuando el usuario selecciona o escribe en estos campos */
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: none; /* Elimina el contorno predeterminado del navegador */
+  border-color: #1d4ed8; 
+}
+
+.campo textarea { /* Estilo específico de los textarea */
+  resize: vertical; /* Permite cambiar su tamaño solamente de forma vertical */
+}
+
+.acciones { /* Contenedor de los botones Cancelar y Guardar */
+  display: flex;  /* Activa Flexbox */
+  justify-content: flex-end; /* Coloca los botones hacia el lado derecho */
+  gap: 12px;  /* Separación entre los botones */
+  margin-top: 30px;  /* Espacio superior */
+}
+
+.acciones button { /* Estilo general de los botones que están dentro de .acciones */
+  padding: 11px 20px; /* Espacio interno del botón */
+  border-radius: 7px; /* Esquinas redondeadas */
+  font-weight: 600;  /* Grosor del texto */
+  cursor: pointer;  /* Muestra la manito cuando el mouse pasa por el botón */
+}
+
+.btn-cancelar { /* Estilo específico del botón Cancelar */
+  background: white; /* Fondo blanco */
+  color: #475569; /* Color del texto */
+  border: 1px solid #cbd5e1;  /* Borde */
+}
+
+.btn-guardar { /* Estilo específico del botón Guardar */
+  background: #1d4ed8;   /* Fondo azul */
+  color: white; /* Texto blanco */
+  border: 1px solid #1d4ed8; /* Borde azul */
+}
+
+.btn-guardar:hover { /* :hover se activa cuando pasamos el mouse sobre Guardar */
+  background: #1e40af; /* Cambia a un azul más oscuro */
+}
+
+@media (max-width: 768px) { /* Estos estilos se aplican cuando la pantalla mide 768px o menos */
+  .crear-comunicado {  
+    padding: 25px 20px; /* Reduce los espacios para pantallas pequeñas */
+  }
+
+  .formulario-card {
+    padding: 20px;  /* Reduce el espacio interno de la tarjeta */
+  }
+
+  .acciones { 
+    flex-direction: column; /* En pantallas pequeñas pone los botones uno debajo del otro */
+  }
+
+  .acciones button {
+    width: 100%; /* Los botones ocupan todo el ancho disponible */
+  }
+}
+
+.error { /* Estilo de los mensajes de error del formulario */
+  color: #dc2626; /* Color rojo */
+  font-size: 13px; /* Tamaño de letra */
+  margin-top: 6px; /* Espacio sobre el mensaje */
+}
+
+.mensaje-exito { /* Estilo del mensaje que aparece cuando se guarda correctamente */
+  margin-top: 20px; /* Espacio superior */
+  padding: 14px; /* Espacio interno */
+  background: #f0fdf4; /* Fondo verde claro */
+  border: 1px solid #bbf7d0;   /* Borde verde */
+  border-radius: 7px; /* Esquinas redondeadas */
+  color: #166534;  /* Color verde oscuro del texto */
+  font-weight: 600;  /* Texto seminegrita */
+}
