@@ -12,71 +12,96 @@ import { CrearComunicado } from './features/dashboard/pages/MP01/crear-comunicad
 import { RevisarComunicado } from './features/dashboard/pages/MP01/revisar-comunicado/revisar-comunicado';
 import { EditarComunicado } from './features/dashboard/pages/MP01/editar-comunicado/editar-comunicado';
 
+
+// ==========================================
+  // 1. RUTAS PÚBLICAS (Con diseño PublicLayout)
+  // ==========================================
+
+
 export const routes: Routes = [
   {
-    path: '',
-    component: PublicLayoutComponent,
+    path: '', // la parte de la URL que debe coincidir para activar una ruta
+    component: PublicLayoutComponent, // Estructura visual para usuarios no logueados (Nav, Footer, etc.)
     children: [
       {
         path: 'home',
-        component: HomeComponent
+        component: HomeComponent 
       },
       {
         path: 'comunicados/detalle/:id',
-        component: ComunicadoDetalle
+        component: ComunicadoDetalle // Ver detalle de un comunicado usando su ID variable
       },
       {
         path: 'comunicados/historico',
-        component: HistoricoComunicados
+        component: HistoricoComunicados // Historial de comunicados públicos
       },
       {
         path: 'comunicados',
-        component: Comunicados
+        component: Comunicados // Lista general de comunicados públicos
       },
       {
         path: '',
-        redirectTo: 'home',
-        pathMatch: 'full'
+        redirectTo: 'home', // Si entran a la raíz pura (ej: mysite.com), redirige a /home
+        pathMatch: 'full'  // Coincidencia exacta de la URL vacía
       }
     ]
   },
+
+  // ==========================================
+  // 2. RUTA DE ACCESO (Sin Layout/Pantalla limpia)
+  // ==========================================
+
+
     {
     path: 'login',
     component: LoginComponent
   },
+
+
+  // ==========================================
+  // 3. RUTAS PRIVADAS (Panel de Administración)
+  // ==========================================
+
+
   {
     path: 'dashboard',
-    component: DashboardLayoutComponent,
+    component: DashboardLayoutComponent, // Estructura con menú lateral/barra administrativa
     children: [
       {
         path: '',
         children: [
           {
           path: 'comunicados',
-          component: GestionComunicados
+          component: GestionComunicados // Panel principal para administrar comunicados
           },
           {
           path: 'comunicados/nuevo',
-          component: CrearComunicado
+          component: CrearComunicado  // Formulario para crear un comunicado nuevo
           },
           {
           path: 'comunicados/revisar/:id',
-          component: RevisarComunicado
+          component: RevisarComunicado // Pantalla para revisar un comunicado específico vía ID
           },
           {
           path: 'comunicados/editar/:id',
-          component: EditarComunicado
+          component: EditarComunicado // Formulario para editar un comunicado existente vía ID
           },
           {
           path: '',
-          component: WelcomeDashboardComponent
+          component: WelcomeDashboardComponent  // Vista por defecto al entrar a /dashboard
           }
         ]
       }
     ]
   },
+
+ // ==========================================
+  // 4. RUTA COMODÍN (Manejo de errores 404)
+  // ==========================================
+
+
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'home' // Cualquier URL inválida o que no exista redirigirá al Home automáticamente
   }
 ];

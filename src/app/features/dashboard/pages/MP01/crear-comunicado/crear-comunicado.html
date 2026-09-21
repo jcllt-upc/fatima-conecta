@@ -1,25 +1,42 @@
-<section class="crear-comunicado">
+<section class="crear-comunicado"> <!-- SECCIÓN PRINCIPAL: Contenedor semántico para el módulo de creación de comunicados -->
 
+
+  <!-- ENCABEZADO DE LA PÁGINA: Títulos informativos y contexto del módulo -->
   <div class="crear-header">
     <span>GESTIÓN INSTITUCIONAL (MP01)</span>
     <h1>Crear comunicado</h1>
     <p>Registre la información del nuevo comunicado institucional.</p>
   </div>
 
-  <div class="formulario-card">
+  <div class="formulario-card"> <!-- CONTENEDOR DEL CAMPO: Agrupa la etiqueta, el input y el error para darles estilo en bloque -->
 
+    
+    
     <form
-        [formGroup]="formularioComunicado"
-        (ngSubmit)="guardarComunicado()">
+        [formGroup]="formularioComunicado"  
+        (ngSubmit)="guardarComunicado()">  <!-- (ngSubmit): Evento especial de Angular que se dispara al pulsar el botón de guardar, ejecutando la función 'guardarComunicado()' -->
 
-      <div class="campo">
+      <div class="campo"> 
         <label for="titulo">Título del comunicado</label>
+
+        <!-- ENTRADA DE TEXTO (INPUT):
+       * type="text": Define que es una caja para escribir texto común.
+       * id="titulo": Conecta esta caja con el 'for' de la etiqueta <label>.
+       * formControlName="titulo": El puente clave de Angular. Vincula este input 
+         con el objeto 'titulo' que creaste en el FormGroup de tu archivo TypeScript.
+       * placeholder: El texto gris temporal que desaparece cuando el usuario empieza a escribir. -->
         <input
           type="text"
           id="titulo"
           formControlName="titulo"
           placeholder="Ingrese el título">
 
+
+           <!-- CONTROL DE FLUJO CONDICIONAL (@if): 
+       Angular revisa dos estados de fábrica del campo 'titulo' en tiempo real:
+       1. .touched -> ¿El usuario ya hizo clic dentro del campo y luego se salió?
+       2. .invalid -> ¿El campo está vacío o mal rellenado según las reglas de TypeScript?
+       Si AMBAS condiciones son verdaderas (True), Angular inyecta el mensaje de error en la pantalla. -->
           @if (formularioComunicado.controls.titulo.touched &&
               formularioComunicado.controls.titulo.invalid) {
             <small class="error">El título es obligatorio.</small>
@@ -28,7 +45,7 @@
 
       <div class="campo">
         <label for="tipo">Tipo de comunicado</label>
-        <select id="tipo" formControlName="tipo">
+        <select id="tipo" formControlName="tipo"> <!-- Lista desplegable conectada con el campo "tipo" del formulario en TypeScript -->
           <option value="">Seleccione una opción</option>
           <option value="Institucional">Institucional</option>
           <option value="Academico">Académico</option>
@@ -43,7 +60,7 @@
       <div class="campo">
         <label for="descripcion">Descripción</label>
         <textarea
-          id="descripcion"
+          id="descripcion" 
           rows="3"
           formControlName="descripcion"
           placeholder="Ingrese un resumen breve del comunicado">
