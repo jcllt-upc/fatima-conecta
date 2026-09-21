@@ -1,0 +1,143 @@
+<div class="contexto-page-layout">
+
+  <!-- ==========================================================================
+       BLOQUE 1: BUSCADOR Y CUADRO DE RESULTADOS DE ESTUDIANTES (LÓGICA P06)
+       ========================================================================== -->
+  <section class="search-results-panel">
+    <div class="panel-card-header">
+      <h2>Buscador de Estudiantes</h2>
+      <p>Filtre por apellidos, nombres o número de DNI para aperturar la ficha cualitativa</p>
+    </div>
+
+    <!-- Formulario Reactivo del Buscador conectado a tu FormGroup -->
+    <form [formGroup]="contextoForm" class="search-form-bar">
+      <div class="search-input-wrapper">
+        <!-- El evento (input) gatilla la búsqueda en tiempo real en cada letra que escribe el profesor -->
+        <input 
+          type="text" 
+          formControlName="txtBuscar" 
+          placeholder="Buscar por DNI o apellidos del alumno..." 
+          (input)="ejecutarBusqueda()"
+          class="search-field-input"
+        />
+        
+        <!-- BOTÓN DE USABILIDAD (CLEAR): Se muestra solo si el profesor ha escrito texto en la caja -->
+        @if (contextoForm.controls.txtBuscar.value.length > 0) {
+          <button 
+            type="button" 
+            class="btn-clear-search" 
+            (click)="limpiarBuscador()"
+            title="Limpiar búsqueda"
+          >
+            ✖
+          </button>
+        }
+
+        <span class="search-inline-icon">🔍</span>
+      </div>
+    </form>
+
+
+    <!-- Grilla de Resultados: Recorre el Signal estudiantesFiltrados() -->
+    <div class="students-data-list">
+      <div class="list-table-header">
+        <span class="col-dni">DNI</span>
+        <span class="col-name">Estudiante</span>
+        <span class="col-grade">Grado y Sección</span>
+      </div>
+
+      <!-- Nueva directiva optimizada de control de flujo @for de Angular -->
+      @for (alumno of estudiantesFiltrados(); track alumno.id) {
+        <!-- Fila Interactiva: Al darle clic se congela el contexto en el TypeScript -->
+        <!-- Añade dinámicamente la clase CSS 'row-selected' si el ID coincide con el Signal -->
+        <div 
+          class="student-data-row" 
+          (click)="seleccionarEstudiante(alumno)"
+          [class.row-selected]="estudianteSeleccionado()?.id === alumno.id"
+        >
+          <span class="col-dni font-monospace">{{ alumno.dni }}</span>
+          <span class="col-name font-bold">{{ alumno.apellidos }}, {{ alumno.nombres }}</span>
+          <span class="col-grade text-muted">{{ alumno.gradoSeccion }}</span>
+        </div>
+      } @empty {
+        <!-- Mensaje de escape de usabilidad si el filtro no arroja ninguna coincidencia en la DB -->
+        <div class="empty-results-fallback">
+          <p>⚠️ No se encontraron estudiantes registrados que coincidan con la búsqueda.</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       BLOQUE 2: APERTURA Y REGISTRO DE LA BITÁCORA PEDAGÓGICA (CONTEXTO MP02)
+       ========================================================================== -->
+  <section class="context-activation-panel">
+    
+    <!-- EVALUACIÓN CONDICIONAL: Si no hay ningún alumno seleccionado en el Signal -->
+    @if (!estudianteSeleccionado()) {
+      <div class="placeholder-unselected-state">
+        <div class="fallback-graphic-icon">📁</div>
+        <h3>Ficha Escolar sin Inicializar</h3>
+        <p>Por favor, seleccione un estudiante de la lista de la izquierda para abrir el registro de acompañamiento formativo del periodo.</p>
+      </div>
+    }
+
+    <!-- EVALUACIÓN CONDICIONAL: Si el profesor ya seleccionó a un alumno en la grilla -->
+    @if (estudianteSeleccionado(); as estudiante) {
+      <div class="active-context-wrapper">
+        <div class="panel-card-header">
+          <h2>Configuración del Contexto</h2>
+          <p>Registre el periodo de evaluación para congelar el contexto del estudiante</p>
+        </div>
+
+        <!-- Tarjeta Informativa del Alumno Seleccionado -->
+        <div class="selected-student-summary-card">
+          <div class="summary-avatar-circle">🎓</div>
+          <div class="summary-meta-text">
+            <h4>{{ estudiante.apellidos }}, {{ estudiante.nombres }}</h4>
+            <p>DNI: {{ estudiante.dni }} | {{ estudiante.gradoSeccion }}</p>
+          </div>
+        </div>
+
+        <!-- Formulario Reactivo para la Selección del Bimestre -->
+        <form [formGroup]="contextoForm" (ngSubmit)="onRegistrarContexto()" class="context-action-form">
+          <div class="dropdown-group">
+            <label for="selBimestre" class="dropdown-field-label">Periodo Escolar Obligatorio</label>
+            <select id="selBimestre" formControlName="selBimestre" class="form-dropdown-select">
+              <option value="" disabled selected>-- Seleccione el Bimestre Escolar --</option>
+              <option value="Primer Bimestre">Primer Bimestre</option>
+              <option value="Segundo Bimestre">Segundo Bimestre</option>
+              <option value="Tercer Bimestre">Tercer Bimestre</option>
+              <option value="Cuarto Bimestre">Cuarto Bimestre</option>
+            </select>
+            
+            <!-- Mensaje de Error de Usabilidad si intenta guardar sin elegir bimestre -->
+            @if (contextoForm.controls.selBimestre.invalid && contextoForm.controls.selBimestre.touched) {
+              <span class="dropdown-error-msg">Debe seleccionar un periodo escolar de forma obligatoria.</span>
+            }
+          </div>
+
+          <!-- BANNER DE ÉXITO: Se enciende solo si el Signal idFichaCreada() tiene un número de registro -->
+          @if (idFichaCreada(); as idFicha) {
+            <div class="success-registration-banner">
+              <div class="banner-icon-success">✓</div>
+              <div class="banner-body-text">
+                <h5>¡Contexto Registrado y Congelado Exitosamente!</h5>
+                <p>Se ha aperturado la Bitácora Pedagógica <strong>N.° {{ idFicha }}</strong> para el periodo seleccionado. Los datos ya se encuentran disponibles para la carga de evidencias y el progreso cualitativo.</p>
+              </div>
+            </div>
+          }
+
+          <!-- Bloque de Botones de Interacción del Subproceso -->
+          <div class="context-panel-actions-row">
+            <button type="button" (click)="limpiarFicha()" class="btn-cancel-context">Cancelar</button>
+            <!-- El botón se desactiva lógicamente si ya se generó la ficha para evitar duplicados -->
+            <button type="submit" [disabled]="idFichaCreada() !== null" class="btn-save-context">Abrir Ficha Escolar</button>
+          </div>
+        </form>
+      </div>
+    }
+
+  </section>
+
+</div>

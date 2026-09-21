@@ -12,6 +12,10 @@ import { CrearComunicado } from './features/dashboard/pages/MP01/crear-comunicad
 import { RevisarComunicado } from './features/dashboard/pages/MP01/revisar-comunicado/revisar-comunicado';
 import { EditarComunicado } from './features/dashboard/pages/MP01/editar-comunicado/editar-comunicado';
 
+// Importamos Modulo Seguimiento
+
+// Importamos la clase oficial de tu primer subproceso refinado en la carpeta mp02
+import { ContextoEstudianteComponent } from './features/dashboard/pages/MP02/contexto-estudiante/contexto-estudiante';
 
 // ==========================================
   // 1. RUTAS PÚBLICAS (Con diseño PublicLayout)
@@ -89,6 +93,13 @@ export const routes: Routes = [
           {
           path: '',
           component: WelcomeDashboardComponent  // Vista por defecto al entrar a /dashboard
+          },
+
+          // Rutas para el Modulo de Seguimiento
+          {
+          // Registramos el camino para el subproceso P02.1 Contexto del Estudiante
+          path: 'contexto-estudiante',
+          component: ContextoEstudianteComponent
           }
         ]
       }
