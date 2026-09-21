@@ -1,0 +1,118 @@
+<div class="evidencias-page-layout">
+
+  <header class="context-sticky-banner">
+    <div class="banner-avatar-icon">🎓</div>
+    <div class="banner-meta-info">
+      <span class="context-small-tag">Contexto de Evaluación Activo (MP02)</span>
+      <h2>Estudiante: {{ nombreEstudiante() }}</h2>
+      <p>Bitácora Pedagógica N.° <strong>{{ idFichaContexto() }}</strong> | Periodo: <strong>{{ bimestreActivo() }}</strong></p>
+    </div>
+  </header>
+
+  @if (!mostrarAlertaExito()) {
+    
+    <div class="active-upload-workspace-block">
+      
+      <section class="upload-component-card">
+        <div class="panel-card-header">
+          <h3>Sustento Documental y Multimedia</h3>
+          <p>Adjunte las pruebas físicas (fotografías de trabajos, fichas o archivos PDF de evaluaciones) que respalden el avance pedagógico</p>
+        </div>
+
+        <div class="advanced-dropzone-box">
+          <div class="dropzone-graphic-icon">📤</div>
+          <h4>Arrastre y suelte sus archivos aquí</h4>
+          <p class="dropzone-restrictions-text">Formatos institucionales admitidos: <strong>JPG, PNG o PDF</strong> (Tamaño máximo por archivo: <strong>5 MB</strong>)</p>
+          
+          <button type="button" class="btn-trigger-explorer" (click)="fileInputExplorer.click()">
+            Seleccionar archivos de la computadora
+          </button>
+
+          <input 
+            type="file" 
+            #fileInputExplorer 
+            multiple 
+            accept=".jpg,.jpeg,.png,.pdf"
+            (change)="onFileSelected($event)" 
+            style="display: none;" 
+          />
+        </div>
+      </section>
+
+      @if (evidenciasCargadas().length > 0) {
+        <section class="preview-gallery-section" style="margin-top: 24px;">
+          <div class="panel-card-header">
+            <h3>Archivos Listos para Enlazar ({{ evidenciasCargadas().length }})</h3>
+            <p>Revise la lista de evidencias antes de guardarlas formalmente en la bitácora escolar</p>
+          </div>
+
+          <div class="gallery-cards-grid">
+            @for (item of evidenciasCargadas(); track item.id) {
+              <article class="preview-media-card">
+                
+                <button 
+                  type="button" 
+                  class="btn-remove-preview" 
+                  (click)="eliminarEvidencia(item.id)"
+                  title="Remover este archivo"
+                >
+                  ✖
+                </button>
+
+                <div class="media-thumbnail-box">
+                  @if (item.tipo.includes('pdf')) {
+                    <div style="font-size: 40px; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: #fef2f2; color: #ef4444;">
+                      📄
+                    </div>
+                  } @else {
+                    <img [src]="item.urlPreview" [alt]="item.nombre" class="img-fluid-preview" />
+                  }
+                </div>
+
+                <div class="media-card-footer-meta">
+                  <h4 class="media-file-title" [title]="item.nombre">{{ item.nombre }}</h4>
+                  <span class="media-file-size-badge">{{ item.tamano }}</span>
+                </div>
+
+              </article>
+            }
+          </div>
+        </section>
+      }
+
+      <footer class="subprocess-navigation-row" style="margin-top: 24px;">
+        <button type="button" routerLink="/dashboard/contexto-estudiante" class="btn-subprocess-back">
+          ← Cambiar Estudiante
+        </button>
+        <button type="button" (click)="guardarEvidencias()" class="btn-subprocess-save">
+          Guardar y Registrar Evidencias
+        </button>
+      </footer>
+
+    </div>
+
+  } @else {
+
+    <div class="success-confirmation-screen-block">
+      
+      <div class="fullscreen-success-toast">
+        <span class="fullscreen-toast-check">✓</span>
+        <div class="fullscreen-toast-text">
+          <h3>¡Evidencias registradas con éxito en el sistema escolar!</h3>
+          <p>Se han enlazado y estructurado correctamente los <strong>{{ evidenciasCargadas().length }} archivos de sustento</strong> dentro de la Bitácora Pedagógica de Gestión Académica <strong>N.° {{ idFichaContexto() }}</strong>.</p>
+        </div>
+      </div>
+      
+      <div class="next-step-action-card">
+        <h4>Siguiente paso del Seguimiento Formativo:</h4>
+        <p>Una vez completado el sustento multimedia, proceda a redactar las conclusiones cualitativas de logros y dificultades del alumno en el periodo lectivo activo.</p>
+        <button type="button" routerLink="/dashboard/evaluacion-progreso" class="btn-proceed-next-subprocess">
+          Proceder a la Evaluación Cualitativa →
+        </button>
+      </div>
+
+    </div>
+
+  }
+
+</div>
