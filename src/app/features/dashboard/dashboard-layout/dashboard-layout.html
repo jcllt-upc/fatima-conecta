@@ -16,6 +16,11 @@
         <i class="menu-icon home"></i> Inicio
       </a>
 
+      <!-- MP03: Repositorio Pedagógico (Acceso general o para el Rol) -->
+      <a routerLink="/dashboard/repositorio" routerLinkActive="active-menu">
+        <i class="menu-icon evidence"></i> Repositorio Pedagógico
+      </a>
+
       @if (currentUserRole() === 'Docente') {
         <div class="menu-group-label">Gestión Académica (MP02)</div>
         <a routerLink="/dashboard/contexto-estudiante" routerLinkActive="active-menu">
