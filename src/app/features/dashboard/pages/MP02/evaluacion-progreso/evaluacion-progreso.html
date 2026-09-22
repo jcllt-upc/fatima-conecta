@@ -1,0 +1,114 @@
+<div class="evaluacion-page-layout">
+
+  <header class="context-sticky-banner">
+    <div class="banner-avatar-icon">🎓</div>
+    <div class="banner-meta-info">
+      <span class="context-small-tag">Contexto de Evaluación Activo (MP02)</span>
+      <h2>Estudiante: {{ nombreEstudiante() }}</h2>
+      <p>Bitácora Pedagógica N.° <strong>{{ idFichaContexto() }}</strong> | Periodo: <strong>{{ bimestreActivo() }}</strong></p>
+    </div>
+  </header>
+
+  @if (!mostrarExitoEvaluacion()) {
+
+    <div class="active-evaluation-workspace-block">
+      
+      <section class="evaluation-form-card">
+        <div class="panel-card-header">
+          <h3>Evaluación Cualitativa y Seguimiento de Logros</h3>
+          <p>Redacte de forma descriptiva el comportamiento, competencias desarrolladas y metas alcanzadas por el alumno en el aula de clases</p>
+        </div>
+
+        <form [formGroup]="evaluacionForm" (ngSubmit)="onGuardarEvaluacion()" class="qualitative-evaluation-form">
+          
+          <div class="textarea-input-group">
+            <label for="txtLogros" class="textarea-field-label">1. Logros alcanzados por el estudiante:</label>
+            <div class="textarea-relative-container">
+              <textarea 
+                id="txtLogros" 
+                formControlName="txtLogros" 
+                placeholder="Escriba de forma detallada las metas pedagógicas cumplidas, habilidades destacadas y avances observados..." 
+                (input)="actualizarContadorLogros()"
+                class="form-textarea-field"
+              ></textarea>
+              
+              <span class="live-character-counter" [class.counter-limit-reached]="conteoLogros() >= MAX_CARACTERES">
+                {{ conteoLogros() }} / {{ MAX_CARACTERES }}
+              </span>
+            </div>
+
+            @if (evaluacionForm.controls.txtLogros.invalid && evaluacionForm.controls.txtLogros.touched) {
+              @if (evaluacionForm.controls.txtLogros.errors?.['required']) {
+                <span class="textarea-error-msg">El registro de los logros alcanzados es obligatorio para la bitácora escolar.</span>
+              }
+              @if (evaluacionForm.controls.txtLogros.errors?.['maxlength']) {
+                <span class="textarea-error-msg">Ha excedido el límite máximo de {{ MAX_CARACTERES }} caracteres permitidos.</span>
+              }
+            }
+          </div>
+
+          <div class="textarea-input-group" style="margin-top: 24px;">
+            <label for="txtDificultades" class="textarea-field-label">2. Dificultades o puntos de mejora detectados:</label>
+            <div class="textarea-relative-container">
+              <textarea 
+                id="txtDificultades" 
+                formControlName="txtDificultades" 
+                placeholder="Escriba de forma objetiva los bloqueos de aprendizaje, áreas que requieren reforzamiento o problemas de conducta identificados..." 
+                (input)="actualizarContadorDificultades()"
+                class="form-textarea-field"
+              ></textarea>
+              
+              <span class="live-character-counter" [class.counter-limit-reached]="conteoDificultades() >= MAX_CARACTERES">
+                {{ conteoDificultades() }} / {{ MAX_CARACTERES }}
+              </span>
+            </div>
+
+            @if (evaluacionForm.controls.txtDificultades.invalid && evaluacionForm.controls.txtDificultades.touched) {
+              @if (evaluacionForm.controls.txtDificultades.errors?.['required']) {
+                <span class="textarea-error-msg">El registro de las dificultades detectadas es obligatorio para el seguimiento.</span>
+              }
+              @if (evaluacionForm.controls.txtDificultades.errors?.['maxlength']) {
+                <span class="textarea-error-msg">Ha excedido el límite máximo de {{ MAX_CARACTERES }} caracteres permitidos.</span>
+              }
+            }
+          </div>
+
+          <footer class="subprocess-navigation-row" style="margin-top: 30px;">
+            <button type="button" routerLink="/dashboard/registro-evidencias" class="btn-subprocess-back">
+              ← Regresar a Evidencias
+            </button>
+            <button type="submit" class="btn-subprocess-save">
+              Guardar Evaluación y Progreso
+            </button>
+          </footer>
+
+        </form>
+      </section>
+
+    </div>
+
+  } @else {
+
+    <div class="success-confirmation-screen-block">
+      
+      <div class="fullscreen-success-toast">
+        <span class="fullscreen-toast-check">✓</span>
+        <div class="fullscreen-toast-text">
+          <h3>¡Evaluación cualitativa y progreso registrados exitosamente!</h3>
+          <p>Se ha guardado de forma conforme la redacción descriptiva de logros y puntos de mejora del estudiante en la Bitácora Escolar <strong>N.° {{ idFichaContexto() }}</strong>. Los datos han quedado sellados de manera local en el sistema.</p>
+        </div>
+      </div>
+
+      <div class="next-step-action-card">
+        <h4>Siguiente paso del Seguimiento Formativo:</h4>
+        <p>Una vez redactado el diagnóstico del progreso escolar del alumno, proceda al módulo de Retroalimentación para registrar las recomendaciones institucionales y los compromisos obligatorios del entorno familiar.</p>
+        <button type="button" routerLink="/dashboard/retroalimentacion" class="btn-proceed-next-subprocess">
+          Proceder a la Retroalimentación →
+        </button>
+      </div>
+
+    </div>
+
+  }
+
+</div>

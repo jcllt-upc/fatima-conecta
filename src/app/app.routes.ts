@@ -17,6 +17,7 @@ import { EditarComunicado } from './features/dashboard/pages/MP01/editar-comunic
 // Importamos la clase oficial de tu primer subproceso refinado en la carpeta mp02
 import { ContextoEstudianteComponent } from './features/dashboard/pages/MP02/contexto-estudiante/contexto-estudiante';
 import { RegistroEvidenciasComponent } from './features/dashboard/pages/MP02/registro-evidencias/registro-evidencias';
+import { EvaluacionProgresoComponent } from './features/dashboard/pages/MP02/evaluacion-progreso/evaluacion-progreso';
 
 // ==========================================
   // 1. RUTAS PÚBLICAS (Con diseño PublicLayout)
@@ -106,6 +107,11 @@ export const routes: Routes = [
           // Registramos el camino para el subproceso P02.2 Registro de Evidencias
            path: 'registro-evidencias',
            component: RegistroEvidenciasComponent
+          },
+          {
+           // Registramos el camino para el subproceso P02.3 Evaluación y Progreso
+           path: 'evaluacion-progreso',
+           component: EvaluacionProgresoComponent
           }
         ]
       }

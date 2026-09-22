@@ -1,9 +1,10 @@
 import { Component, signal, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-welcome-dashboard',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './welcome-dashboard.html',
   styleUrl: './welcome-dashboard.css'
 })

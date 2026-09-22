@@ -1,0 +1,313 @@
+/* ==========================================================================
+   ESTILOS DE EVALUACIÓN Y PROGRESO (P02.3): REDACCIÓN CUALITATIVA FORMAL
+   ========================================================================== */
+
+/* Contenedor estructural vertical */
+.evaluacion-page-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Encabezados de sección */
+.panel-card-header h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+}
+
+.panel-card-header p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   ZONA 1: REUTILIZACIÓN DE ESTILOS DEL BANNER DE CONTEXTO CONGELADO
+   ========================================================================== */
+.context-sticky-banner {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-accent-blue) 100%);
+  color: var(--color-white);
+  padding: 20px 24px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-left: 5px solid #f5b700;
+  box-shadow: 0 4px 10px rgba(11, 37, 69, 0.05);
+}
+
+.banner-avatar-icon {
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.banner-meta-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.context-small-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: #f5b700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.banner-meta-info h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.banner-meta-info p {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   ZONA 2: CARD DEL FORMULARIO DE REDACCIÓN CUALITATIVA
+   ========================================================================== */
+.evaluation-form-card {
+  background-color: var(--color-white);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.01);
+}
+
+.qualitative-evaluation-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.textarea-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.textarea-field-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+/* Contenedor relativo para poder anclar el contador de letras de forma fija */
+.textarea-relative-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Caja de Redacción Extensa Textarea */
+.form-textarea-field {
+  width: 100%;
+  height: 140px; /* Altura idónea para un párrafo extenso de 1000 letras */
+  padding: 14px 16px 35px 16px; /* Padding inferior de 35px para que el texto no tape el contador */
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  color: var(--color-text-dark);
+  background-color: var(--color-white);
+  resize: none; /* Bloquea que el profesor estire la caja rompiendo la maquetación */
+  transition: all 0.25s ease;
+}
+
+.form-textarea-field:focus {
+  border-color: var(--color-secondary-blue);
+  box-shadow: 0 0 0 4px rgba(19, 70, 175, 0.08);
+}
+
+/* CONTADOR VIVO DE CARACTERES POSICIONADO CON ABSOLUTE */
+.live-character-counter {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none; /* El mouse ignora el contador al arrastrar texto */
+  transition: color 0.2s ease;
+}
+
+/* Alerta de Límite Alcanzado: cambia a un tono rojo vivo si llega a las 1000 letras */
+.live-character-counter.counter-limit-reached {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* Validación con clases nativas de Angular si el profesor se sale del margen */
+.form-textarea-field.ng-invalid.ng-touched {
+  border-color: #ef4444;
+}
+
+.textarea-error-msg {
+  font-size: 12px;
+  color: #ef4444;
+  font-weight: 500;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   ZONA 3: PÁGINA DE CONFIRMACIÓN DE EVALUACIÓN EXITOSA
+   ========================================================================== */
+.success-confirmation-screen-block {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  animation: fadeInEvalConfirmation 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.fullscreen-success-toast {
+  background-color: #f0fdf4;
+  border: 1.5px solid #bbf7d0;
+  padding: 24px 30px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.04);
+}
+
+.fullscreen-toast-check {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background-color: #22c55e;
+  color: var(--color-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.2);
+}
+
+.fullscreen-toast-text h3 {
+  color: #166534;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.fullscreen-toast-text p {
+  color: #15803d;
+  font-size: 14.5px;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+/* Tarjeta del siguiente paso lógico */
+.next-step-action-card {
+  background-color: var(--color-white);
+  border: 1.5px solid #e2e8f0;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.next-step-action-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.next-step-action-card p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  max-width: 600px;
+  margin-bottom: 8px;
+}
+
+/* Botón imponente de transición */
+.btn-proceed-next-subprocess {
+  background-color: var(--color-secondary-blue);
+  color: var(--color-white);
+  border: none;
+  padding: 14px 28px;
+  font-size: 14.5px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(19, 70, 175, 0.2);
+  transition: all 0.25s ease;
+}
+
+.btn-proceed-next-subprocess:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   BOTONERA DE NAVEGACIÓN COMPUESTA GENERAL (FOOTER ROW)
+   ========================================================================== */
+.subprocess-navigation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-subprocess-back {
+  background-color: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid #cbd5e1;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-subprocess-back:hover {
+  background-color: var(--color-white);
+  color: var(--color-primary-dark);
+  border-color: #94a3b8;
+}
+
+.btn-subprocess-save {
+  background-color: var(--color-secondary-blue);
+  color: var(--color-white);
+  border: none;
+  padding: 12px 26px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(19, 70, 175, 0.15);
+  transition: background-color 0.2s ease;
+}
+
+.btn-subprocess-save:hover {
+  background-color: var(--color-primary-dark);
+}
+
+@keyframes fadeInEvalConfirmation {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
