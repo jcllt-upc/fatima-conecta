@@ -1,0 +1,134 @@
+.contenedor-mp04 {
+  padding: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.encabezado-modulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.encabezado-modulo h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primario {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.btn-primario:hover {
+  background-color: #1d4ed8;
+}
+
+.barra-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.input-busqueda {
+  flex: 1 1 260px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.select-filtro {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  min-width: 200px;
+}
+
+.tabla-envoltorio {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.tabla-actividades {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.tabla-actividades th,
+.tabla-actividades td {
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+}
+
+.tabla-actividades thead {
+  background-color: #f8fafc;
+}
+
+.celda-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.enlace-accion {
+  font-size: 0.85rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.enlace-accion:hover {
+  text-decoration: underline;
+}
+
+.mensaje-vacio {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #64748b;
+}
+
+/* Estados visualmente diferenciados (sección 16) */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-propuesta { background: #e2e8f0; color: #334155; }
+.badge-pendiente_revision { background: #fef3c7; color: #92400e; }
+.badge-aprobada { background: #dcfce7; color: #166534; }
+.badge-rechazada { background: #fee2e2; color: #991b1b; }
+.badge-programada { background: #dbeafe; color: #1e40af; }
+.badge-en_ejecucion { background: #ede9fe; color: #5b21b6; }
+.badge-finalizada { background: #cffafe; color: #155e75; }
+.badge-cerrada { background: #f1f5f9; color: #0f172a; }
+
+@media (max-width: 600px) {
+  .barra-filtros {
+    flex-direction: column;
+  }
+
+  .select-filtro {
+    width: 100%;
+  }
+}

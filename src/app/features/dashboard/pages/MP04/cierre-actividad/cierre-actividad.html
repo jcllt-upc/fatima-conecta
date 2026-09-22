@@ -1,0 +1,81 @@
+<section class="contenedor-mp04">
+  <header class="encabezado-modulo">
+    <h1>Evidencias y cierre de actividad</h1>
+    <a class="enlace-volver" routerLink="/dashboard/actividades">← Volver al listado</a>
+  </header>
+
+  <p *ngIf="cargando">Cargando actividad...</p>
+  <p class="mensaje-error" *ngIf="!cargando && noEncontrada">
+    No se encontró ninguna actividad con ese identificador.
+  </p>
+
+  <div *ngIf="actividad as a">
+    <div class="tarjeta-resumen">
+      <div class="fila-titulo">
+        <h2>{{ a.nombre }}</h2>
+        <span class="badge badge-{{ a.estado.toLowerCase() }}">{{ a.estado }}</span>
+      </div>
+      <p><strong>Responsable:</strong> {{ a.responsable }}</p>
+      <p class="mensaje-info" *ngIf="mensaje">{{ mensaje }}</p>
+    </div>
+
+    <!-- Paso 1: registrar resultado de la ejecución (solo si aún no se ha hecho) -->
+    <div class="panel" *ngIf="a.estado === 'EN_EJECUCION'">
+      <h3>Resultado de la ejecución</h3>
+      <textarea
+        rows="3"
+        placeholder="Describe cómo se desarrolló la actividad..."
+        [(ngModel)]="resultadoTexto"
+      ></textarea>
+      <button class="btn btn-primario" (click)="registrarResultadoYFinalizar()">
+        Registrar resultado y finalizar
+      </button>
+    </div>
+
+    <!-- Paso 2: evidencias e informe (disponible desde FINALIZADA en adelante) -->
+    <div class="panel" *ngIf="a.estado === 'FINALIZADA' || a.estado === 'CERRADA'">
+      <h3>Evidencias</h3>
+      <ul class="lista-simple">
+        <li *ngFor="let ev of a.evidencias">
+          {{ ev.descripcion }} <span *ngIf="ev.url" class="url-evidencia">({{ ev.url }})</span>
+        </li>
+        <li *ngIf="a.evidencias.length === 0" class="texto-vacio">Sin evidencias registradas.</li>
+      </ul>
+
+      <div class="fila-agregar" *ngIf="a.estado === 'FINALIZADA'">
+        <input type="text" placeholder="Descripción de la evidencia" [(ngModel)]="nuevaEvidenciaDescripcion" />
+        <input type="text" placeholder="Referencia/URL (opcional)" [(ngModel)]="nuevaEvidenciaUrl" />
+        <button class="btn btn-secundario" (click)="agregarEvidencia()">Agregar</button>
+      </div>
+    </div>
+
+    <div class="panel" *ngIf="a.estado === 'FINALIZADA' || a.estado === 'CERRADA'">
+      <h3>Informe de resultados</h3>
+      <textarea
+        rows="4"
+        placeholder="Redacta el informe final de la actividad..."
+        [(ngModel)]="informeTexto"
+        [disabled]="a.estado === 'CERRADA'"
+      ></textarea>
+      <button class="btn btn-secundario" *ngIf="a.estado === 'FINALIZADA'" (click)="guardarInforme()">
+        Guardar informe
+      </button>
+    </div>
+
+    <!-- Paso 3: cierre definitivo -->
+    <div class="panel" *ngIf="a.estado === 'FINALIZADA'">
+      <h3>Cerrar actividad</h3>
+      <p class="texto-ayuda">
+        Para cerrar la actividad se requiere al menos una evidencia registrada
+        y el informe de resultados (RN06).
+      </p>
+      <button class="btn btn-cerrar" [disabled]="!puedeCerrar" (click)="cerrarActividad()">
+        Cerrar actividad
+      </button>
+    </div>
+
+    <p class="mensaje-exito" *ngIf="cierreCompletado">
+      ✅ La actividad quedó en estado <strong>CERRADA</strong>.
+    </p>
+  </div>
+</section>

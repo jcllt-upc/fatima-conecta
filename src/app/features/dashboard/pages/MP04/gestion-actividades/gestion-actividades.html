@@ -1,0 +1,85 @@
+<section class="contenedor-mp04">
+  <header class="encabezado-modulo">
+    <h1>Gestión de Actividades Institucionales</h1>
+    <a class="btn btn-primario" routerLink="/dashboard/actividades/nueva">
+      + Nueva actividad
+    </a>
+  </header>
+
+  <div class="barra-filtros">
+    <input
+      type="text"
+      class="input-busqueda"
+      placeholder="Buscar por nombre o responsable..."
+      [(ngModel)]="terminoBusqueda"
+      (ngModelChange)="aplicarFiltros()"
+    />
+
+    <select
+      class="select-filtro"
+      [(ngModel)]="estadoSeleccionado"
+      (ngModelChange)="aplicarFiltros()"
+    >
+      <option value="">Todos los estados</option>
+      <option *ngFor="let estado of estadosDisponibles" [value]="estado">
+        {{ etiquetaEstado(estado) }}
+      </option>
+    </select>
+  </div>
+
+  <div class="tabla-envoltorio" *ngIf="actividadesFiltradas.length > 0; else sinResultados">
+    <table class="tabla-actividades">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Responsable</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let actividad of actividadesFiltradas">
+          <td>{{ actividad.nombre }}</td>
+          <td>{{ actividad.fecha }}</td>
+          <td>{{ actividad.responsable }}</td>
+          <td>
+            <span [class]="claseEstado(actividad.estado)">
+              {{ etiquetaEstado(actividad.estado) }}
+            </span>
+          </td>
+          <td class="celda-acciones">
+            <a
+              class="enlace-accion"
+              [routerLink]="['/dashboard/actividades/revisar', actividad.id]"
+            >
+              Revisar
+            </a>
+            <a
+              class="enlace-accion"
+              [routerLink]="['/dashboard/actividades/editar', actividad.id]"
+            >
+              Editar
+            </a>
+            <a
+              class="enlace-accion"
+              [routerLink]="['/dashboard/actividades/seguimiento', actividad.id]"
+            >
+              Seguimiento
+            </a>
+            <a
+              class="enlace-accion"
+              [routerLink]="['/dashboard/actividades/cierre', actividad.id]"
+            >
+              Cierre
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #sinResultados>
+    <p class="mensaje-vacio">No se encontraron actividades con los filtros aplicados.</p>
+  </ng-template>
+</section>

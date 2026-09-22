@@ -1,0 +1,58 @@
+<section class="contenedor-mp04">
+  <header class="encabezado-modulo">
+    <h1>Revisión de actividad</h1>
+    <a class="enlace-volver" routerLink="/dashboard/actividades">← Volver al listado</a>
+  </header>
+
+  <p *ngIf="cargando">Cargando actividad...</p>
+  <p class="mensaje-error" *ngIf="!cargando && noEncontrada">
+    No se encontró ninguna actividad con ese identificador.
+  </p>
+
+  <div class="tarjeta-actividad" *ngIf="actividad as a">
+    <div class="fila-titulo">
+      <h2>{{ a.nombre }}</h2>
+      <span class="badge badge-{{ a.estado.toLowerCase() }}">{{ a.estado }}</span>
+    </div>
+
+    <dl class="lista-datos">
+      <dt>Descripción</dt>
+      <dd>{{ a.descripcion }}</dd>
+
+      <dt>Objetivo</dt>
+      <dd>{{ a.objetivo }}</dd>
+
+      <dt>Fecha</dt>
+      <dd>{{ a.fecha }}</dd>
+
+      <dt>Lugar</dt>
+      <dd>{{ a.lugar }}</dd>
+
+      <dt>Responsable</dt>
+      <dd>{{ a.responsable }}</dd>
+    </dl>
+
+    <p class="mensaje-info" *ngIf="mensaje">{{ mensaje }}</p>
+
+    <div class="acciones-revision" *ngIf="a.estado === 'PENDIENTE_REVISION'">
+      <button class="btn btn-aprobar" (click)="aprobar()">Aprobar</button>
+      <button class="btn btn-rechazar" (click)="mostrarFormularioRechazo()">Rechazar</button>
+    </div>
+
+    <div class="formulario-rechazo" *ngIf="mostrandoFormularioRechazo">
+      <label for="observacion">Observación del rechazo</label>
+      <textarea
+        id="observacion"
+        rows="3"
+        [(ngModel)]="observacionRechazo"
+        placeholder="Explica por qué se rechaza la propuesta..."
+      ></textarea>
+      <button class="btn btn-rechazar" (click)="confirmarRechazo()">Confirmar rechazo</button>
+    </div>
+
+    <div class="bloque-observacion" *ngIf="a.estado === 'RECHAZADA' && a.observacionRechazo">
+      <strong>Observación registrada:</strong>
+      <p>{{ a.observacionRechazo }}</p>
+    </div>
+  </div>
+</section>

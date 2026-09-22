@@ -1,0 +1,74 @@
+<section class="contenedor-mp04">
+  <header class="encabezado-modulo">
+    <h1>Editar actividad</h1>
+    <a class="enlace-volver" routerLink="/dashboard/actividades">← Volver al listado</a>
+  </header>
+
+  <p *ngIf="cargando">Cargando actividad...</p>
+  <p class="mensaje-error" *ngIf="!cargando && noEncontrada">
+    No se encontró ninguna actividad con ese identificador.
+  </p>
+
+  <p class="mensaje-exito" *ngIf="guardadoExitoso">✅ Cambios guardados correctamente.</p>
+
+  <form
+    class="formulario-actividad"
+    [formGroup]="formulario"
+    (ngSubmit)="guardar()"
+    *ngIf="!cargando && !noEncontrada"
+  >
+    <div class="campo">
+      <label for="nombre">Nombre de la actividad</label>
+      <input id="nombre" type="text" formControlName="nombre" />
+      <p class="error" *ngIf="campos.nombre.touched && campos.nombre.invalid">
+        El nombre es obligatorio (mínimo 3 caracteres).
+      </p>
+    </div>
+
+    <div class="campo">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" rows="3" formControlName="descripcion"></textarea>
+      <p class="error" *ngIf="campos.descripcion.touched && campos.descripcion.invalid">
+        La descripción es obligatoria.
+      </p>
+    </div>
+
+    <div class="campo">
+      <label for="objetivo">Objetivo</label>
+      <textarea id="objetivo" rows="2" formControlName="objetivo"></textarea>
+      <p class="error" *ngIf="campos.objetivo.touched && campos.objetivo.invalid">
+        El objetivo es obligatorio.
+      </p>
+    </div>
+
+    <div class="fila-doble">
+      <div class="campo">
+        <label for="fecha">Fecha</label>
+        <input id="fecha" type="date" formControlName="fecha" />
+        <p class="error" *ngIf="campos.fecha.touched && campos.fecha.invalid">
+          La fecha es obligatoria.
+        </p>
+      </div>
+
+      <div class="campo">
+        <label for="lugar">Lugar</label>
+        <input id="lugar" type="text" formControlName="lugar" />
+        <p class="error" *ngIf="campos.lugar.touched && campos.lugar.invalid">
+          El lugar es obligatorio.
+        </p>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="responsable">Responsable</label>
+      <input id="responsable" type="text" formControlName="responsable" />
+      <p class="error" *ngIf="campos.responsable.touched && campos.responsable.invalid">
+        El responsable es obligatorio.
+      </p>
+    </div>
+
+    <div class="acciones-formulario">
+      <button type="submit" class="btn btn-primario">Guardar cambios</button>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,179 @@
+.contenedor-mp04 {
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.encabezado-modulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.encabezado-modulo h1 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.enlace-volver {
+  font-size: 0.9rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.mensaje-error {
+  color: #b91c1c;
+}
+
+.tarjeta-resumen {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.fila-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fila-titulo h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.mensaje-info {
+  background: #eff6ff;
+  color: #1e40af;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+}
+
+.grid-seguimiento {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.panel h3 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.lista-tareas,
+.lista-simple {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+}
+
+.lista-tareas label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.completada {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.fecha {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.estado-incidencia {
+  margin-left: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.estado-incidencia.resuelta {
+  color: #166534;
+}
+
+.texto-vacio {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.fila-agregar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.fila-agregar input {
+  flex: 1;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.88rem;
+}
+
+.btn-primario {
+  background-color: #2563eb;
+  color: #ffffff;
+  margin-top: 0.5rem;
+}
+
+.btn-secundario {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+.enlace-accion {
+  background: none;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  padding: 0;
+  margin-left: 0.3rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-propuesta { background: #e2e8f0; color: #334155; }
+.badge-pendiente_revision { background: #fef3c7; color: #92400e; }
+.badge-aprobada { background: #dcfce7; color: #166534; }
+.badge-rechazada { background: #fee2e2; color: #991b1b; }
+.badge-programada { background: #dbeafe; color: #1e40af; }
+.badge-en_ejecucion { background: #ede9fe; color: #5b21b6; }
+.badge-finalizada { background: #cffafe; color: #155e75; }
+.badge-cerrada { background: #f1f5f9; color: #0f172a; }

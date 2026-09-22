@@ -1,0 +1,108 @@
+.contenedor-mp04 {
+  padding: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.encabezado-modulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.encabezado-modulo h1 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.enlace-volver {
+  font-size: 0.9rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.mensaje-exito {
+  background: #dcfce7;
+  color: #166534;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.formulario-actividad {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.campo label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.campo input,
+.campo textarea {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.fila-doble {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.fila-doble .campo {
+  flex: 1 1 200px;
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.acciones-formulario {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 0.55rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-primario {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.btn-primario:hover {
+  background-color: #1d4ed8;
+}
+
+@media (max-width: 500px) {
+  .fila-doble {
+    flex-direction: column;
+  }
+}

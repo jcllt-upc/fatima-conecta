@@ -15,7 +15,9 @@
       <a routerLink="/dashboard" routerLinkActive="active-menu" [routerLinkActiveOptions]="{exact: true}">
         <i class="menu-icon home"></i> Inicio
       </a>
-
+      <a routerLink="/dashboard/actividades" routerLinkActive="active-menu">
+  <i class="menu-icon activities"></i> Actividades
+</a>
       @if (currentUserRole() === 'Docente') {
         <div class="menu-group-label">Gestión Académica (MP02)</div>
         <a routerLink="/dashboard/contexto-estudiante" routerLinkActive="active-menu">

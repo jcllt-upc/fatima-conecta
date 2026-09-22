@@ -1,0 +1,95 @@
+<section class="contenedor-mp04">
+  <header class="encabezado-modulo">
+    <h1>Seguimiento de actividad</h1>
+    <a class="enlace-volver" routerLink="/dashboard/actividades">← Volver al listado</a>
+  </header>
+
+  <p *ngIf="cargando">Cargando actividad...</p>
+  <p class="mensaje-error" *ngIf="!cargando && noEncontrada">
+    No se encontró ninguna actividad con ese identificador.
+  </p>
+
+  <div *ngIf="actividad as a">
+    <div class="tarjeta-resumen">
+      <div class="fila-titulo">
+        <h2>{{ a.nombre }}</h2>
+        <span class="badge badge-{{ a.estado.toLowerCase() }}">{{ a.estado }}</span>
+      </div>
+      <p><strong>Responsable:</strong> {{ a.responsable }}</p>
+      <p><strong>Fecha:</strong> {{ a.fecha }}</p>
+
+      <button
+        class="btn btn-primario"
+        *ngIf="a.estado === 'PROGRAMADA'"
+        (click)="iniciarEjecucion()"
+      >
+        Iniciar ejecución
+      </button>
+      <p class="mensaje-info" *ngIf="mensaje">{{ mensaje }}</p>
+    </div>
+
+    <div class="grid-seguimiento">
+      <!-- Tareas -->
+      <div class="panel">
+        <h3>Tareas ({{ tareasPendientes.length }} pendientes)</h3>
+        <ul class="lista-tareas">
+          <li *ngFor="let tarea of a.tareas">
+            <label>
+              <input
+                type="checkbox"
+                [checked]="tarea.completada"
+                (change)="alternarTarea(tarea.id, !tarea.completada)"
+              />
+              <span [class.completada]="tarea.completada">{{ tarea.descripcion }}</span>
+            </label>
+          </li>
+          <li *ngIf="a.tareas.length === 0" class="texto-vacio">Sin tareas registradas.</li>
+        </ul>
+        <div class="fila-agregar">
+          <input type="text" placeholder="Nueva tarea..." [(ngModel)]="nuevaTarea" />
+          <button class="btn btn-secundario" (click)="agregarTarea()">Agregar</button>
+        </div>
+      </div>
+
+      <!-- Avances -->
+      <div class="panel">
+        <h3>Avances</h3>
+        <ul class="lista-simple">
+          <li *ngFor="let avance of a.avances">
+            <span class="fecha">{{ avance.fecha }}</span> — {{ avance.descripcion }}
+          </li>
+          <li *ngIf="a.avances.length === 0" class="texto-vacio">Sin avances registrados.</li>
+        </ul>
+        <div class="fila-agregar">
+          <input type="text" placeholder="Describir avance..." [(ngModel)]="nuevoAvance" />
+          <button class="btn btn-secundario" (click)="agregarAvance()">Registrar</button>
+        </div>
+      </div>
+
+      <!-- Incidencias -->
+      <div class="panel">
+        <h3>Incidencias</h3>
+        <ul class="lista-simple">
+          <li *ngFor="let incidencia of a.incidencias; let i = index">
+            <span class="fecha">{{ incidencia.fecha }}</span> — {{ incidencia.descripcion }}
+            <span class="estado-incidencia" [class.resuelta]="incidencia.resuelta">
+              {{ incidencia.resuelta ? 'Resuelta' : 'Pendiente' }}
+            </span>
+            <button
+              class="enlace-accion"
+              *ngIf="!incidencia.resuelta"
+              (click)="resolverIncidencia(i)"
+            >
+              Marcar resuelta
+            </button>
+          </li>
+          <li *ngIf="a.incidencias.length === 0" class="texto-vacio">Sin incidencias registradas.</li>
+        </ul>
+        <div class="fila-agregar">
+          <input type="text" placeholder="Describir incidencia..." [(ngModel)]="nuevaIncidencia" />
+          <button class="btn btn-secundario" (click)="agregarIncidencia()">Registrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
