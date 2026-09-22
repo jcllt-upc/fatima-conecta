@@ -19,6 +19,7 @@ import { ContextoEstudianteComponent } from './features/dashboard/pages/MP02/con
 import { RegistroEvidenciasComponent } from './features/dashboard/pages/MP02/registro-evidencias/registro-evidencias';
 import { EvaluacionProgresoComponent } from './features/dashboard/pages/MP02/evaluacion-progreso/evaluacion-progreso';
 import { RetroalimentacionComponent } from './features/dashboard/pages/MP02/retroalimentacion/retroalimentacion';
+import { ConsultaProgresoComponent } from './features/dashboard/pages/MP02/consulta-progreso/consulta-progreso';
 
 // ==========================================
   // 1. RUTAS PÚBLICAS (Con diseño PublicLayout)
@@ -118,6 +119,11 @@ export const routes: Routes = [
            // Registramos el camino para el subproceso P02.4 Retroalimentación
            path: 'retroalimentacion',
            component: RetroalimentacionComponent
+          },
+          {
+           // Registramos el camino para el subproceso P02.5 Consulta del Progreso
+           path: 'consulta-progreso',
+            component: ConsultaProgresoComponent
           }
         ]
       }

@@ -1,0 +1,111 @@
+<div class="consulta-page-layout">
+
+  @if (estadoFicha() !== 'Publicado') {
+
+    <div class="locked-report-fallback-card">
+      <div class="locked-graphic-icon">⏳</div>
+      <h2>Informe en Proceso de Revisión</h2>
+      <p>La Bitácora Pedagógica de Seguimiento Formativo para el periodo seleccionado aún se encuentra en proceso de redacción y validación por parte del docente de aula.</p>
+      <div class="locked-card-divider"></div>
+      <p class="locked-footer-help-text">El sistema le notificará de forma inmediata en este panel en cuanto el tutor presione el botón de cierre institucional.</p>
+      <button type="button" routerLink="/dashboard" class="btn-fallback-return-dashboard">Regresar al Inicio</button>
+    </div>
+
+  } @else {
+
+    <div class="active-report-full-workspace">
+      
+      <header>
+        <div class="header-student-avatar">👨‍👩‍👦</div>
+        <div class="header-meta-text-block">
+          <span class="report-badge-status-published">Ficha Oficial Publicada</span>
+          <h2>Reporte de Progreso: {{ nombreAlumno() }}</h2>
+          <p>Ecosistema Centralizado Fátima Conecta | Bitácora N.° <strong>{{ idFicha() }}</strong> | Periodo Lectivo: <strong>{{ bimestreDesc() }}</strong></p>
+        </div>
+      </header>
+
+      <section class="report-data-block-section">
+        <div class="section-block-title-row">
+          <span class="section-numeric-badge">A</span>
+          <h3>Diagnóstico del Progreso Académico y Competencias</h3>
+        </div>
+
+        <div class="qualitative-content-two-columns-grid">
+          <article class="qualitative-viewer-card card-style-logros">
+            <h4>🎯 Logros cualitativos alcanzados:</h4>
+            <div class="viewer-text-content-paragraph">
+              {{ observacionesLogros() }}
+            </div>
+          </article>
+
+          <article class="qualitative-viewer-card card-style-dificultades">
+            <h4>⚠️ Puntos de mejora o dificultades detectadas:</h4>
+            <div class="viewer-text-content-paragraph">
+              {{ observacionesDificultades() }}
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="report-data-block-section" style="margin-top: 30px;">
+        <div class="section-block-title-row">
+          <span class="section-numeric-badge">B</span>
+          <h3>Plan de Acción, Recomendaciones y Acuerdos</h3>
+        </div>
+
+        <div class="qualitative-content-two-columns-grid">
+          <article class="qualitative-viewer-card card-style-recomendaciones">
+            <h4>💡 Recomendaciones pedagógicas del docente:</h4>
+            <div class="viewer-text-content-paragraph">
+              {{ recomendacionesTutor() }}
+            </div>
+          </article>
+
+          <article class="qualitative-viewer-card card-style-compromisos">
+            <h4>✍️ Compromisos asumidos por el entorno familiar:</h4>
+            <div class="viewer-text-content-paragraph">
+              {{ compromisosFamilia() }}
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="report-data-block-section" style="margin-top: 30px;">
+        <div class="section-block-title-row">
+          <span class="section-numeric-badge">C</span>
+          <h3>Sustento Documental y Evidencias Multimedia Adjuntas</h3>
+        </div>
+
+        <div class="family-evidence-viewer-card">
+          @if (evidenciasAdjuntas().length === 0) {
+            <p class="empty-evidence-message-text">📁 No se adjuntaron archivos multimedia adicionales para esta bitácora bimestral.</p>
+          } @else {
+            <p class="evidence-instruction-text">El docente ha enlazado los siguientes <strong>{{ evidenciasAdjuntas().length }} archivos binarios</strong> como sustento físico de las observaciones. Dé clic en el enlace para abrirlos en una pestaña externa segura:</p>
+            
+            <div class="family-downloadable-files-list">
+              @for (file of evidenciasAdjuntas(); track file.nombre) {
+                <div class="downloadable-file-item-row">
+                  <span class="file-type-icon-indicator" [class.pdf-color]="file.tipo === 'pdf'">
+                    {{ file.tipo === 'pdf' ? '📄' : '🖼️' }}
+                  </span>
+                  <div class="file-item-meta-text">
+                    <h5>{{ file.nombre }}</h5>
+                    <span class="file-item-extension-tag">{{ file.tipo === 'pdf' ? 'Documento de Evaluación PDF' : 'Sustento Fotográfico JPG' }}</span>
+                  </div>
+                  <a class="btn-simulated-download-link" target="_blank">Visualizar Sustento ↑</a>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </section>
+      
+      <footer class="family-portal-footer-actions-row" style="margin-top: 35px;">
+        <button type="button" routerLink="/dashboard" class="btn-family-back-dashboard">← Regresar al Tablero Principal</button>
+      </footer>
+
+    </div>
+
+  }
+
+</div>
