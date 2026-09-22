@@ -4,6 +4,7 @@ import { HomeComponent } from './features/public/pages/home/home';
 import { LoginComponent } from './features/auth/pages/login/login.component';
 import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout/dashboard-layout';
 import { WelcomeDashboardComponent } from './features/dashboard/pages/welcome-dashboard/welcome-dashboard';
+import { RepositorioComponent } from './features/dashboard/pages/repositorio/repositorio.component';
 
 export const routes: Routes = [
   {
@@ -21,7 +22,7 @@ export const routes: Routes = [
       }
     ]
   },
-    {
+  {
     path: 'login',
     component: LoginComponent
   },
@@ -31,12 +32,11 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        children: [
-          {
-          path: '',
-          component: WelcomeDashboardComponent
-          }
-        ]
+        component: WelcomeDashboardComponent
+      },
+      {
+        path: 'repositorio',
+        component: RepositorioComponent
       }
     ]
   },

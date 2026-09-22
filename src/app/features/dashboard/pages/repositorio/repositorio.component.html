@@ -1,0 +1,90 @@
+<div class="repositorio-container">
+  <header class="module-header">
+    <h2>MP03 - Gestión del Repositorio Pedagógico</h2>
+    <p>Plataforma para el registro, consulta y descarga de recursos educativos institucionales.</p>
+  </header>
+
+  <div class="repositorio-grid">
+    <!-- Formulario de Carga -->
+    <section class="card form-card">
+      <h3>Cargar Nuevo Recurso</h3>
+      <form [formGroup]="recursoForm" (ngSubmit)="registrarRecurso()">
+        <div class="form-group">
+          <label for="titulo">Título del Recurso *</label>
+          <input id="titulo" type="text" formControlName="titulo" placeholder="Ej. Guía de Geometría..." />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="curso">Área / Curso *</label>
+            <select id="curso" formControlName="curso">
+              <option value="">Seleccione...</option>
+              @for (curso of cursosList; track curso) {
+                <option [value]="curso">{{ curso }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="grado">Grado Académico *</label>
+            <select id="grado" formControlName="grado">
+              <option value="">Seleccione...</option>
+              @for (grado of gradosList; track grado) {
+                <option [value]="grado">{{ grado }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="archivoUrl">Enlace del Archivo (URL) *</label>
+          <input id="archivoUrl" type="url" formControlName="archivoUrl" placeholder="https://ejemplo.com/recurso.pdf" />
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción *</label>
+          <textarea id="descripcion" rows="3" formControlName="descripcion" placeholder="Breve descripción del material..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" [disabled]="recursoForm.invalid">
+          Cargar al Repositorio
+        </button>
+      </form>
+    </section>
+
+    <!-- Buscador y Listado -->
+    <section class="card list-card">
+      <div class="list-header">
+        <h3>Recursos Disponibles</h3>
+        <div class="filters-row">
+          <input type="text" [(ngModel)]="filtroBusqueda" placeholder="Buscar por título o descripción..." class="search-input" />
+          <select [(ngModel)]="filtroCurso" class="filter-select">
+            <option value="">Todas las áreas</option>
+            @for (curso of cursosList; track curso) {
+              <option [value]="curso">{{ curso }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="recursos-list">
+        @for (item of recursosFiltrados; track item.id) {
+          <article class="recurso-item">
+            <div class="recurso-header">
+              <h4>{{ item.titulo }}</h4>
+              <span class="badge">{{ item.curso }}</span>
+            </div>
+            <p class="recurso-meta"><strong>Grado:</strong> {{ item.grado }} | <strong>Fecha:</strong> {{ item.fechaRegistro }}</p>
+            <p class="recurso-desc">{{ item.descripcion }}</p>
+            <div class="recurso-actions">
+              <a [href]="item.archivoUrl" target="_blank" class="btn-download">Descargar Material</a>
+              <button class="btn-delete" (click)="eliminarRecurso(item.id)">Eliminar</button>
+            </div>
+          </article>
+        } @empty {
+          <p class="empty-msg">No se encontraron recursos registrados.</p>
+        }
+      </div>
+    </section>
+  </div>
+</div>
