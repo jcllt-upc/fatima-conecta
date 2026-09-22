@@ -1,0 +1,114 @@
+<div class="retroalimentacion-page-layout">
+
+  <header class="context-sticky-banner">
+    <div class="banner-avatar-icon">🎓</div>
+    <div class="banner-meta-info">
+      <span class="context-small-tag">Contexto de Evaluación Activo (MP02)</span>
+      <h2>Estudiante: {{ nombreEstudiante() }}</h2>
+      <p>Bitácora Pedagógica N.° <strong>{{ idFichaContexto() }}</strong> | Periodo: <strong>{{ bimestreActivo() }}</strong></p>
+    </div>
+  </header>
+
+  @if (!mostrarExitoPublicacion()) {
+
+    <div class="active-retro-workspace-block">
+      
+      <section class="retro-form-card">
+        <div class="panel-card-header">
+          <h3>Emisión de Recomendaciones y Compromisos de Apoyo</h3>
+          <p>Establezca las pautas pedagógicas orientadas a fortalecer el aprendizaje del estudiante y registre los acuerdos vinculantes con los padres de familia</p>
+        </div>
+
+        <form [formGroup]="retroalimentacionForm" (ngSubmit)="onFinalizarPublicacion()" class="qualitative-retro-form">
+          
+          <div class="textarea-input-group">
+            <label for="txtRecomendaciones" class="textarea-field-label">1. Recomendaciones pedagógicas del tutor / docente:</label>
+            <div class="textarea-relative-container">
+              <textarea 
+                id="txtRecomendaciones" 
+                formControlName="txtRecomendaciones" 
+                placeholder="Redacte sugerencias técnicas, hábitos de estudio recomendados y estrategias de nivelación académica específicas para el alumno..." 
+                (input)="actualizarContadorRecomendaciones()"
+                class="form-textarea-field"
+              ></textarea>
+              
+              <span class="live-character-counter" [class.counter-limit-reached]="conteoRecomendaciones() >= MAX_CARACTERES">
+                {{ conteoRecomendaciones() }} / {{ MAX_CARACTERES }}
+              </span>
+            </div>
+
+            @if (retroalimentacionForm.controls.txtRecomendaciones.invalid && retroalimentacionForm.controls.txtRecomendaciones.touched) {
+              @if (retroalimentacionForm.controls.txtRecomendaciones.errors?.['required']) {
+                <span class="textarea-error-msg">El registro de las recomendaciones pedagógicas es obligatorio para el cierre del informe.</span>
+              }
+              @if (retroalimentacionForm.controls.txtRecomendaciones.errors?.['maxlength']) {
+                <span class="textarea-error-msg">Ha excedido el límite máximo de {{ MAX_CARACTERES }} caracteres permitidos.</span>
+              }
+            }
+          </div>
+
+          <div class="textarea-input-group" style="margin-top: 24px;">
+            <label for="txtCompromisos" class="textarea-field-label">2. Compromisos asumidos por el entorno familiar y el estudiante:</label>
+            <div class="textarea-relative-container">
+              <textarea 
+                id="txtCompromisos" 
+                formControlName="txtCompromisos" 
+                placeholder="Registre los acuerdos vinculantes acordados con los padres o apoderados (ej. revisión diaria de tareas, asistencia a tutorías, apoyo motivacional)..." 
+                (input)="actualizarContadorCompromisos()"
+                class="form-textarea-field"
+              ></textarea>
+              
+              <span class="live-character-counter" [class.counter-limit-reached]="conteoCompromisos() >= MAX_CARACTERES">
+                {{ conteoCompromisos() }} / {{ MAX_CARACTERES }}
+              </span>
+            </div>
+
+            @if (retroalimentacionForm.controls.txtCompromisos.invalid && retroalimentacionForm.controls.txtCompromisos.touched) {
+              @if (retroalimentacionForm.controls.txtCompromisos.errors?.['required']) {
+                <span class="textarea-error-msg">El registro de los compromisos familiares es obligatorio para sellar la ficha formativa.</span>
+              }
+              @if (retroalimentacionForm.controls.txtCompromisos.errors?.['maxlength']) {
+                <span class="textarea-error-msg">Ha excedido el límite máximo de {{ MAX_CARACTERES }} caracteres permitidos.</span>
+              }
+            }
+          </div>
+
+          <footer class="subprocess-navigation-row" style="margin-top: 30px;">
+            <button type="button" routerLink="/dashboard/evaluacion-progreso" class="btn-subprocess-back">
+              ← Regresar a Evaluación
+            </button>
+            <button type="submit" class="btn-subprocess-save">
+              Finalizar y Publicar Ficha Escolar
+            </button>
+          </footer>
+
+        </form>
+      </section>
+
+    </div>
+
+  } @else {
+
+    <div class="success-confirmation-screen-block">
+      
+      <div class="fullscreen-success-toast">
+        <span class="fullscreen-toast-check">✓</span>
+        <div class="fullscreen-toast-text">
+          <h3>¡Bitácora Pedagógica publicada oficialmente con éxito!</h3>
+          <p>La Ficha de Seguimiento Formativo <strong>N.° {{ idFichaContexto() }}</strong> ha cambiado su estado a <strong>'Publicada'</strong> en la base de datos de forma segura. El proceso de carga del docente ha concluido con éxito.</p>
+        </div>
+      </div>
+
+      <div class="next-step-action-card">
+        <h4>¡Módulo Concluido Exitosamente!</h4>
+        <p>Toda la información cualitativa, evidencias multimedia, observaciones de progreso y compromisos han sido sellados. Los datos se encuentran disponibles en tiempo real para la consulta inmediata de los Padres de Familia y Apoderados autorizados de la institución.</p>
+        <button type="button" routerLink="/dashboard" class="btn-proceed-next-subprocess">
+          Regresar al Inicio del Dashboard
+        </button>
+      </div>
+
+    </div>
+
+  }
+
+</div>
