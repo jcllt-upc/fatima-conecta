@@ -1,65 +1,79 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Comunicado } from '../../../../../services/comunicado';
 
 @Component({
-  imports: [RouterLink],
   selector: 'app-comunicados',
-  styleUrl: './comunicados.css',
+  imports: [RouterLink],
   templateUrl: './comunicados.html',
+  styleUrl: './comunicados.css',
 })
-export class Comunicados {
+export class Comunicados implements OnInit {
 
-  comunicados = [
-    {
-      id: 1,
-      dia: '15',
-      mes: 'SEP',
-      tipo: 'INSTITUCIONAL',
-      titulo: 'Reunión general de padres de familia',
-      descripcion: 'Se comunica a los padres de familia sobre la próxima reunión general de nuestra institución educativa.'
-    },
-    {
-      id: 2,
-      dia: '10',
-      mes: 'SEP',
-      tipo: 'ACADÉMICO',
-      titulo: 'Entrega de reportes de progreso',
-      descripcion: 'Se informa a la comunidad educativa sobre la entrega de los reportes de progreso correspondientes al periodo académico.'
-    },
-    {
-      id: 3,
-      dia: '05',
-      mes: 'SEP',
-      tipo: 'ACTIVIDADES',
-      titulo: 'Jornada deportiva institucional',
-      descripcion: 'Se invita a los estudiantes a participar en la jornada deportiva organizada por nuestra institución educativa.'
-  }
-  ];
+  // Lista reactiva de comunicados que utilizará el HTML
+  comunicados = signal<any[]>([]);
 
+  // Inyectamos el servicio que se comunica con API Gateway
+  constructor(private comunicadoService: Comunicado) {}
+
+  // Se ejecuta automáticamente al ingresar al componente
   ngOnInit(): void {
-  const comunicadoGuardado = localStorage.getItem('nuevo_comunicado_mp01');
 
-  if (comunicadoGuardado) {
-    const nuevoComunicado = JSON.parse(comunicadoGuardado);
+    this.comunicadoService.getComunicados().subscribe({
 
-    if (nuevoComunicado.estado === 'Publicado') {
-      const fecha = nuevoComunicado.fechaPublicacion
-        ? new Date(nuevoComunicado.fechaPublicacion)
-        : new Date();
+      next: (response: any) => {
 
-      this.comunicados.unshift({
-        id: nuevoComunicado.id,
-        dia: fecha.getDate().toString().padStart(2, '0'),
-        mes: fecha
-          .toLocaleString('es-PE', { month: 'short' })
-          .replace('.', '')
-          .toUpperCase(),
-        tipo: nuevoComunicado.tipo.toUpperCase(),
-        titulo: nuevoComunicado.titulo,
-        descripcion: nuevoComunicado.descripcion
-      });
-    }
+        // La respuesta de Lambda contiene los registros dentro de "body"
+        const datos = typeof response.body === 'string'
+          ? JSON.parse(response.body)
+          : response.body;
+
+        // Solo mostramos los comunicados que están PUBLICADOS
+        const comunicadosPublicados = datos
+          .filter((comunicado: any) =>
+            comunicado.Nombre_Estado === 'Publicado'
+          )
+          .map((comunicado: any) => {
+
+            const fecha = new Date(comunicado.Fecha_Creacion);
+
+            return {
+              id: comunicado.ID_Comunicado,
+
+              dia: fecha
+                .getDate()
+                .toString()
+                .padStart(2, '0'),
+
+              mes: fecha
+                .toLocaleString('es-PE', { month: 'short' })
+                .replace('.', '')
+                .toUpperCase(),
+
+              tipo: comunicado.Tipo_Comunicado.toUpperCase(),
+
+              titulo: comunicado.Titulo,
+
+              descripcion: comunicado.Descripcion_Corta
+            };
+          });
+
+        // Actualizamos el signal
+        this.comunicados.set(comunicadosPublicados);
+
+        console.log(
+          'Comunicados desde AWS:',
+          this.comunicados()
+        );
+      },
+
+      error: (error) => {
+        console.error(
+          'Error al obtener comunicados:',
+          error
+        );
+      }
+
+    });
   }
-}
-
 }

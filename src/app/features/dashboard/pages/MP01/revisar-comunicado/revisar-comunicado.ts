@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Comunicado } from '../../../../../services/comunicado';
 
 @Component({
   imports: [],
@@ -6,54 +9,117 @@ import { Component } from '@angular/core';
   styleUrl: './revisar-comunicado.css',
   templateUrl: './revisar-comunicado.html',
 })
-export class RevisarComunicado {
+export class RevisarComunicado implements OnInit {
+
   estado: string = 'Pendiente de revisión';
   mensaje: string = '';
   nuevoComunicado: any = null;
 
+  idComunicado: number = 0;
+  cargando: boolean = true;
+  procesando: boolean = false;
+
+  constructor(
+  private comunicadoService: Comunicado,
+  private route: ActivatedRoute,
+  private router: Router,
+  private cdr: ChangeDetectorRef
+) {}
+
   ngOnInit(): void {
-  const comunicadoGuardado = localStorage.getItem('nuevo_comunicado_mp01');
 
-  if (comunicadoGuardado) {
-    this.nuevoComunicado = JSON.parse(comunicadoGuardado);
+    // Obtener el ID del comunicado desde la URL
+    this.idComunicado = Number(
+      this.route.snapshot.paramMap.get('id')
+    );
+
+    if (!this.idComunicado) {
+      this.mensaje = 'ID de comunicado no válido.';
+      this.cargando = false;
+      return;
+    }
+
+    // Consultar el comunicado desde SQL Server
+    this.comunicadoService
+      .getComunicadoPorId(String(this.idComunicado))
+      .subscribe({
+
+        next: (respuesta: any) => {
+
+          const datos = typeof respuesta.body === 'string'
+            ? JSON.parse(respuesta.body)
+            : (respuesta.body ?? respuesta);
+
+          // Nuestro GET devuelve un arreglo
+          this.nuevoComunicado = Array.isArray(datos)
+            ? datos[0]
+            : datos;
+
+          if (!this.nuevoComunicado) {
+            this.mensaje = 'Comunicado no encontrado.';
+          }
+
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+          console.error('Error al consultar comunicado:', error);
+          this.mensaje = 'No se pudo cargar el comunicado.';
+          this.cargando = false;
+          this.cdr.detectChanges();
+        }
+
+      });
   }
-}
 
+  // Aprobar comunicado mediante PUT
   aprobarComunicado(): void {
-  if (this.nuevoComunicado) {
-    this.nuevoComunicado.estado = 'Aprobado';
 
-    localStorage.setItem(
-      'nuevo_comunicado_mp01',
-      JSON.stringify(this.nuevoComunicado)
-    );
+    if (!this.nuevoComunicado || this.procesando) {
+      return;
+    }
 
-    this.estado = 'Aprobado';
-    this.mensaje = 'Comunicado aprobado correctamente.';
-    return;
+    this.procesando = true;
+    this.mensaje = '';
+
+    this.comunicadoService
+      .actualizarEstado(this.idComunicado, 2)
+      .subscribe({
+
+        next: (respuesta: any) => {
+
+          const resultado = typeof respuesta.body === 'string'
+            ? JSON.parse(respuesta.body)
+            : (respuesta.body ?? respuesta);
+
+          if (respuesta.statusCode !== 200) {
+            this.mensaje = resultado.mensaje || 'No se pudo aprobar.';
+            this.procesando = false;
+            return;
+          }
+
+          this.estado = 'Aprobado';
+          this.mensaje = 'Comunicado aprobado correctamente.';
+          this.procesando = false;
+
+          // Regresar a Gestión de Comunicados
+          this.router.navigate(['/dashboard/comunicados']);
+        },
+
+        error: (error) => {
+          console.error('Error al aprobar comunicado:', error);
+          this.mensaje = 'Ocurrió un error al aprobar el comunicado.';
+          this.procesando = false;
+        }
+
+      });
   }
 
-    this.estado = 'Aprobado';
-    this.mensaje = 'Comunicado aprobado correctamente.';
-    localStorage.setItem('estado_comunicado_1', 'Aprobado');
-  }
-
+  // El rechazo todavía no está implementado en SQL Server
   rechazarComunicado(): void {
-  if (this.nuevoComunicado) {
-    this.nuevoComunicado.estado = 'Rechazado';
-
-    localStorage.setItem(
-      'nuevo_comunicado_mp01',
-      JSON.stringify(this.nuevoComunicado)
-    );
-
-    this.estado = 'Rechazado';
-    this.mensaje = 'Comunicado rechazado.';
-    return;
+    this.mensaje = 'La función Rechazar todavía no está implementada.';
   }
 
-  this.estado = 'Rechazado';
-  this.mensaje = 'Comunicado rechazado.';
-  localStorage.setItem('estado_comunicado_1', 'Rechazado');
-  }
 }
+

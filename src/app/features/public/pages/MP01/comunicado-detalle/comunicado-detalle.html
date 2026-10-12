@@ -1,23 +1,35 @@
 <section class="detalle-section">
 
-  @if (comunicado) {
 
-    <div class="detalle-contenido">
+<!-- CONTROL DE FLUJO CONDICIONAL (@if): 
+       Angular verifica que el objeto 'comunicado' no esté vacío o en 'null' (por ejemplo, mientras 
+       se busca en el localStorage). Solo inyecta el contenido si el comunicado existe -->
+  
+  @if (comunicado()) {
 
-      <span class="detalle-tipo">
-        {{ comunicado.tipo }}
+    <div class="detalle-contenido"> <!-- TARJETA DE CONTENIDO: Envoltura visual para estructurar la información del comunicado -->
+
+      <span class="detalle-tipo"> <!-- CATEGORÍA: Muestra de forma dinámica la etiqueta del tipo de comunicado 
+                                  (ej: 'Institucional', 'Académico', 'Actividades') usando interpolación {{ }} -->
+        {{ comunicado().tipo }}
       </span>
 
-      <h1>{{ comunicado.titulo }}</h1>
+      <h1>{{ comunicado().titulo }}</h1> <!-- TÍTULO PRINCIPAL: Renderiza el título completo del comunicado en letras grandes -->
 
+
+      <!-- FECHA DE PUBLICACIÓN: Muestra el día formateado y el nombre del mes lado a lado 
+           (ej: '05 Setiembre' o '21 Septiembre') -->
       <p class="detalle-fecha">
-        {{ comunicado.dia }} {{ comunicado.mes }}
+        {{ comunicado().dia }} {{ comunicado().mes }}
       </p>
 
-      <p class="detalle-descripcion">
-        {{ comunicado.contenido }}
+      <p class="detalle-descripcion"> <!-- CUERPO PRINCIPAL: Renderiza el desarrollo o contenido extenso que redactó el usuario -->
+        {{ comunicado().contenido }}
       </p>
 
+
+      <!-- BOTÓN REGRESAR: Enlace inteligente (routerLink) que permite al usuario retornar 
+           a la lista general de comunicados públicos de forma fluida y sin recargar la página -->
       <a class="btn-volver" routerLink="/comunicados">
         ← Volver a comunicados
         </a>

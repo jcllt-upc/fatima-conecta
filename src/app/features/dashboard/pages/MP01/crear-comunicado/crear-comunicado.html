@@ -111,11 +111,11 @@
 
     </form>
 
-     @if (mensajeExito) {
-    <div class="mensaje-exito">
-      {{ mensajeExito }}
-    </div>
-  }
+     @if (mensajeExito()) {
+  <div class="mensaje-exito">
+    {{ mensajeExito() }}
+  </div>
+}
 
 
   </div>
