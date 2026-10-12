@@ -41,23 +41,11 @@ export class ConsultaProgresoComponent implements OnInit {
   protected readonly recomendacionesTutor = signal<string>('');
   protected readonly compromisosFamilia = signal<string>('');
 
-  /**
-   * SIGNAL MULTIMEDIA INTEGRADO (HU13):
-   * Contiene la lista física de archivos con sus URLs firmadas y listas para su descarga desde Amazon S3.
-   */
   protected readonly evidenciasAdjuntas = signal<EvidenciaAdjunta[]>([]);
 
-  /**
-   * SIGNALS ADICIONALES DE CONTROL DE INTERFAZ (UX):
-   * Manejan el estado de carga asíncrono y capturan excepciones de la nube.
-   */
   protected readonly isLoading = signal<boolean>(false);
   protected readonly mensajeError = signal<string | null>(null);
 
-  /**
-   * Ciclo de vida inicial del componente: Se ejecuta al despertar la pantalla del Padre de Familia.
-   * Rescata el ID del usuario en sesión y consulta el progreso real de su hijo en la infraestructura cloud.
-   */
   public ngOnInit(): void {
     // 1. Extraemos el identificador único del apoderado autenticado en la sesión actual
     const userIdLocal = localStorage.getItem('fc_user_id');

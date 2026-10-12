@@ -1,6 +1,3 @@
-// =====================================================================================================================
-// 1. SECCIÓN DE IMPORTACIONES: DECORADORES, ENRUTADORES, SERVICIOS ASÍNCRONOS Y PRIMITIVAS REACTIVAS
-// =====================================================================================================================
 import { Component, signal, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -12,8 +9,6 @@ import { RetroalimentacionService } from '../../../../../core/services/retroalim
 @Component({
   selector: 'app-retroalimentacion',
   standalone: true,
-  // ReactiveFormsModule habilita el control estructurado de los campos de texto de compromisos
-  // CommonModule y RouterLink manejan las directivas condicionales y de navegación entre subprocesos
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './retroalimentacion.html',
   styleUrl: './retroalimentacion.css'
@@ -23,47 +18,21 @@ export class RetroalimentacionComponent implements OnInit {
   // INYECCIÓN MODERNA DE INFRAESTRUCTURA CLOUD (ANGULAR 19 + SERVERLESS)
   private readonly retroalimentacionService = inject(RetroalimentacionService);
 
-  /**
-   * SIGNALS DE CONTEXTO CONGELADO:
-   * Corrige la lectura de llaves físicas reales para heredar la consistencia del expediente (HU12, HU14).
-   */
   protected readonly nombreEstudiante = signal<string>('No seleccionado');
   protected readonly bimestreActivo = signal<string>('');
   protected readonly idFichaContexto = signal<string>('');
 
-  /**
-   * SIGNALS DE USABILIDAD (CONTADORES VIVOS): Almacenan en tiempo real la cantidad de letras escritas.
-   * Angular reaccará de forma quirúrgica actualizando el contador visual sin refrescar la pantalla.
-   */
   protected readonly conteoRecomendaciones = signal<number>(0);
   protected readonly conteoCompromisos = signal<number>(0);
 
-  /**
-   * SIGNAL DE BLOQUEO DE CONTROLES (UX DE PREVENCIÓN):
-   * Se activa durante el viaje de los datos hacia AWS Lambda para evitar dobles clics accidentales.
-   */
   protected readonly isLoading = signal<boolean>(false);
 
-  /**
-   * SIGNAL DE TRAZA DE EXCEPCIONES EN RED:
-   * Almacena y despliega leyendas descriptivas si la base de datos RDS rechaza los textos.
-   */
   protected readonly mensajeError = signal<string | null>(null);
 
-  /**
-   * SIGNAL DE UI: Controla la transición final de la pantalla (Oculta el formulario y muestra la confirmación de publicación).
-   */
   protected readonly mostrarExitoPublicacion = signal<boolean>(false);
 
-  /**
-   * REGLAS DE NEGOCIO PEDAGÓGICAS: Límites máximos de caracteres permitidos en la base de datos.
-   */
   protected readonly MAX_CARACTERES = 1000;
 
-  /**
-   * FORMULARIO REACTIVO (FormGroup): Centraliza el estado lógico de la retroalimentación cualitativa.
-   * Valida que ambos campos sean obligatorios y no excedan el tamaño máximo de almacenamiento.
-   */
   protected readonly retroalimentacionForm = new FormGroup({
     txtRecomendaciones: new FormControl('', {
       nonNullable: true,
@@ -93,27 +62,16 @@ export class RetroalimentacionComponent implements OnInit {
     }
   }
 
-  /**
-   * MÉTODO DE USABILIDAD: Escucha activamente cada pulsación de tecla en la caja de 'Recomendaciones'.
-   * Sincroniza la longitud del texto directamente con su Signal correspondiente.
-   */
   protected actualizarContadorRecomendaciones(): void {
     const longitudText = this.retroalimentacionForm.controls.txtRecomendaciones.value.length;
     this.conteoRecomendaciones.set(longitudText);
   }
 
-  /**
-   * MÉTODO DE USABILIDAD: Escucha activamente cada pulsación de tecla en la caja de 'Compromisos'.
-   */
   protected actualizarContadorCompromisos(): void {
     const longitudText = this.retroalimentacionForm.controls.txtCompromisos.value.length;
     this.conteoCompromisos.set(longitudText);
   }
 
-  /**
-   * ACCIÓN FINAL DE EMISIÓN (HU14, HU15): Cierra y sella la bitácora escolar del bimestre.
-   * Dispara el payload hacia Amazon API Gateway provocando la mutación definitiva a estado 'Publicado'.
-   */
   protected onFinalizarPublicacion(): void {
     // Si el docente dejó los campos vacíos o excedió el tamaño de letras, activamos los bordes rojos.
     if (this.retroalimentacionForm.invalid || !this.idFichaContexto()) {

@@ -1,7 +1,4 @@
-/**
- * INTERFAZ DE MODELO (CONTRATO DE DATOS GLOBAL): Define la estructura estricta de un Alumno.
- * Centralizado en la capa 'Core' para que pueda ser consumido por cualquier componente o Macroproceso del sistema.
- */
+
 export interface Estudiante {
   // Campos base obligatorios que ya utiliza el sistema
   idEstudiante: number;
@@ -14,10 +11,6 @@ export interface Estudiante {
   seccion: string;
   aulaDetalle: string;
 
-  // ==========================================================================
-  // NUEVOS CAMPOS EXPANDIDOS (CONFIGURADOS COMO OPCIONALES)
-  // El operador '?' evita errores en vistas antiguas que no manejan estos datos
-  // ==========================================================================
   edad?: number | null;
   fechaNacimiento?: string | null;
   domicilio?: string | null;

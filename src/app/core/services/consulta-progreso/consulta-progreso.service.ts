@@ -33,10 +33,6 @@ export class ConsultaProgresoService {
   // URL del API Gateway productivo en AWS
   private readonly API_URL = 'https://fw6paaoszj.execute-api.us-east-1.amazonaws.com/prod/mp02-seguimiento/consulta-progreso';
 
-  /**
-   * Consulta el expediente pedagógico completo de los hijos asociados al idUsuario del Padre.
-   * @param idUsuario Código único del apoderado autenticado en la sesión.
-   */
   public obtenerProgresoHijo(idUsuario: number): Observable<ProgresoPadreResponse> {
     const payload = {
       accion: 'OBTENER_PROGRESO_PADRE',
