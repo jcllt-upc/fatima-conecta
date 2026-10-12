@@ -1,0 +1,102 @@
+<section class="editar-comunicado">
+
+  <div class="editar-header">
+    <span>GESTIÓN INSTITUCIONAL (MP01)</span>
+    <h1>Editar comunicado</h1>
+    <p>Modifique la información del comunicado seleccionado.</p>
+  </div>
+
+  <div class="formulario-card">
+
+    <form
+        [formGroup]="formularioComunicado"
+        (ngSubmit)="guardarCambios()">  <!--(ngSubmit) ejecuta guardarCambios() cuando se envía el formulario.-->
+
+      <!-- Campo para editar el título -->
+        <div class="campo">
+        <label for="titulo">Título del comunicado</label> <!-- for="titulo" relaciona el label con el elemento que tiene id="titulo" -->
+
+        <input
+          type="text"
+          id="titulo" 
+          formControlName="titulo"> <!-- Conecta este input con el FormControl "titulo" del TS -->
+
+
+          <!-- Muestra el error si el campo fue tocado Y es inválido -->
+        @if (formularioComunicado.controls.titulo.touched && 
+             formularioComunicado.controls.titulo.invalid) {
+          <small class="error">El título es obligatorio.</small>
+        }
+      </div>
+
+      <!-- Campo para editar el tipo de comunicado -->
+      <div class="campo">
+        <label for="tipo">Tipo de comunicado</label>
+
+        <select id="tipo" formControlName="tipo"> <!-- Conecta este select con el FormControl "tipo" del TS -->
+          <option value="Institucional">Institucional</option>
+          <option value="Academico">Académico</option>
+          <option value="Actividades">Actividades</option>
+        </select>
+      </div>
+
+      <!-- Campo para editar la descripción -->
+      
+      <div class="campo">
+        <label for="descripcion">Descripción breve</label>
+
+        <textarea
+          id="descripcion"
+          rows="3"
+          formControlName="descripcion">
+        </textarea>
+
+        <!-- Muestra el error si descripción fue tocada Y es inválida -->
+        @if (formularioComunicado.controls.descripcion.touched &&
+             formularioComunicado.controls.descripcion.invalid) {
+          <small class="error">La descripción es obligatoria.</small>
+        }
+      </div>
+
+       <!-- Campo para editar el contenido completo -->
+      <div class="campo">
+        <label for="contenido">Contenido del comunicado</label>
+
+        <textarea
+          id="contenido"
+          rows="7"
+          formControlName="contenido">
+        </textarea>
+
+         <!-- Muestra el error si contenido fue tocado Y es inválido -->
+        @if (formularioComunicado.controls.contenido.touched &&
+             formularioComunicado.controls.contenido.invalid) {
+          <small class="error">El contenido es obligatorio.</small>
+        }
+      </div>
+
+      <!-- Contenedor de los botones -->
+      <div class="acciones">
+        <button
+            type="button"
+            class="btn-cancelar"
+            (click)="cancelar()">
+            Cancelar
+        </button>
+
+        <button type="submit" class="btn-guardar">
+          Guardar cambios
+        </button>
+      </div>
+
+    </form>
+
+        @if (mensajeExito) {
+    <div class="mensaje-exito">
+        {{ mensajeExito }}  <!-- Muestra el mensaje generado desde el TS -->
+    </div>
+    }
+
+  </div>
+
+</section>

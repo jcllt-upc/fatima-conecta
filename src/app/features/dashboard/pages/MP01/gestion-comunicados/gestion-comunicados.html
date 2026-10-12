@@ -1,0 +1,111 @@
+<section class="gestion-comunicados">
+
+  <div class="gestion-header">
+    <div>
+      <span>GESTIÓN INSTITUCIONAL (MP01)</span>
+      <h1>Gestión de Comunicados</h1>
+      <p>Administre los comunicados institucionales y su estado de publicación.</p>
+    </div>
+
+    <a routerLink="/dashboard/comunicados/nuevo" class="btn-nuevo">
+      + Nuevo comunicado
+    </a>
+  </div>
+
+  <div class="tabla-card">
+
+    <div class="tabla-header">
+      <span>Comunicado</span>
+      <span>Estado</span>
+      <span>Acciones</span>
+    </div>
+
+    @if (cargando()) {
+      <p>Cargando comunicados...</p>
+    }
+
+    @if (error()) {
+      <p>{{ error() }}</p>
+    }
+
+    @if (!cargando() && comunicados().length === 0) {
+      <p>No hay comunicados registrados.</p>
+    }
+
+    <!-- Recorre todos los comunicados recibidos desde SQL Server -->
+    @for (comunicado of comunicados(); track comunicado.ID_Comunicado) {
+
+      <div class="tabla-fila">
+
+        <!-- DATOS DEL COMUNICADO -->
+        <div>
+          <strong>{{ comunicado.Titulo }}</strong>
+          <p>{{ comunicado.Descripcion_Corta }}</p>
+        </div>
+
+        <!-- ESTADO ACTUAL -->
+        <div>
+          <span
+            class="estado"
+            [class.pendiente]="comunicado.Nombre_Estado === 'Pendiente'"
+            [class.aprobado]="comunicado.Nombre_Estado === 'Aprobado'"
+            [class.publicado]="comunicado.Nombre_Estado === 'Publicado'">
+
+            {{ comunicado.Nombre_Estado }}
+
+          </span>
+        </div>
+
+        <!-- ACCIONES SEGÚN ESTADO -->
+        <div class="acciones">
+
+          @if (comunicado.Nombre_Estado === 'Pendiente') {
+            <a
+              [routerLink]="['/dashboard/comunicados/revisar', comunicado.ID_Comunicado]"
+              class="btn-accion">
+              Revisar
+            </a>
+          }
+
+          @if (comunicado.Nombre_Estado === 'Aprobado') {
+            <button
+              class="btn-accion"
+              (click)="publicarComunicado(comunicado.ID_Comunicado)">
+              Publicar
+            </button>
+          }
+
+          @if (comunicado.Nombre_Estado !== 'Publicado') {
+            <a
+              [routerLink]="['/dashboard/comunicados/editar', comunicado.ID_Comunicado]"
+              class="btn-accion">
+              Editar
+            </a>
+          }
+
+          @if (comunicado.Nombre_Estado === 'Publicado') {
+            <a
+              [routerLink]="['/comunicados/detalle', comunicado.ID_Comunicado]"
+              class="btn-accion">
+              Ver
+            </a>
+          }
+
+          
+            <!-- DELETE: Eliminar comunicado -->
+            <button
+              type="button"
+              class="btn-accion"
+              (click)="eliminarComunicado(comunicado.ID_Comunicado)">
+              Eliminar
+            </button>
+
+
+        </div>
+
+      </div>
+    }
+
+  </div>
+
+</section>

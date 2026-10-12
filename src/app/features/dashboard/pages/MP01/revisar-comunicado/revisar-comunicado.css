@@ -1,0 +1,123 @@
+.revisar-comunicado {
+  padding: 40px;
+  max-width: 1000px;
+}
+
+.revision-header {
+  margin-bottom: 30px;
+}
+
+.revision-header span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1d4ed8;
+  letter-spacing: 1px;
+}
+
+.revision-header h1 {
+  font-size: 32px;
+  color: #0f2747;
+  margin: 8px 0;
+}
+
+.revision-header p {
+  color: #64748b;
+  margin: 0;
+}
+
+.revision-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.dato {
+  margin-bottom: 24px;
+}
+
+.dato label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 7px;
+}
+
+.dato p {
+  margin: 0;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.estado-actual {
+  margin-top: 10px;
+  padding: 14px;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 7px;
+}
+
+.acciones-revision {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.acciones-revision button {
+  padding: 11px 22px;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-rechazar {
+  background: white;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.btn-rechazar:hover {
+  background: #fef2f2;
+}
+
+.btn-aprobar {
+  background: #1d4ed8;
+  color: white;
+  border: 1px solid #1d4ed8;
+}
+
+.btn-aprobar:hover {
+  background: #1e40af;
+}
+
+@media (max-width: 768px) {
+  .revisar-comunicado {
+    padding: 25px 20px;
+  }
+
+  .revision-card {
+    padding: 20px;
+  }
+
+  .acciones-revision {
+    flex-direction: column;
+  }
+
+  .acciones-revision button {
+    width: 100%;
+  }
+}
+
+.mensaje-resultado {
+  margin-top: 20px;
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  color: #334155;
+  font-weight: 600;
+}

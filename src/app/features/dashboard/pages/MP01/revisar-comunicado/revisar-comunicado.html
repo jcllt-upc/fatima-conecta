@@ -1,0 +1,85 @@
+
+<section class="revisar-comunicado">
+
+  <div class="revision-header">
+    <span>GESTIÓN INSTITUCIONAL (MP01)</span>
+    <h1>Revisar comunicado</h1>
+    <p>Revise la información antes de aprobar el comunicado.</p>
+  </div>
+
+  <div class="revision-card">
+
+    <!-- Mensaje mientras consultamos SQL Server -->
+    @if (cargando) {
+      <p>Cargando comunicado...</p>
+    }
+
+    <!-- Mostrar información real del comunicado -->
+    @if (!cargando && nuevoComunicado) {
+
+      <div class="dato">
+        <label>Título</label>
+        <p>{{ nuevoComunicado.Titulo }}</p>
+      </div>
+
+      <div class="dato">
+        <label>Tipo</label>
+        <p>{{ nuevoComunicado.Tipo_Comunicado }}</p>
+      </div>
+
+      <div class="dato">
+        <label>Descripción breve</label>
+        <p>{{ nuevoComunicado.Descripcion_Corta }}</p>
+      </div>
+
+      <div class="dato">
+        <label>Contenido</label>
+        <p>{{ nuevoComunicado.Contenido_Extendido }}</p>
+      </div>
+
+      <div class="dato">
+        <label>Archivo adjunto</label>
+        <p>No se adjuntó ningún archivo.</p>
+      </div>
+
+      <div class="estado-actual">
+        Estado de revisión: <strong>{{ estado }}</strong>
+      </div>
+
+      <!-- Botones de revisión -->
+      @if (estado === 'Pendiente de revisión') {
+
+        <div class="acciones-revision">
+
+          <button
+            type="button"
+            class="btn-rechazar"
+            [disabled]="procesando"
+            (click)="rechazarComunicado()">
+            Rechazar
+          </button>
+
+          <button
+            type="button"
+            class="btn-aprobar"
+            [disabled]="procesando"
+            (click)="aprobarComunicado()">
+            {{ procesando ? 'Aprobando...' : 'Aprobar' }}
+          </button>
+
+        </div>
+
+      }
+
+    }
+
+    <!-- Mensajes de éxito o error -->
+    @if (mensaje) {
+      <div class="mensaje-resultado">
+        {{ mensaje }}
+      </div>
+    }
+
+  </div>
+
+</section>

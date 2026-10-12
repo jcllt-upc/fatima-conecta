@@ -39,7 +39,33 @@
         </a>
       }
 
+
+      <!-- ===================================================== -->
+<!-- MP01 - GESTIÓN INSTITUCIONAL Y COMUNICACIÓN           -->
+<!-- Esta sección solo se muestra si el usuario es Director -->
+<!-- ===================================================== -->
+
+
       @if (currentUserRole() === 'Director') {
+        
+         <!-- ===== AGREGADO POR MP01 ===== -->
+        
+        <div class="menu-group-label">Gestión Institucional (MP01)</div>
+
+        <!-- Enlace que permite ingresar a Gestión de Comunicados.
+
+        routerLink: Indica la ruta a la que Angular debe navegar cuando el usuario haga clic.
+
+        En este caso:/dashboard/comunicados
+
+        Angular buscará esta ruta en app.routes.ts y cargará el componente GestionComunicados.-->
+
+        <a routerLink="/dashboard/comunicados" routerLinkActive="active-menu"> <!-- Ruta a la que navegará y quedara resaltado cuando se seleccione -->
+          <i class="menu-icon"></i> Gestión de Comunicados <!-- Icono del menú --> <!-- Texto visible -->
+        </a>
+
+          <!-- ===== FIN MP01 ===== -->
+
         <div class="menu-group-label">Administración General</div>
         <a routerLink="/dashboard/usuarios" routerLinkActive="active-menu">
           <i class="menu-icon users"></i> Control de Usuarios

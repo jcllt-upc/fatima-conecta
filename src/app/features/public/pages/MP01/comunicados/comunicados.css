@@ -1,0 +1,136 @@
+.comunicados-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.comunicados-header {
+  margin-bottom: 40px;
+}
+
+.comunicados-etiqueta {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1d4ed8;
+  letter-spacing: 1px;
+}
+
+.comunicados-header h1 {
+  font-size: 36px;
+  margin: 10px 0;
+  color: #0f2747;
+}
+
+.comunicados-header p {
+  font-size: 16px;
+  color: #64748b;
+  max-width: 700px;
+}
+
+.comunicados-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comunicado-card {
+  display: flex;
+  gap: 25px;
+  padding: 25px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.comunicado-fecha {
+  min-width: 70px;
+  height: 70px;
+  background: #eff6ff;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.comunicado-fecha span {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.comunicado-fecha small {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.comunicado-contenido {
+  flex: 1;
+}
+
+.comunicado-tipo {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.comunicado-contenido h2 {
+  margin: 8px 0;
+  color: #0f2747;
+}
+
+.comunicado-contenido p {
+  margin-bottom: 18px;
+  color: #64748b;
+}
+
+.comunicado-contenido button {
+  background: #1d4ed8;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.comunicado-contenido button:hover {
+  background: #1e40af;
+}
+
+@media (max-width: 768px) {
+  .comunicados-section {
+    padding: 40px 20px;
+  }
+
+  .comunicado-card {
+    flex-direction: column;
+  }
+
+  .comunicado-fecha {
+    width: 70px;
+  }
+
+  .comunicados-header h1 {
+    font-size: 30px;
+  }
+}
+
+.acciones-comunicados {
+  margin-bottom: 30px;
+}
+
+.btn-historico {
+  display: inline-block;
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-historico:hover {
+  text-decoration: underline;
+}
