@@ -1,0 +1,394 @@
+<!-- ====================================================================================================
+     CONTENEDOR MAESTRO CENTRALIZADO: MANTENEDOR DE EXPEDIENTES DE ESTUDIANTES
+==================================================================================================== -->
+<div class="mantenimiento-wrapper">
+
+  <!-- BLOQUE DE BIENVENIDA Y CABECERA DEL PANEL -->
+  <header class="panel-header-section">
+    <div class="header-title-block">
+      <h1 class="main-panel-title">Mantenimiento de Estudiantes</h1>
+      <p class="panel-subtitle">Panel de control administrativo exclusivo para el rol de Dirección General</p>
+    </div>
+
+    <!-- Botón de Registro: Solo se visualiza si el Director está parado en el estado de la Lista General -->
+    @if (vistaActiva() === 'LISTA') {
+    <button class="btn-primary-action" (click)='irAFormularioCrear()'>
+      <svg class="btn-svg-icon" xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="2"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      Registrar Nuevo Alumno
+    </button>
+    }
+  </header>
+
+  <!-- RECURSO DE CARGA TRANSACCIONAL (SPINNER INTEGRADO CON CLASES DE CSS PURO) -->
+  @if (estaCargando()) {
+  <div class="loading-overlay-screen">
+    <div class="spinner-css-pure"></div>
+    <p class="loading-text-feedback">Sincronizando expedientes con AWS RDS y S3, por favor espere...</p>
+  </div>
+  }
+
+  <!-- ====================================================================================================
+       VISTA 1: TABLA GENERAL DE ALUMNOS (ESTADO === 'LISTA')
+       ==================================================================================================== -->
+  @if (vistaActiva() === 'LISTA' && !estaCargando()) {
+  <section class="table-view-container animate-fade-in">
+
+    <!-- Validación de Seguridad: Si no existen registros en SQL Server, muestra panel vacío estilizado -->
+    @if (listaEstudiantes().length === 0) {
+    <div class="empty-state-card">
+      <p class="empty-message">No se encontraron expedientes de estudiantes matriculados en la institución.</p>
+    </div>
+    } @else {
+    <!-- Contenedor con scroll horizontal controlado de forma nativa por CSS Puro -->
+    <div class="responsive-table-scroll">
+      <table class="custom-data-table">
+        <thead>
+          <tr>
+            <th class="th-dni">DNI</th>
+            <th class="th-estudiante">Apellidos y Nombres</th>
+            <th class="th-aula">Grado y Sección</th>
+            <th class="th-matricula">Código Matrícula</th>
+            <th class="th-estado">Estado</th>
+            <th class="th-acciones">Acciones de Gestión</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Directiva @for nativa de Angular para iterar la señal reactiva eficientemente -->
+          <!--@for (alumno of listaEstudiantes(); track alumno.idEstudiante) {-->
+          @for (alumno of obtenerEstudiantesPaginados(); track alumno.idEstudiante) {
+          <tr class="table-row-interactive">
+            <td class="td-dni-text">{{ alumno.dni }}</td>
+            <td class="td-name-text">{{ alumno.apellidos }}, {{ alumno.nombres }}</td>
+            <td>
+              <span class="aula-pill-css">
+                {{ alumno.grado }} - "{{ alumno.seccion }}"
+              </span>
+            </td>
+            <td class="td-code-text">{{ alumno.codigoMatricula || 'No Asignado' }}</td>
+            <td>
+              <!-- Clase dinámica controlada por CSS Puro según el estado de la matrícula -->
+              <span class="status-badge-css" [ngClass]="{
+                      'badge-activo': alumno.estadoAlumno === 'Activo',
+                      'badge-inactivo': alumno.estadoAlumno !== 'Activo'
+                    }">
+                {{ alumno.estadoAlumno }}
+              </span>
+            </td>
+            <td class="td-actions-block">
+              <!-- Botón Acción 1: Consultar Ficha de Detalle Expandido -->
+              <button class="action-icon-btn btn-view" title="Ver Expediente"
+                (click)="verDetalleAlumno(alumno.idEstudiante)">
+                <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+              </button>
+
+              <!-- Botón Acción 2: Editar Formulario -->
+              <button class="action-icon-btn btn-edit" title="Modificar Datos" (click)="irAFormularioEditar(alumno)">
+                <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                </svg>
+              </button>
+
+              <!-- Botón Acción 3: Remover físicamente de la base de datos AWS RDS -->
+              <button class="action-icon-btn btn-delete" title="Remover del Sistema"
+                (click)="eliminarAlumnoDelEcosistema(alumno.idEstudiante)">
+                <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-1.816A2.25 2.25 0 0 0 13.81 3.5H10.19a2.25 2.25 0 0 0-2.23 2.14V4.85m7.42 0H5.15" />
+                </svg>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ====================================================================================================
+           🟢 CONTENEDOR DE CONTROLES DE PAGINACIÓN: BLINDAJE DE CENTRADO COMPACTO (7 ALUMNIOS)
+      ==================================================================================================== -->
+    <div class="paginacion-container-pure">
+
+      <!-- Botón Anterior -->
+      <button type="button" (click)="paginaAnterior()" [disabled]="paginaActual() === 1">
+        Anterior
+      </button>
+
+      <!-- Indicador de Ubicación en el Catálogo -->
+      <span>
+        Página <strong>{{ paginaActual() }}</strong> de <strong>{{ obtenerTotalPaginas() }}</strong>
+      </span>
+
+      <!-- Botón Siguiente -->
+      <button type="button" (click)="paginaSiguiente()" [disabled]="paginaActual() === obtenerTotalPaginas()">
+        Siguiente
+      </button>
+    </div>
+
+    }
+  </section>
+  }
+
+  <!-- ====================================================================================================
+       VISTA 2: FORMULARIO REACTIVO (ESTADO === 'FORMULARIO') - REGISTRO Y EDICIÓN (CORREGIDO)
+       ==================================================================================================== -->
+  @if (vistaActiva() === 'FORMULARIO' && !estaCargando()) {
+  <section class="form-view-container animate-fade-in">
+
+    <form [formGroup]="estudianteForm" (ngSubmit)="guardarCambiosEstudiante()" class="pure-grid-form">
+
+      <!-- COLUMNA IZQUIERDA: GESTIÓN INTEGRADA MULTIMEDIA (AWS S3) -->
+      <div class="form-media-column">
+        <div class="photo-uploader-card">
+          <h3 class="card-section-title">Fotografía de Perfil</h3>
+
+          <div class="avatar-preview-box">
+            @if (previsualizacionFotoUrl()) {
+            <img [src]="previsualizacionFotoUrl()" alt="Previsualización de perfil del estudiante"
+              class="img-preview-fluid" />
+            } @else {
+            <div class="avatar-placeholder-css">
+              <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
+                class="placeholder-svg">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+            </div>
+            }
+          </div>
+
+          <label for="filePhotoInput" class="custom-file-upload-btn">
+            Seleccionar Foto (.JPG)
+          </label>
+          <input id="filePhotoInput" type="file" accept="image/jpeg, image/jpg" (change)="onFotoSeleccionada($event)"
+            class="hidden-input-file" />
+          <p class="uploader-instructions">La imagen será depositada de forma segura y directa en el bucket Amazon S3.
+          </p>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: CAMPOS DE TEXTO E INFORMACIÓN COMPLETA -->
+      <div class="form-fields-column">
+
+        <!-- BLOQUE A: COMPONENTE DE DATOS PERSONALES -->
+        <div class="form-data-card-block">
+          <h3 class="card-section-title">Información Personal Básica</h3>
+
+          <div class="fields-responsive-row">
+            <div class="form-group-item">
+              <label class="pure-label">DNI del Alumno <span class="required-star">*</span></label>
+              <input type="text" formControlName="dni" placeholder="Ej: 72819403" class="pure-form-control"
+                [readonly]="esEdicion" />
+            </div>
+
+            <div class="form-group-item">
+              <label class="pure-label">Código de Matrícula</label>
+              <input type="text" formControlName="codigoMatricula" placeholder="Ej: MAT-2026-009"
+                class="pure-form-control" />
+            </div>
+          </div>
+
+          <div class="fields-responsive-row">
+            <div class="form-group-item">
+              <label class="pure-label">Nombres Completos <span class="required-star">*</span></label>
+              <input type="text" formControlName="nombres" placeholder="Ingrese nombres" class="pure-form-control" />
+            </div>
+
+            <div class="form-group-item">
+              <label class="pure-label">Apellidos Paterno y Materno <span class="required-star">*</span></label>
+              <input type="text" formControlName="apellidos" placeholder="Ingrese apellidos"
+                class="pure-form-control" />
+            </div>
+          </div>
+
+          <div class="fields-responsive-row">
+            <div class="form-group-item">
+              <label class="pure-label">Edad Cronológica</label>
+              <input type="number" formControlName="edad" placeholder="Ej: 12" class="pure-form-control" />
+            </div>
+
+            <div class="form-group-item">
+              <label class="pure-label">Fecha de Nacimiento</label>
+              <input type="date" formControlName="fechaNacimiento" class="pure-form-control" />
+            </div>
+          </div>
+
+          <div class="form-group-item-full">
+            <label class="pure-label">Domicilio Habitual</label>
+            <input type="text" formControlName="domicilio" placeholder="Dirección exacta, Avenida, Calle o Jirón"
+              class="pure-form-control" />
+          </div>
+        </div>
+
+        <!-- BLOQUE B: CONTEXTO INSTITUCIONAL Y FICHA MÉDICA -->
+        <div class="form-data-card-block space-top-card">
+          <h3 class="card-section-title">Contexto Institucional y Ficha Médica</h3>
+
+          <div class="fields-responsive-row">
+            <div class="form-group-item">
+              <label class="pure-label">Asignación de Aula (ID Sección) <span class="required-star">*</span></label>
+              <select formControlName="idSeccion" class="pure-form-control-select">
+                <option [value]="1">1er Grado de Primaria - Aula 'A'</option>
+                <option [value]="2">2do Grado de Primaria - Aula 'B'</option>
+                <option [value]="3">3er Grado de Primaria - Aula 'A'</option>
+              </select>
+            </div>
+
+            <div class="form-group-item">
+              <label class="pure-label">Estado de la Matrícula</label>
+              <select formControlName="estadoAlumno" class="pure-form-control-select">
+                <option value="Activo">Activo / Matriculado</option>
+                <option value="Inactivo">Inactivo / Retirado</option>
+                <option value="Trasladado">Trasladado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="fields-responsive-row">
+            <div class="form-group-item">
+              <label class="pure-label">Grupo Sanguíneo</label>
+              <input type="text" formControlName="grupoSanguineo" placeholder="Ej: O+, A-, AB+"
+                class="pure-form-control" />
+            </div>
+
+            <div class="form-group-item">
+              <label class="pure-label">Contacto de Emergencia (Teléfono)</label>
+              <input type="text" formControlName="contactoEmergenciaTelf" placeholder="Ej: 987654321"
+                class="pure-form-control" />
+            </div>
+          </div>
+
+          <div class="form-group-item-full">
+            <label class="pure-label">Alergias o Condiciones Médicas Clínicas</label>
+            <textarea formControlName="alergiasMedicas" placeholder="Escriba aquí las condiciones..."
+              class="pure-form-control-textarea"></textarea>
+          </div>
+        </div>
+
+        <!-- BARRA DE ACCIONES DEL FORMULARIO: PERFECTAMENTE ENGLOBADA AL CENTRO -->
+        <div class="form-actions-footer-bar">
+          <button type="button" class="btn-secondary-cancel" (click)="regresarALista()">Cancelar Operación</button>
+          <button type="submit" class="btn-success-save" [disabled]="estudianteForm.invalid">
+            {{ esEdicion ? 'Guardar Cambios' : 'Registrar Estudiante' }}
+          </button>
+        </div>
+
+      </div> <!-- Cierra form-fields-column -->
+    </form>
+  </section>
+  }
+
+
+
+  <!-- ====================================================================================================
+       VISTA 3: EXPEDIENTE DE DETALLE (ESTADO === 'DETALLE')
+       ==================================================================================================== -->
+  @if (vistaActiva() === 'DETALLE' && estudianteSeleccionado() && !estaCargando()) {
+  <section class="detalle-view-container animate-fade-in">
+
+    <button class="btn-back-to-list" (click)="regresarALista()">
+      <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+        class="btn-back-svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+      </svg>
+      Regresar al Listado General
+    </button>
+
+    <div class="detalle-layout-grid">
+
+      <!-- TARJETA PERFIL LATERAL IZQUIERDA -->
+      <div class="detalle-profile-sidebar-card">
+        <div class="profile-photo-wrapper-hd">
+          @if (estudianteSeleccionado()?.fotoUrl) {
+          <img [src]="estudianteSeleccionado()?.fotoUrl" alt="Fotografía oficial de perfil" class="img-profile-hd" />
+          } @else {
+          <div class="profile-avatar-placeholder-hd">
+            <span class="placeholder-initials-text">
+              {{ estudianteSeleccionado()?.nombres?.charAt(0) }}{{
+              estudianteSeleccionado()?.apellidos?.charAt(0) }}
+            </span>
+          </div>
+          }
+        </div>
+
+        <h2 class="profile-fullname-title">{{ estudianteSeleccionado()?.apellidos }}, {{
+          estudianteSeleccionado()?.nombres }}</h2>
+        <span class="profile-matricula-badge">{{ estudianteSeleccionado()?.codigoMatricula || 'SIN MATRÍCULA'
+          }}</span>
+
+        <div class="profile-status-indicator space-top-indicator">
+          <span class="status-badge-css" [ngClass]="{
+              'badge-activo': estudianteSeleccionado()?.estadoAlumno === 'Activo',
+              'badge-inactivo': estudianteSeleccionado()?.estadoAlumno !== 'Activo'
+            }">
+            Matrícula {{ estudianteSeleccionado()?.estadoAlumno }}
+          </span>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DE BLOQUES DE DATOS DERECHA -->
+      <div class="detalle-info-content-card">
+
+        <div class="info-section-group">
+          <h4 class="info-section-header-title">Ficha de Identidad y Registro</h4>
+          <div class="info-data-flex-row">
+            <div class="info-data-item"><span class="data-label">DNI:</span> <span class="data-value">{{
+                estudianteSeleccionado()?.dni }}</span></div>
+            <div class="info-data-item"><span class="data-label">Edad Actual:</span> <span class="data-value">{{
+                estudianteSeleccionado()?.edad || 'No especificada' }} años</span>
+            </div>
+            <div class="info-data-item"><span class="data-label">Nacimiento:</span> <span class="data-value">{{
+                estudianteSeleccionado()?.fechaNacimiento || 'No registrada'
+                }}</span></div>
+            <div class="info-data-item"><span class="data-label">Aula Escolar:</span> <span
+                class="data-value font-highlight-pill">{{ estudianteSeleccionado()?.aulaDetalle
+                }}</span></div>
+          </div>
+          <div class="info-data-full-row">
+            <span class="data-label">Domicilio Habitual del Menor:</span>
+            <p class="data-value-paragraph">{{ estudianteSeleccionado()?.domicilio || 'Dirección no
+              especificada.' }}</p>
+          </div>
+        </div>
+
+        <div class="info-section-group space-top-section">
+          <h4 class="info-section-header-title">Credenciales de Acceso al Ecosistema Virtual</h4>
+          <div class="info-data-full-row bg-highlight-credentials">
+            <span class="data-label">Correo Electrónico Institucional (Login):</span>
+            <span class="data-value-code-mail">{{ estudianteSeleccionado()?.correoInstitucional || 'Usuario
+              No Sincronizado' }}</span>
+          </div>
+        </div>
+
+        <div class="info-section-group space-top-section">
+          <h4 class="info-section-header-title">Expediente Médico y Seguridad Estudiantil</h4>
+          <div class="info-data-flex-row">
+            <div class="info-data-item"><span class="data-label">Grupo Sanguíneo:</span> <span
+                class="data-value medical-highlight-text">{{ estudianteSeleccionado()?.grupoSanguineo ||
+                'Desconocido' }}</span></div>
+            <div class="info-data-item"><span class="data-label">Teléfono de Urgencias:</span> <span
+                class="data-value font-phone-text">{{ estudianteSeleccionado()?.contactoEmergenciaTelf
+                || 'No Asignado' }}</span></div>
+          </div>
+          <div class="info-data-full-row">
+            <span class="data-label">Alergias o Condiciones Especiales:</span>
+            <p class="data-value-paragraph medical-alert-paragraph"
+              [ngClass]="{'has-allergies': estudianteSeleccionado()?.alergiasMedicas !== 'Ninguna'}">
+              {{ estudianteSeleccionado()?.alergiasMedicas }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  }
+
+</div>

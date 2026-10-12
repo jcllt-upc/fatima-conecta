@@ -1,0 +1,6 @@
+/* Asegura que el contenido central tome el tamaño mínimo disponible para evitar que el footer flote */
+.layout-viewport-content {
+  min-height: calc(100vh - 50px - 50px); /* Resta la altura estimada de la cabecera y el pie de página */
+  display: flex;
+  flex-direction: column;
+}

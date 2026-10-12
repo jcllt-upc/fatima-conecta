@@ -1,0 +1,187 @@
+<!-- =====================================================================================================================
+     1. CONTENEDOR CENTRAL: MAQUETACIÓN DE DOBLE PANEL CON TU DISTRIBUCIÓN FLEXBOX ORIGINAL
+     ===================================================================================================================== -->
+<div class="contexto-page-layout" [formGroup]="contextoForm">
+
+  <!-- ===================================================================================================================
+       BLOQUE 1: PANEL IZQUIERDO - BUSCADOR Y LISTADO DE RESULTADOS EN VIVO DESDE AWS RDS
+       =================================================================================================================== -->
+  <section class="search-results-panel">
+
+    <!-- Encabezado de tu panel izquierdo original -->
+    <div class="panel-card-header">
+      <h2>Buscador de Estudiantes</h2>
+      <p>Filtre por apellidos, nombres o número de DNI para aperturar la ficha cualitativa</p>
+    </div>
+
+    <!-- Barra del Buscador Formulario -->
+    <div class="search-form-bar">
+      <div class="search-input-wrapper">
+        <!-- Input acoplado al control 'txtBuscar'. Cada letra gatilla tu motor de búsqueda en caché -->
+        <input type="text" formControlName="txtBuscar" (input)="ejecutarBusqueda()"
+          placeholder="Buscar por DNI o apellidos del alumno..." class="search-field-input"
+          [attr.disabled]="isLoading() ? true : null" />
+
+        <!-- UX: Si hay texto en el input, se dibuja tu botón de limpieza rápida (Equis) -->
+        @if (contextoForm.controls.txtBuscar.value.length > 0) {
+        <button type="button" class="btn-clear-search" (click)="limpiarBuscador()">✖</button>
+        }
+        <span class="search-inline-icon">🔍</span>
+      </div>
+    </div>
+
+    <!-- Tu Estructura Modular de Tabla en Flexbox -->
+    <div class="students-data-list">
+
+      <!-- Fila Fija de Encabezados de tu Tabla -->
+      <div class="list-table-header">
+        <div class="col-dni">DNI</div>
+        <div class="col-name">Estudiante</div>
+        <div class="col-grade">Grado y Sección</div>
+      </div>
+
+      <!-- Cuerpo de Datos Dinámico: itera la respuesta real de tu AWS Lambda con @for -->
+      <!-- @for (alumno of estudiantesFiltrados(); track alumno.idEstudiante) {-->
+      @for (alumno of obtenerAlumnosPaginados(); track alumno.idEstudiante) {
+      <!-- Al hacer clic, se congela su identidad y se inyecta tu clase condicional 'row-selected' -->
+      <div class="student-data-row"
+        [class.row-selected]="estudianteSeleccionado()?.idEstudiante === alumno.idEstudiante"
+        (click)="seleccionarEstudiante(alumno)">
+
+        <div class="col-dni font-monospace font-bold">{{ alumno.dni }}</div>
+        <!-- 'nombreCompleto' viene unificado desde Python con el formato "Apellidos, Nombres" -->
+        <div class="col-name font-bold">{{ alumno.nombreCompleto }}</div>
+        <!-- 'aulaDetalle' contiene el grado y letra de la sección de tu SQL Server de RDS -->
+        <div class="col-grade text-muted">{{ alumno.aulaDetalle }}</div>
+
+      </div>
+      } @empty {
+      <!-- Fallback visual por si el docente busca un alumno que no existe en AWS RDS -->
+      <div class="empty-results-fallback">
+        <span style="font-size: 18px; margin-right: 6px;">⚠</span>
+        No se encontraron estudiantes que coincidan con el criterio de búsqueda.
+      </div>
+      }
+
+      <!-- ====================================================================================================
+       🟢 CONTENEDOR DE CONTROLES DE PAGINACIÓN (ESTRUCTURA INTEGRADA EN TU INTERFAZ ORIGINAL)
+      ==================================================================================================== -->
+      <div class="paginacion-container-pure"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid #f1f5f9;">
+
+        <!-- Botón Anterior -->
+        <button type="button" (click)="paginaAnterior()" [disabled]="paginaActual() === 1">
+          Anterior
+        </button>
+
+        <!-- Indicador de Páginas -->
+        <span>
+          Página <strong>{{ paginaActual() }}</strong> de <strong>{{ obtenerTotalPaginas() }}</strong>
+        </span>
+
+        <!-- Botón Siguiente -->
+        <button type="button" (click)="paginaSiguiente()" [disabled]="paginaActual() === obtenerTotalPaginas()">
+          Siguiente
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================================================================
+       BLOQUE 2: PANEL DERECHO - APERTURA DE LA BITÁCORA ESCOLAR (INSERT INTO)
+       =================================================================================================================== -->
+  <section class="context-activation-panel">
+
+    <!-- ESCENARIO A: ESTADO DE ESPERA (Cuando no hay ningún alumno cliqueado en la izquierda) -->
+    @if (!estudianteSeleccionado()) {
+    <div class="placeholder-unselected-state">
+      <div class="fallback-graphic-icon">📁</div>
+      <h3>Ficha Escolar sin Inicializar</h3>
+      <p>Por favor, seleccione un estudiante de la lista de la izquierda para abrir el registro de acompañamiento
+        formativo del periodo.</p>
+    </div>
+    }
+
+    <!-- ESCENARIO B: CASO ACTIVO (Se despliega tu formulario original al marcar un alumno) -->
+    @if (estudianteSeleccionado(); as estudiante) {
+    <div class="active-context-wrapper">
+
+      <div class="panel-card-header">
+        <h2>Configuración del Contexto</h2>
+        <p>Registre el periodo de evaluación para congelar el contexto del estudiante</p>
+      </div>
+
+      <!-- Tu Tarjeta Resumen del Alumno Seleccionado -->
+      <div class="selected-student-summary-card">
+        <div class="summary-avatar-circle">🎓</div>
+        <div class="summary-meta-text">
+          <h4>{{ estudiante.nombreCompleto }}</h4>
+          <p>DNI: {{ estudiante.dni }} | {{ estudiante.aulaDetalle }}</p>
+        </div>
+      </div>
+
+      <!-- RECUADRO DE ADVERTENCIAS Y EXCEPCIONES EN CALIENTE (Gatillado por el error 409 Duplicado) -->
+      @if (mensajeError()) {
+      <div
+        style="background-color: #fef2f2; border: 1.5px solid #fecaca; color: #991b1b; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 16px;">❌</span>
+        <div style="font-weight: 500;">{{ mensajeError() }}</div>
+      </div>
+      }
+
+      <!-- Tu Formulario de Acción y Desplegables -->
+      <div class="context-action-form">
+        <div class="dropdown-group">
+          <label for="selBimestre" class="dropdown-field-label">Periodo Escolar Obligatorio</label>
+
+          <select id="selBimestre" formControlName="selBimestre" class="form-dropdown-select"
+            [attr.disabled]="isLoading() || fichaAperturadaExitosamente() ? true : null">
+            <option value="" disabled selected>-- Seleccione el Bimestre Escolar --</option>
+            <option value="Primer Bimestre">Primer Bimestre</option>
+            <option value="Segundo Bimestre">Segundo Bimestre</option>
+            <option value="Tercer Bimestre">Tercer Bimestre</option>
+            <option value="Cuarto Bimestre">Cuarto Bimestre</option>
+          </select>
+
+          <!-- Tu Alerta Mensaje de Error Reactiva del Combo -->
+          @if (contextoForm.controls.selBimestre.invalid && contextoForm.controls.selBimestre.touched) {
+          <span class="dropdown-error-msg">Debe seleccionar un periodo escolar de forma obligatoria.</span>
+          }
+        </div>
+      </div>
+
+      <!-- TU BANNER DE ÉXITO INSTITUCIONAL (Se enciende con el código 201 Created de tu SQL Server) -->
+      @if (fichaAperturadaExitosamente()) {
+      <div class="success-registration-banner" style="margin-top: 24px; margin-bottom: 10px;">
+        <div class="banner-icon-success">✓</div>
+        <div class="banner-body-text">
+          <h5>¡Contexto Registrado y Congelado Exitosamente!</h5>
+          <p>Se ha aperturado la Bitácora Pedagógica en **AWS RDS**. El contexto ya se encuentra consolidado en el
+            almacenamiento local para la carga de evidencias y el progreso cualitativo.</p>
+        </div>
+      </div>
+      }
+
+      <!-- Tu Botonera Inferior Completa con tus Estilos de Botones -->
+      <div class="context-panel-actions-row">
+        <button type="button" class="btn-cancel-context" (click)="limpiarFicha()"
+          [attr.disabled]="isLoading() ? true : null">
+          Cancelar
+        </button>
+
+        <!-- Ocultamos el botón de confirmación únicamente si ya se guardó con éxito en RDS -->
+        @if (!fichaAperturadaExitosamente()) {
+        <button type="button" class="btn-save-context" (click)="onRegistrarContexto()"
+          [attr.disabled]="isLoading() ? true : null">
+          {{ isLoading() ? 'Procesando en AWS...' : 'Abrir Ficha Escolar' }}
+        </button>
+        }
+      </div>
+
+    </div>
+    }
+
+  </section>
+
+</div>

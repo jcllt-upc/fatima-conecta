@@ -1,0 +1,120 @@
+<!-- =====================================================================================================================
+     1. CONTENEDOR ESTRUCTURAL PRINCIPAL DEL ENTORNO PRIVADO (DASHBOARD LAYOUT)
+     ===================================================================================================================== -->
+<div class="dashboard-container">
+
+  <!-- =====================================================================================================================
+       2. PANEL LATERAL DE NAVEGACIÓN FIJO (DASHBOARD SIDEBAR COMPONENT)
+       ===================================================================================================================== -->
+  <aside class="dashboard-sidebar">
+
+    <!-- CONTENEDOR DEL LOGOTIPO INSTITUCIONAL: Alineado a la par mediante Flexbox -->
+    <div class="sidebar-brand-box">
+      <!-- Envolvemos el emoji dentro de la clase brand-icon para poder darle tamaño y márgenes correctos -->
+      <span class="brand-icon">🏫</span>
+      <h2 class="brand-title">FÁTIMA DIGITAL</h2>
+    </div>
+
+    <!-- Renderizamos dinámicamente el nombre del rol del usuario usando el Signal -->
+    <div class="user-role-container">
+      <span class="user-role-tag">{{ currentUserRole() }}</span>
+    </div>
+
+    <!-- MENÚ DE ENLACES DINÁMICOS BASADO EN ROLES REALES DE AWS RDS -->
+    <nav class="sidebar-menu-links">
+
+      <!-- ENLACE DE BIENVENIDA UNIVERSAL: Visible para todos los usuarios autenticados sin importar su rol -->
+      <a routerLink="/dashboard" routerLinkActive="active-menu" [routerLinkActiveOptions]="{exact: true}">
+        <i class="menu-icon glyphicon glyphicon-home"></i> Inicio
+      </a>
+
+  <!-- ====================================================================================================
+     MÓDULO DEL PROFESOR: SE ACTIVA ÚNICAMENTE SI EL ROL PROVENIENTE DE AWS RDS ES 'Docente'
+==================================================================================================== -->
+<!-- La nueva directiva estructural @if de Angular evalúa en tiempo real tu Signal reactivo 'currentUserRole()' -->
+@if (currentUserRole() === 'Docente') {
+    <!-- Etiqueta agrupadora de sección cualitativa -->
+    <div class="menu-group-label">Gestión Académica (MP02)</div>
+
+    <!-- Subproceso P02.1: Panel de Búsqueda y Congelado de Contexto Pedagógico -->
+    <a routerLink="/dashboard/contexto-estudiante" routerLinkActive="active-menu">
+        <i class="menu-icon glyphicon glyphicon-user"></i> Contexto del Estudiante
+    </a>
+
+    <!-- Subproceso P02.2: Dropzone Advanced y Almacenamiento de Archivos Binarios en AWS S3 -->
+    <a routerLink="/dashboard/registro-evidencias" routerLinkActive="active-menu">
+        <i class="menu-icon glyphicon glyphicon-folder-open"></i> Registro de Evidencias
+    </a>
+
+    <!-- Subproceso P02.3: Redacción Cualitativa de Logros y Dificultades con Contadores Vivos -->
+    <a routerLink="/dashboard/evaluacion-progreso" routerLinkActive="active-menu">
+        <i class="menu-icon glyphicon glyphicon-edit"></i> Evaluación y Progreso
+    </a>
+
+    <!-- Subproceso P02.4: Emisión de Recomendaciones y Sello Final del Informe del Bimestre -->
+    <a routerLink="/dashboard/retroalimentacion" routerLinkActive="active-menu">
+        <i class="menu-icon glyphicon glyphicon-ok-sign"></i> Retroalimentación
+    </a>
+}
+
+      <!-- =================================================================================================================
+           MÓDULO DEL APODERADO: SE ACTIVA ÚNICAMENTE SI EL ROL PROVENIENTE DE AWS RDS ES 'Padre de Familia'
+           ================================================================================================================= -->
+      @if (currentUserRole() === 'Padre de Familia') {
+      <!-- Etiqueta agrupadora del Portal Familiar de Solo Lectura -->
+      <div class="menu-group-label">Portal de Familia (MP02)</div>
+
+      <!-- Subproceso P02.5: Reporte o Boleta Cualitativa de Libre Consulta para los Padres -->
+      <a routerLink="/dashboard/consulta-progreso" routerLinkActive="active-menu">
+        <i class="menu-icon report-eye"></i> Consulta del Progreso
+      </a>
+      }
+
+      <!-- =================================================================================================================
+           MÓDULO DEL ADMINISTRADOR: SE ACTIVA ÚNICAMENTE SI EL ROL PROVENIENTE DE AWS RDS ES 'Director'
+           ================================================================================================================= -->
+      @if (currentUserRole() === 'Director') {
+      <!-- Etiqueta agrupadora de privilegios globales del sistema escolar -->
+      <div class="menu-group-label">Administración General</div>
+
+      <!-- Gestión de Cuentas de Usuarios de la Institución -->
+      <a routerLink="/dashboard/usuarios" routerLinkActive="active-menu">
+        <i class="menu-icon users-control"></i> Control de Usuarios
+      </a>
+
+      <!-- Asignación de Roles de Base de Datos y Permisos de Acceso -->
+      <a routerLink="/dashboard/roles-permisos" routerLinkActive="active-menu">
+        <i class="menu-icon shield-lock"></i> Roles y Permisos
+      </a>
+
+      <!-- Acceso Exclusivo al Nuevo Mantenedor de Alumnos -->
+      <a routerLink="/dashboard/mantenimiento-estudiantes" routerLinkActive="active-menu">
+         <i class="menu-icon shield-lock"></i>Gestión de Estudiantes
+      </a>
+      }
+
+    </nav>
+
+    <!-- =================================================================================================================
+         3. SECCIÓN INFERIOR FIJA: BOTÓN DE CIERRE DE SESIÓN SEGURO Y ATÓMICO (UX/UI PREMIUM)
+         ================================================================================================================= -->
+    <div class="sidebar-footer">
+      <!-- El evento vinculante (click) ejecuta tu método logout() corregido en el controlador TypeScript.
+           Garantiza el barrido masivo e inmediato del 100% de los tokens de Amazon y las variables RDS del disco -->
+      <button type="button" class="btn-logout" (click)="logout()">
+        <i class="menu-icon exit"></i> Cerrar Sesión
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- =====================================================================================================================
+       4. LIENZO DERECHO DINÁMICO: COMPONENTE PRINCIPAL DE INYECCIÓN DE PÁGINAS INTERNAS
+       ===================================================================================================================== -->
+  <main class="dashboard-viewport">
+    <!-- El router-outlet es la directiva nativa de Angular que actúa como un puerto de renderizado.
+         Inyectará de forma fluida la pantalla en la que se encuentre navegando el profesor o padre (ej: el Registro de Evidencias) -->
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

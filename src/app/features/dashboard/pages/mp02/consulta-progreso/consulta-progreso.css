@@ -1,0 +1,365 @@
+/* ==========================================================================
+   ESTILOS DE PORTAL DE CONSULTA (P02.5): EXPEDIENTE DIGITAL DE SOLO LECTURA
+   ========================================================================== */
+
+/* Contenedor estructural de la página */
+.consulta-page-layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 25px;
+}
+
+/* ==========================================================================
+   ESTADO 1: COMPUERTA DE BLOQUEO (FALLBACK CUANDO LA FICHA NO ESTÁ PUBLICADA)
+   ========================================================================== */
+.locked-report-fallback-card {
+  background-color: var(--color-white);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  max-width: 550px;
+  margin: 40px auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: fadeInFallback 0.3s ease-out;
+}
+
+.locked-graphic-icon {
+  font-size: 48px;
+  color: #94a3b8;
+}
+
+.locked-report-fallback-card h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+}
+
+.locked-report-fallback-card p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.locked-card-divider {
+  width: 80px;
+  height: 2px;
+  background-color: #e2e8f0;
+  margin: 8px 0;
+}
+
+.locked-footer-help-text {
+  font-size: 12.5px !important;
+  font-style: italic;
+  color: #64748b !important;
+}
+
+.btn-fallback-return-dashboard {
+  margin-top: 10px;
+  background-color: var(--color-secondary-blue);
+  color: var(--color-white);
+  border: none;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-fallback-return-dashboard:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* ==========================================================================
+   ESTADO 2: EXPEDIENTE O BOLETA DIGITAL LIBERADA (REPORTE COMPLETO)
+   ========================================================================== */
+.active-report-full-workspace {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: slideUpReport 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Cabecera Presidencial de Identidad del Reporte */
+.report-identity-header-card {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, #1e3a8a 100%);
+  color: var(--color-white);
+  padding: 24px 30px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-left: 5px solid #f5b700;
+  box-shadow: 0 4px 12px rgba(11, 37, 69, 0.06);
+  margin-bottom: 30px;
+}
+
+.header-student-avatar {
+  width: 52px;
+  height: 52px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.header-meta-text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.report-badge-status-published {
+  background-color: #22c55e; /* Verde brillante de liberación */
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-bottom: 4px;
+}
+
+.header-meta-text-block h2 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.header-meta-text-block p {
+  font-size: 13.5px;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
+
+/* Estructura de los Bloques de Datos por Secciones (A, B, C) */
+.report-data-block-section {
+  width: 100%;
+}
+
+.section-block-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.section-numeric-badge {
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.section-block-title-row h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Grilla de dos columnas para los contenedores cualitativos de texto */
+.qualitative-content-two-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* Tarjeta contenedora de visualización de textos */
+.qualitative-viewer-card {
+  background-color: var(--color-white);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+}
+
+.qualitative-viewer-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Estilos de bordes superiores de colores para diferenciar las tarjetas pedagógicas */
+.card-style-logros { border-top: 4px solid #22c55e; }        /* Verde Logros */
+.card-style-dificultades { border-top: 4px solid #ef4444; }   /* Rojo Dificultades */
+.card-style-recomendaciones { border-top: 4px solid #3b82f6; }/* Azul Recomendaciones */
+.card-style-compromisos { border-top: 4px solid #f5b700; }   /* Amarillo Compromisos */
+
+.viewer-text-content-paragraph {
+  font-size: 14px;
+  color: var(--color-text-dark);
+  line-height: 1.6;
+  white-space: pre-wrap; /* Respeta los saltos de línea realizados por el profesor */
+}
+
+/* ==========================================================================
+   SECCIÓN C: ESTILOS DE LA GALERÍA MULTIMEDIA DEL PADRE DE FAMILIA
+   ========================================================================== */
+.family-evidence-viewer-card {
+  background-color: var(--color-white);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.empty-evidence-message-text {
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.evidence-instruction-text {
+  font-size: 14px;
+  color: var(--color-text-dark);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* Contenedor vertical de filas de archivos */
+.family-downloadable-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+}
+
+/* Fila individual del archivo descargable */
+.downloadable-file-item-row {
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: rgba(244, 245, 247, 0.3);
+  transition: all 0.2s ease;
+}
+
+.downloadable-file-item-row:hover {
+  border-color: #94a3b8;
+  background-color: var(--color-white);
+}
+
+.file-type-icon-indicator {
+  font-size: 22px;
+  width: 38px;
+  height: 38px;
+  background-color: rgba(148, 163, 184, 0.12);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icono condicionado para PDFs en color rojo pastel */
+.file-type-icon-indicator.pdf-color {
+  background-color: #fef2f2;
+}
+
+.file-item-meta-text {
+  flex-grow: 1;
+}
+
+.file-item-meta-text h5 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.file-item-extension-tag {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 1px;
+  display: block;
+}
+
+/* Enlace simulado interactivo de descarga */
+.btn-simulated-download-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-secondary-blue);
+  background-color: rgba(19, 70, 175, 0.06);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-simulated-download-link:hover {
+  background-color: var(--color-secondary-blue);
+  color: var(--color-white);
+}
+
+/* Botonera inferior del portal */
+.family-portal-footer-actions-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-family-back-dashboard {
+  background-color: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid #cbd5e1;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-family-back-dashboard:hover {
+  background-color: var(--color-white);
+  color: var(--color-primary-dark);
+  border-color: #94a3b8;
+}
+
+/* ==========================================================================
+   ANIMACIONES NATIVAS DE TRANSICIÓN
+   ========================================================================== */
+@keyframes fadeInFallback {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUpReport {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   DISEÑO ADAPTABLE (RESPONSIVE)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .qualitative-content-two-columns-grid {
+    grid-template-columns: 1fr; /* En celulares colapsa a una sola columna vertical */
+  }
+  .report-identity-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+}

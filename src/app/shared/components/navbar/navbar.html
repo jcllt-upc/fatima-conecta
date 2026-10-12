@@ -1,0 +1,40 @@
+<header class="navbar-container">
+  <!-- Contenedor del Logotipo e Identidad Visual del Colegio -->
+  <!-- Al hacer clic en el logo, redirige instantáneamente al inicio del sitio público -->
+  <div class="navbar-logo-section" routerLink="/home">
+    <!-- El escudo de la institución se simula con un contenedor geométrico estilizado en CSS -->
+    <div class="logo-shield">M</div>
+    <div class="logo-text">
+      <span class="title-main">FÁTIMA DIGITAL 2035</span>
+      <span class="subtitle-sub">Ecosistema Digital Institucional</span>
+    </div>
+  </div>
+
+  <!-- Menú de Navegación Central (Páginas Informativas Generales) -->
+  <nav class="navbar-links">
+    <!-- RouterLink: Al hacer clic, intercepta el evento del navegador para simular una transición instantánea entre pantallas. -->
+    <!--             Mantiene intacto el estado global de la aplicación (los datos hardcodeados en memoria) al evitar la recarga destructiva de la pestaña. -->
+    <!--             Proporciona una navegación fluida tipo Single Page Application (SPA), donde el cambio de interfaz se siente inmediato para el usuario. -->
+    <!-- 'routerLinkActive' añadirá automáticamente la clase CSS 'active-link' cuando estemos en esa página -->
+    <!--                    Comportamiento de RouterLinkActive: Actúa como un sensor visual que ilumina o resalta la pestaña del menú según la página donde navega el usuario. -->
+    <!--                    Modifica el diseño estético en tiempo real aplicando la clase CSS decorativa sin requerir código JavaScript de manipulación del DOM. -->
+    <!--                    El parámetro {exact:true} restringe este resaltado visual a la URL exacta, evitando confusiones estéticas en los menús principales. -->
+    <!-- '[routerLinkActiveOptions]="{exact: true}"' evita que el menú 'Inicio' se quede prendido cuando entramos a otras sub-rutas -->
+    <a routerLink="/home" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+    <a routerLink="/noticias" routerLinkActive="active-link">Noticias</a>
+    <a routerLink="/institucion" routerLinkActive="active-link">Institución</a>
+    <a routerLink="/recursos" routerLinkActive="active-link">Recursos</a>
+    <a routerLink="/innovacion" routerLinkActive="active-link">Innovación</a>
+    <a routerLink="/actividades" routerLinkActive="active-link">Actividades</a>
+  </nav>
+
+  <!-- Sección del Botón de Acción Principal para iniciar el flujo de autenticación -->
+  <div class="navbar-actions">
+    <!-- Redirige a la ruta limpia de login que implementaremos más adelante -->
+    <button class="btn-login" routerLink="/login">
+      <!-- Icono de usuario abstracto maquetado con puro CSS nativo -->
+      <span class="user-icon"></span>
+      Ingresar
+    </button>
+  </div>
+</header>

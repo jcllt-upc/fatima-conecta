@@ -1,0 +1,112 @@
+<div class="login-page-container">
+
+  <!-- ==========================================================================
+       COLUMNA IZQUIERDA: BLOQUE VISUAL INSTITUCIONAL (OCUPARÁ EL 50% EN ESCRITORIO)
+       ========================================================================== -->
+  <aside class="login-visual-column">
+    <div class="visual-overlay"></div>
+    <div class="visual-content">
+      <!-- Escudo del colegio maquetado en HTML/CSS -->
+      <div class="visual-shield">M</div>
+      <h1 class="visual-title">FÁTIMA DIGITAL 2035</h1>
+      <p class="visual-subtitle">Ecosistema Digital Institucional</p>
+      <div class="visual-divider"></div>
+      <p class="visual-welcome-text">Bienvenido al portal de autenticación centralizado. Inicie sesión para acceder a su
+        panel de gestión académica y seguimiento formativo.</p>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       COLUMNA DERECHA: BLOQUE DEL FORMULARIO DE ACCIÓN (OCUPARÁ EL 50%)
+       ========================================================================== -->
+  <main class="login-form-column">
+    <div class="form-wrapper">
+
+      <!-- Cabecera del Formulario -->
+      <div class="form-header">
+        <h2>Iniciar Sesión</h2>
+        <p>Ingrese sus credenciales de acceso institucional</p>
+      </div>
+
+      <!-- ==========================================================================
+     ZONA DE ALERTA DE ERROR REACTIVA (INTEGRACIÓN CON AWS RDS)
+     ========================================================================== -->
+      <!-- Nueva directiva condicional de Angular 22: se dibuja en el navegador 
+     únicamente si el Signal 'mensajeError' captura un fallo del servidor -->
+      @if (mensajeError()) {
+      <div class="inline-error-login-toast">
+        <span class="toast-error-circle-icon">⚠</span>
+        <div class="toast-error-message-body">
+          <strong>Error de ingreso:</strong> {{ mensajeError() }}
+        </div>
+      </div>
+      }
+
+      <!-- Formulario enlazado con la directiva lógica [formGroup] de tu archivo TypeScript -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+
+        <!-- ✉️ GRUPO INPUT: CORREO ELECTRÓNICO -->
+        <div class="input-group">
+          <div class="input-relative">
+            <!-- formControlName mapea esta caja directamente con el validador estricto de Angular -->
+            <input type="email" id="email" formControlName="email" placeholder=" " autocomplete="username"
+              class="form-input" />
+            <!-- El placeholder en espacio en blanco " " es un truco de CSS puro para activar la etiqueta flotante -->
+            <label for="email" class="form-label">Correo Electrónico</label>
+          </div>
+
+          <!-- Mensaje de Error Reactivo usando el nuevo flujo @if de Angular -->
+          <!-- Se muestra solo si el campo es inválido Y el usuario ya interactuó con la caja (invalid && touched) -->
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <span class="input-error-msg">Por favor, ingrese un correo institucional válido.</span>
+          }
+        </div>
+
+        <!-- 🔑 GRUPO INPUT: CONTRASEÑA -->
+        <div class="input-group">
+          <div class="input-relative">
+            <!-- Tipo de input dinámico: lee el Signal 'isPasswordVisible()'. Si es true es 'text', si es false es 'password' -->
+            <input [type]="isPasswordVisible() ? 'text' : 'password'" id="password" formControlName="password"
+              placeholder=" " autocomplete="current-password" class="form-input" />
+            <label for="password" class="form-label">Contraseña</label>
+
+            <!-- Botón interactivo (Ojo) para mostrar/ocultar texto, gatilla tu método con Signal -->
+            <button type="button" class="btn-toggle-password" (click)="togglePasswordVisibility()"
+              title="Alternar visibilidad">
+              <!-- Icono del ojo cambia dinámicamente según el estado del Signal -->
+              <span class="eye-icon" [class.slashed]="!isPasswordVisible()"></span>
+            </button>
+          </div>
+
+          <!-- Mensaje de Error Reactivo para la contraseña -->
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <span class="input-error-msg">La contraseña es obligatoria y debe tener mínimo 6 caracteres.</span>
+          }
+        </div>
+
+        <!-- Enlaces de soporte de usuario (Recuperación de acceso) -->
+        <div class="form-options">
+          <a class="link-forgot-password">¿Olvidó su contraseña?</a>
+        </div>
+
+        <!-- 🚀 BOTÓN DE ACCIÓN PRINCIPAL -->
+        <!-- Se deshabilita lógicamente si el formulario es inválido O si el Signal isLoading() está activo -->
+        <button type="submit" class="btn-submit-login" [disabled]="loginForm.invalid || isLoading()">
+          <!-- Intercambio de texto reactivo mediante tu Signal de carga -->
+          @if (isLoading()) {
+          <span class="spinner-text">Validando credenciales...</span>
+          } @else {
+          <span>Ingresar al Sistema</span>
+          }
+        </button>
+
+        <!-- Botón secundario para regresar al sitio público informativo sin loguearse -->
+        <div class="form-footer-actions">
+          <a routerLink="/home" class="btn-back-home">← Regresar a la página de inicio</a>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+</div>

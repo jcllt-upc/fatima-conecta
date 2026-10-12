@@ -1,0 +1,80 @@
+/* Distribución horizontal del Footer usando Flexbox con fondo azul oscuro */
+.footer-container {
+  background-color: var(--color-primary-dark); /* Lee la variable global azul oscuro */
+  color: var(--color-white);
+  padding: 30px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 4px solid #f5b700; /* Línea superior dorada decorativa */
+  flex-wrap: wrap; /* Permite que los elementos bajen ordenadamente en pantallas chicas */
+  gap: 20px;
+}
+
+/* Bloque del escudo y ubicación */
+.footer-logo-block {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-shield {
+  border: 2px solid #f5b700;
+  color: #f5b700;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 6px;
+}
+
+.footer-school-name h4 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.footer-school-name p {
+  font-size: 12px;
+  color: #93a3b1; /* Color grisáceo claro para contraste secundario */
+  margin-top: 2px;
+}
+
+/* Lema Central */
+.motto-text {
+  font-style: italic;
+  font-size: 15px;
+  color: #e2e8f0;
+  letter-spacing: 0.5px;
+}
+
+/* Sección de Pilares */
+.footer-pillars-section {
+  display: flex;
+  gap: 20px;
+}
+
+.pillar-item {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e2e8f0;
+}
+
+/* Iconos de círculos de colores hechos con CSS nativo puro */
+.dot-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Colores específicos para cada pilar del ecosistema */
+.dot-icon.education { background-color: #f5a623; }     /* Naranja */
+.dot-icon.trust { background-color: #4a90e2; }         /* Azul claro */
+.dot-icon.innovation { background-color: #50e3c2; }    /* Menta */
+.dot-icon.collaboration { background-color: #b8e986; } /* Verde manzana */

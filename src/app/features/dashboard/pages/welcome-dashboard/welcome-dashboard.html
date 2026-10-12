@@ -1,0 +1,103 @@
+<!-- CONTENEDOR MAESTRO GLOBAL: Define la caja principal que confina toda la interfaz del tablero de bienvenida interno -->
+<div class="welcome-container">
+
+  <!-- Cabecera del Tablero de Control -->
+  <!-- CABECERA DEL TABLERO DE CONTROL (PERSISTENTE): Sección estática que da la bienvenida transversal a cualquier usuario autenticado -->
+  <header class="welcome-header-card">
+    <h1 class="welcome-main-title">¡Bienvenido al Panel de Control de Fátima Digital!</h1>
+    <p class="welcome-main-subtitle">Ecosistema Digital Institucional de la I.E. N.° 20395 "Nuestra Señora de Fátima"</p>
+    <!-- Línea decorativa de acento visual para delimitar la cabecera del contenido dinámico inferior -->
+    <div class="title-accent-bar"></div>
+  </header>
+
+  <!-- ==========================================================================
+       VISTA EXCLUSIVA DEL ROL: DOCENTE
+       ========================================================================== -->
+  <!-- BLOQUE CONDICIONAL NATIVO ANGULAR (@if): Evalúa síncronamente la Signal reactiva 'currentRole()'. -->
+  <!-- Si el valor en memoria coincide exactamente con el string 'Docente', compila y renderiza físicamente en el DOM todo el bloque inferior. -->
+  @if (currentRole() === 'Docente') {
+    <!-- SECCIÓN DE INTRODUCCIÓN CONTEXTUAL: Identifica el alcance normativo y el propósito pedagógico asignado al profesor -->
+    <section class="role-intro-section">
+      <h2 class="role-section-title">Módulos de Gestión Académica y Acompañamiento (MP02)</h2>
+      <p class="role-section-desc">Seleccione una de las siguientes tarjetas funcionales para iniciar las actividades de seguimiento pedagógico:</p>
+    </section>
+
+    <!-- Grilla de Tarjetas tipo Caja Cuadrada -->
+    <!-- GRILLA OPERATIVA CENTRAL: Contenedor flexible tipo Grid que distribuye simétricamente los accesos rápidos del profesor -->
+    <div class="dashboard-cards-grid">
+      
+      <!-- TARJETA 1: CONTEXTO DEL ESTUDIANTE (SUBPROCESO P02.1) -->
+      <!-- routerLink="/dashboard/contexto-estudiante" intercepta el clic para viajar al buscador interno sin recargar el navegador -->
+      <article class="box-card" routerLink="/dashboard/contexto-estudiante">
+        <div class="card-icon-box">📁</div>
+        <div class="card-info">
+          <h3>Contexto del Estudiante</h3>
+          <p>Apertura del registro formativo cualitativo. Permite buscar al alumno y seleccionar el periodo escolar para iniciar el acompañamiento.</p>
+        </div>
+      </article>
+
+      <!-- TARJETA 2: REGISTRO DE EVIDENCIAS (SUBPROCESO P02.2) -->
+      <!-- Redirige dinámicamente al módulo encargado de adjuntar los respaldos físicos y multimedias de las sesiones del aula -->
+      <article class="box-card" routerLink="/dashboard/registro-evidencias">
+        <!-- Caja contenedora que renderiza de manera independiente el icono representativo de un folder o perfil escolar -->
+        <div class="card-icon-box">➕</div>
+        <div class="card-info">
+          <h3>Registro de Evidencias</h3>
+          <p>Sustente documental y visual de los avances del aula. Adjunte fotografías, videos o archivos PDF que evidencien logros o dificultades.</p>
+        </div>
+      </article>
+
+      <!-- TARJETA 3: EVALUACIÓN Y PROGRESO (SUBPROCESO P02.3) -->
+      <!-- Enlace programático enfocado en la apertura de la bitácora cualitativa donde se redactan narrativamente los logros detectados -->
+      <article class="box-card" routerLink="/dashboard/evaluacion-progreso">
+        <div class="card-icon-box">📝</div>
+        <div class="card-info">
+          <h3>Evaluación y Progreso</h3>
+          <p>Módulo de redacción cualitativa. Registre de forma descriptiva los logros alcanzados y los puntos de mejora detectados en el progreso.</p>
+        </div>
+      </article>
+
+      <!-- TARJETA 4: RETROALIMENTACIÓN (SUBPROCESO P02.4) -->
+      <!-- Conecta instantáneamente con el formulario diseñado para la emisión de compromisos orientados al entorno familiar del alumno -->
+      <article class="box-card" routerLink="/dashboard/retroalimentacion">
+        <div class="card-icon-box">💬</div>
+        <div class="card-info">
+          <h3>Retroalimentación</h3>
+          <p>Emisión de recomendaciones y compromisos personalizados orientados a fortalecer el apoyo formativo desde el entorno familiar.</p>
+        </div>
+      </article>
+
+    </div><!-- Cierre de la grilla de tarjetas del docente -->
+  }
+
+  <!-- ==========================================================================
+       VISTA EXCLUSIVA DEL ROL: PADRE DE FAMILIA
+       ========================================================================== -->
+  <!-- PROTECCIÓN Y DISCRIMINACIÓN LÓGICA: Evalúa si la Signal mutó al estado de 'Padre de Familia'. -->
+  <!-- Si el usuario activo es un Profesor, esta condición resulta falsa. Angular omite radicalmente la compilación de este bloque en el DOM, -->
+  <!-- garantizando de forma estricta que el docente jamás visualice ni interactúe con los accesos restringidos de la familia. -->
+  @if (currentRole() === 'Padre de Familia') {
+    <!-- SECCIÓN INTRODUCTORIA FAMILIAR: Mensaje de bienvenida contextualizado al entorno del apoderado o tutor legal -->
+    <section class="role-intro-section">
+      <h2 class="role-section-title">Portal de Acompañamiento Familiar (MP02)</h2>
+      <p class="role-section-desc">Bienvenido al espacio de consulta. Revise el avance escolar de sus hijos en la institución:</p>
+    </section>
+
+    <!-- GRILLA ADAPTATIVA CON ESTILO DE CENTRADO CARDINAL: Aplica una clase especial 'single-card-center' para posicionar estéticamente una 
+         única tarjeta -->
+    <div class="dashboard-cards-grid single-card-center">
+      
+      <!-- Tarjeta Única del Padre -->
+      <!-- TARJETA ÚNICA DEL PADRE (SUBPROCESO P02.5): Diseñada con formato extendido horizontal 'family-card-wide' para jerarquizar la consulta -->
+      <article class="box-card family-card-wide" routerLink="/dashboard/consulta-progreso">
+        <div class="card-icon-box">👪</div>
+        <div class="card-info">
+          <h3>Consulta del Progreso</h3>
+          <p>Visualice de forma permanente el historial cronológico de observaciones cualitativas, evidencias multimedia y recomendaciones emitidas exclusivamente para sus hijos.</p>
+        </div>
+      </article>
+
+    </div><!-- Cierre de la grilla familiar -->
+  }
+
+</div><!-- Cierre del contenedor maestro welcome-container -->

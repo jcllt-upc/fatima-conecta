@@ -1,0 +1,251 @@
+/* ==========================================================================
+   ESTILOS DEL DASHBOARD LAYOUT: INTERFAZ PRIVADA DE CONTROL CON SIDEBAR FIJO
+   ========================================================================== */
+
+/* 1. CONTENEDOR ESTRUCTURAL: Ocupa toda la pantalla y distribuye con Flexbox */
+.dashboard-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Evita que la pantalla completa sufra scrolls molestos */
+  background-color: var(--color-background-light); /* Fondo plomo claro para las hojas */
+}
+
+/* ==========================================================================
+   SIDEBAR: MENÚ LATERAL IZQUIERDO FIJO
+   ========================================================================== */
+.dashboard-sidebar {
+  width: 280px; /* Ancho fijo óptimo para el menú de control */
+  min-width: 280px;
+  height: 100%;
+  background-color: var(--color-primary-dark); /* Fondo azul marino profundo institucional */
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Empuja el footer del menú hacia el fondo */
+  border-right: 4px solid #f5b700; /* Línea dorada de separación institucional */
+}
+
+/* Cabecera de Identidad dentro del Menú */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-shield {
+  background-color: #f5b700;
+  color: var(--color-primary-dark);
+  font-weight: 800;
+  font-size: 18px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.sidebar-branding h3 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Etiqueta dinámica del Rol (Dibuja el tag amarillo/azul según el rol) */
+.user-role-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f5b700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   ENLACES Y CATEGORÍAS DEL MENÚ DE ACCESO
+   ========================================================================== */
+.sidebar-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 12px;
+  flex-grow: 1; /* Permite que esta zona tome el espacio central sobrante */
+  overflow-y: auto; /* Habilita scroll interno si los compañeros añaden más opciones */
+}
+
+/* Separadores de Macroproceso (MP) */
+.menu-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8; /* Gris azulado discreto */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  padding-left: 12px;
+}
+
+/* Enlaces individuales del menú */
+.sidebar-menu-links a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #cbd5e1; /* Color gris claro por defecto */
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* Comportamiento Hover: Iluminación sutil */
+.sidebar-menu-links a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-white);
+}
+
+/* ESTADO DE MENÚ SELECCIONADO: Resaltado en azul eléctrico vibrante (HU06) */
+.sidebar-menu-links a.active-menu {
+  background-color: var(--color-secondary-blue);
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   ICONOS ABSTRACTOS EN CSS 3 PURO (SIN LIBRERÍAS EXTERNAS)
+   ========================================================================== */
+.menu-icon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor; /* Toma automáticamente el color del texto del enlace */
+  display: inline-block;
+  position: relative;
+  border-radius: 3px;
+}
+
+/* Variaciones geométricas sencillas para cada opción del profesor */
+.menu-icon.profile { border-radius: 50%; }
+.menu-icon.evidence::after {
+  content: '+';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: bold;
+}
+.menu-icon.assessment::after {
+  content: '';
+  position: absolute;
+  width: 6px; height: 6px;
+  background-color: currentColor;
+  left: 3px; bottom: 3px;
+}
+.menu-icon.feedback { border-style: dashed; }
+.menu-icon.exit { border-color: #f87171; } /* Icono de salida condicionado en tono rojo */
+
+/* Icono geométrico abstracto de una casa (Home) en CSS puro */
+.menu-icon.home::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  width: 0;
+  height: 0;
+  /* Dibuja un triángulo simulando el techo de la casa */
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid currentColor;
+}
+
+
+/* ==========================================================================
+   FOOTER DEL MENÚ: BOTÓN DE CERRAR SESIÓN
+   ========================================================================== */
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-logout {
+  width: 100%;
+  background: none;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171; /* Texto en tono rojo de alerta suave */
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.25s ease;
+}
+
+.btn-logout:hover {
+  background-color: rgba(248, 113, 113, 0.1);
+  border-color: #f87171;
+}
+
+/* ==========================================================================
+   ÁREA DE TRABAJO (MAIN VIEWPORT): ZONA DERECHA DE PÁGINAS DINÁMICAS
+   ========================================================================== */
+.dashboard-viewport {
+  flex-grow: 1; /* Toma de forma automática todo el ancho sobrante del escritorio */
+  height: 100%;
+  overflow-y: auto; /* Si el formulario es largo, solo esta columna tendrá scroll */
+  padding: 40px; /* Margen interno cómodo para renderizar las hojas de los subprocesos */
+}
+
+
+
+/* Contenedor principal del Logotipo (Ajustado para centrar horizontalmente) */
+.sidebar-brand-box {
+  display: flex;             /* Activa el motor de flexbox horizontal */
+  align-items: center;       /* Alinea el icono y el texto al centro vertical */
+  justify-content: center;   /* ¡NUEVO!: Centra el icono y el título de forma horizontal */
+  gap: 10px;                 /* Mantiene la separación de 10px entre la casita y el título */
+  padding: 15px 0;           /* Le da un poco más de aire superior e inferior para estilizarlo */
+  width: 100%;               /* Ocupa todo el ancho disponible del sidebar para calcular el centro */
+}
+/* Ajustes específicos para el icono de la escuela */
+.brand-icon {
+  font-size: 24px;           /* Tamaño idóneo para que resalte sin romper la grilla */
+  line-height: 1;            /* Evita espacios fantasmas arriba o abajo del emoji */
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Ajustes específicos para el título principal */
+.brand-title {
+  font-size: 19px;           /* Tamaño corporativo legible */
+  font-weight: 800;          /* Letra imponente y gruesa */
+  color: #ffffff;            /* Blanco puro institucional */
+  margin: 0;                 /* Resetea los márgenes por defecto del <h3> que empujaban la caja hacia abajo */
+  white-space: nowrap;       /* Evita que el título se rompa en dos renglones */
+}
+
+/* Contenedor del Rol (Ajustado para darle sangría o desplazamiento a la derecha) */
+.user-role-container {
+  margin-top: 12px;          /* Le da una separación elegante abajo del logotipo centrado */
+  margin-bottom: 24px;       /* Separa el rol del inicio de los botones del menú */
+  width: 100%;               /* Asegura que la caja abarque el ancho para aplicar el margen */
+  padding-left: 24px;        /* ¡NUEVO!: Desplaza el texto exactamente 24px a la derecha */
+  box-sizing: border-box;    /* Evita que el padding estire el ancho total del menú lateral */
+}
+
+/* Estilos de la etiqueta de texto del Rol */
+.user-role-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #f5b700;            /* Mantiene tu color dorado institucional académico */
+  text-transform: uppercase;
+  letter-spacing: 0.8px;     /* Separa ligeramente las letras para mejorar la legibilidad */
+  display: block;            /* Convierte la etiqueta en bloque para respetar el alineado izquierdo + padding */
+}

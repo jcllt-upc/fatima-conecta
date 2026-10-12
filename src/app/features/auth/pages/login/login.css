@@ -1,0 +1,387 @@
+/* ==========================================================================
+   ESTILOS DE LA PÁGINA DE LOGIN: PATRÓN DE DOBLE COLUMNA Y ETIQUETAS FLOTANTES
+   ========================================================================== */
+
+/* 1. CONTENEDOR PRINCIPAL: Ocupa el 100% de la pantalla sin scroll */
+.login-page-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-background-light);
+}
+
+/* ==========================================================================
+   COLUMNA IZQUIERDA: DISEÑO VISUAL INSTITUCIONAL
+   ========================================================================== */
+.login-visual-column {
+  position: relative;
+  width: 50%; /* Ocupa exactamente la mitad de la pantalla */
+  height: 100%;
+  background-image: url('https://unsplash.com');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* Filtro oscuro superpuesto para garantizar el contraste de los textos blancos */
+.visual-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(11, 37, 69, 0.95) 0%, rgba(19, 64, 116, 0.8) 100%);
+  z-index: 1;
+}
+
+/* Bloque interno del texto informativo del colegio */
+.visual-content {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+  color: var(--color-white);
+  text-align: center;
+}
+
+.visual-shield {
+  background-color: transparent;
+  color: #f5b700;
+  font-weight: 800;
+  font-size: 32px;
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 3px solid #f5b700;
+  margin: 0 auto 20px auto;
+}
+
+.visual-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+.visual-subtitle {
+  font-size: 14px;
+  color: #93a3b1;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.visual-divider {
+  width: 60px;
+  height: 4px;
+  background-color: #f5b700;
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+.visual-welcome-text {
+  font-size: 15px;
+  color: #e2e8f0;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   COLUMNA DERECHA: SECCIÓN DEL FORMULARIO DE ACCIÓN
+   ========================================================================== */
+.login-form-column {
+  width: 50%; /* Ocupa la otra mitad de la pantalla */
+  height: 100%;
+  background-color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 380px; /* Tamaño ideal y compacto para no abrumar al usuario */
+}
+
+.form-header {
+  margin-bottom: 35px;
+}
+
+.form-header h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+}
+
+.form-header p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* Estructura vertical del formulario */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-relative {
+  position: relative;
+  width: 100%;
+}
+
+/* ==========================================================================
+   PATRÓN DE DISEÑO: INPUT CON ETIQUETA FLOTANTE (FLOATING LABELS)
+   ========================================================================== */
+.form-input {
+  width: 100%;
+  padding: 16px;
+  font-size: 15px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: transparent;
+  outline: none;
+  color: var(--color-text-dark);
+  transition: all 0.25s ease;
+}
+
+/* Posicionamiento inicial de la etiqueta flotante dentro del input */
+.form-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #64748b;
+  pointer-events: none; /* Evita que la etiqueta interfiera con los clics del mouse */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--color-white);
+  padding: 0 4px;
+}
+
+/* ACCIÓN DE LA ETIQUETA: Si la caja está en foco (:focus) O no está vacía (:not(:placeholder-shown))
+   se encoge, cambia de color y sube flotando al borde superior */
+.form-input:focus ~ .form-label,
+.form-input:not(:placeholder-shown) ~ .form-label {
+  top: 0;
+  font-size: 12px;
+  color: var(--color-secondary-blue);
+  font-weight: 600;
+}
+
+/* ESTADO DE FOCO DEL INPUT: Borde azul institucional vibrante */
+.form-input:focus {
+  border-color: var(--color-secondary-blue);
+  box-shadow: 0 0 0 4px rgba(19, 70, 175, 0.1);
+}
+
+/* ==========================================================================
+   VALIDACIONES EN TIEMPO REAL CON CLASES NATIVAS DE ANGULAR
+   ========================================================================== */
+
+/* ESTADO INVÁLIDO: Captura las clases que inyecta Angular cuando el campo está mal tocado */
+.form-input.ng-invalid.ng-touched {
+  border-color: #ef4444 !important; /* Rojo de alerta */
+}
+
+/* Si el campo está inválido y tocado, forzamos a que la etiqueta de texto flote también en rojo */
+.form-input.ng-invalid.ng-touched ~ .form-label {
+  color: #ef4444 !important;
+}
+
+/* Texto de error explícito debajo del input */
+.input-error-msg {
+  font-size: 12px;
+  color: #ef4444;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* ==========================================================================
+   INTERFAZ DE CONTRASEÑA: BOTÓN INTERACTIVO DEL OJO (CSS PURO)
+   ========================================================================== */
+.btn-toggle-password {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-icon {
+  width: 18px;
+  height: 12px;
+  border: 2px solid #64748b;
+  border-radius: 50% 50%;
+  position: relative;
+}
+
+.eye-icon::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: #64748b;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Línea diagonal que tacha el ojo cuando la contraseña está oculta */
+.eye-icon.slashed::before {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 2px;
+  background-color: #64748b;
+  transform: rotate(45deg);
+  left: -4px;
+  top: 3px;
+}
+
+/* Opciones extras: Link de olvido de clave */
+.form-options {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.link-forgot-password {
+  font-size: 13px;
+  color: var(--color-secondary-blue);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.link-forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   BOTÓN SUBMIT DE ACCIÓN Y ENVÍO DEL FORMULARIO
+   ========================================================================== */
+.btn-submit-login {
+  background-color: var(--color-secondary-blue);
+  color: var(--color-white);
+  border: none;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-submit-login:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+/* ESTADO DESHABILITADO: Si Angular bloquea el botón por campos vacíos o en proceso de carga */
+.btn-submit-login:disabled {
+  background-color: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed; /* Cursor de bloqueo de usabilidad */
+}
+
+/* Botón secundario para regresar al Home público */
+.form-footer-actions {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.btn-back-home {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.btn-back-home:hover {
+  color: var(--color-primary-dark);
+}
+
+/* ==========================================================================
+   DISEÑO ADAPTABLE (RESPONSIVE DESIGN): OPTIMIZACIÓN PARA MÓVILES
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* En celulares, la columna visual de la imagen se oculta por completo */
+  .login-visual-column {
+    display: none;
+  }
+  /* El formulario pasa a tomar el 100% de la pantalla del teléfono celular */
+  .login-form-column {
+    width: 100%;
+    padding: 24px;
+  }
+}
+
+/* ==========================================================================
+   ESTILOS DE LA FRANJA ROJA DE ERROR INTEGRADA (AWS LAMBDA ALERTS)
+   ========================================================================== */
+.inline-error-login-toast {
+  background-color: #fef2f2; /* Fondo rojo/rosado ultra suave de advertencia */
+  border: 1.5px solid #fecaca; /* Borde rosa pastel sutil */
+  color: #991b1b; /* Texto guinda oscuro de alta legibilidad para accesibilidad */
+  padding: 14px 18px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.02);
+  /* Llama a la animación de cortina para que aparezca de forma elegante */
+  animation: slideDownError 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.toast-error-circle-icon {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  background-color: #ef4444; /* Círculo rojo brillante para el signo de atención */
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.toast-error-message-body strong {
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+/* ANIMACIÓN NATIVA CSS 3: Efecto de deslizamiento fluido hacia abajo */
+@keyframes slideDownError {
+  from {
+    opacity: 0;
+    transform: translateY(-10px); /* Nace un poco más arriba encogido */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* Se asienta suavemente en su posición real */
+  }
+}

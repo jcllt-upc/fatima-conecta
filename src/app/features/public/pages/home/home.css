@@ -1,0 +1,125 @@
+/* Contenedor del Banner Principal con la Foto de Fondo */
+.home-hero-container {
+  position: relative;
+  width: 100%;
+  height: 520px; /* Altura calculada proporcionalmente al diseño original */
+  background-image: url('https://unsplash.com');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 0 8%;
+}
+
+/* Filtro Oscuro translúcido para asegurar el contraste de la letra blanca (Overlay) */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Gradiente nativo de azul marino a transparente para un acabado profesional */
+  background: linear-gradient(90deg, rgba(11, 37, 69, 0.9) 0%, rgba(19, 64, 116, 0.6) 100%);
+  z-index: 1;
+}
+
+/* Contenedor de Texto posicionado sobre la capa oscura */
+.hero-content-wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  color: var(--color-white); /* Lee la variable global blanca que guardamos en styles.css */
+}
+
+.hero-tagline {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #cbd5e1; /* Gris claro para el tag superior */
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.hero-main-title {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.hero-description {
+  font-size: 16px;
+  color: #f1f5f9;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Distribución de Botones en línea */
+.hero-actions-block {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-hero-solid {
+  background-color: var(--color-secondary-blue); /* Lee nuestro color azul del botón */
+  color: var(--color-white);
+  border: none;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 25px; /* Bordes redondeados del diseño */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-hero-solid:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-hero-outline {
+  background-color: transparent;
+  color: var(--color-white);
+  border: 2px solid var(--color-white);
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-hero-outline:hover {
+  background-color: var(--color-white);
+  color: var(--color-primary-dark);
+}
+
+/* Sección Inferior "Nuestro Ecosistema" */
+.ecosystem-intro-section {
+  padding: 55px 8%;
+  background-color: var(--color-white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.section-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+}
+
+.title-underline {
+  width: 55px;
+  height: 4px;
+  background-color: var(--color-secondary-blue);
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+.section-subtitle-text {
+  font-size: 16px;
+  color: var(--color-text-muted);
+}

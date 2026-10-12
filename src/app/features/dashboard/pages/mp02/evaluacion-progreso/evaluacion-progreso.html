@@ -1,0 +1,141 @@
+<div class="evaluacion-page-layout">
+
+  <!-- ==========================================================================
+     ZONA 1: BANNER INFORMATIVO SUPERIOR (CONTEXTO CONGELADO RECUPERADO DE AWS)
+     ========================================================================== -->
+  <div class="context-sticky-banner">
+    <div class="banner-avatar-icon">🎓</div>
+    <div class="banner-meta-info">
+      <span class="context-small-tag">Contexto de Evaluación Activo (MP02)</span>
+      <h2>Estudiante: {{ nombreEstudiante() }}</h2>
+      <p>Bitácora Pedagógica N.° <strong>{{ idFichaContexto() }}</strong> | Periodo: <strong>{{ bimestreActivo() }}</strong></p>
+    </div>
+  </div>
+
+  <!-- BANNER DE ALERTA DE RED / EXCEPCIONES: Se activa de forma reactiva si falla la Lambda o API Gateway -->
+  @if (mensajeError()) {
+    <div class="textarea-error-msg" style="background-color: #fef2f2; border: 1.5px solid #fecaca; padding: 14px 20px; border-radius: 10px; color: #ef4444; font-weight: 600; margin-bottom: 5px;">
+      ❌ {{ mensajeError() }}
+    </div>
+  }
+
+  <!-- CONDICIONAL CENTRAL: Si no se ha guardado con éxito, pintamos el panel del formulario -->
+  @if (!mostrarExitoEvaluacion()) {
+
+    <!-- ==========================================================================
+       ZONA 2: CARD DEL FORMULARIO DE REDACCIÓN CUALITATIVA DE LOGROS
+       ========================================================================== -->
+    <div class="evaluation-form-card">
+      <div class="panel-card-header">
+        <h3>Evaluación Cualitativa y Seguimiento de Logros</h3>
+        <p>Redacte de forma descriptiva el comportamiento, competencias desarrolladas y metas alcanzadas por el alumno en el aula de clases</p>
+      </div>
+
+      <!-- Vinculamos la directiva nativa al contenedor del formulario reactivo -->
+      <form [formGroup]="evaluacionForm" (ngSubmit)="onGuardarEvaluacion()" class="qualitative-evaluation-form">
+        
+        <!-- Bloque 1: Criterio Cualitativo de Logros -->
+        <div class="textarea-input-group">
+          <label class="textarea-field-label">1. Logros alcanzados por el estudiante:</label>
+          <div class="textarea-relative-container">
+            <textarea 
+              formControlName="txtLogros" 
+              (input)="actualizarContadorLogros()"
+              placeholder="Escriba de forma detallada las metas pedagógicas cumplidas, habilidades destacadas y avances observados..."
+              class="form-textarea-field">
+            </textarea>
+            <!-- Contador vivo con Absolute: cambia a rojo si toca el techo de los 1000 caracteres -->
+            <span class="live-character-counter" [ngClass]="{'counter-limit-reached': conteoLogros() >= MAX_CARACTERES}">
+              {{ conteoLogros() }} / {{ MAX_CARACTERES }}
+            </span>
+          </div>
+          
+          <!-- Mensajes defensivos de validación síncrona en el cliente -->
+          @if (evaluacionForm.controls.txtLogros.invalid && evaluacionForm.controls.txtLogros.touched) {
+            <span class="textarea-error-msg">
+              @if (evaluacionForm.controls.txtLogros.errors?.['required']) {
+                El registro de los logros alcanzados es obligatorio para la bitácora escolar.
+              }
+              @if (evaluacionForm.controls.txtLogros.errors?.['maxlength']) {
+                Ha excedido el límite máximo de {{ MAX_CARACTERES }} caracteres permitidos.
+              }
+            </span>
+          }
+        </div>
+
+        <br><br>
+
+        <!-- Bloque 2: Criterio Cualitativo de Dificultades -->
+        <div class="textarea-input-group">
+          <label class="textarea-field-label">2. Dificultades o puntos de mejora detectados:</label>
+          <div class="textarea-relative-container">
+            <textarea 
+              formControlName="txtDificultades" 
+              (input)="actualizarContadorDificultades()"
+              placeholder="Escriba de forma objetiva los bloqueos de aprendizaje, áreas que requieren reforzamiento o problemas de conducta identificados..."
+              class="form-textarea-field">
+            </textarea>
+            <span class="live-character-counter" [ngClass]="{'counter-limit-reached': conteoDificultades() >= MAX_CARACTERES}">
+              {{ conteoDificultades() }} / {{ MAX_CARACTERES }}
+            </span>
+          </div>
+
+          @if (evaluacionForm.controls.txtDificultades.invalid && evaluacionForm.controls.txtDificultades.touched) {
+            <span class="textarea-error-msg">
+              @if (evaluacionForm.controls.txtDificultades.errors?.['required']) {
+                El registro de las dificultades detectadas es obligatorio para el seguimiento.
+              }
+              @if (evaluacionForm.controls.txtDificultades.errors?.['maxlength']) {
+                Ha excedido el límite máximo de {{ MAX_CARACTERES }} caracteres permitidos.
+              }
+            </span>
+          }
+        </div>
+
+        <br><br>
+
+        <!-- ==========================================================================
+           ZONA 4: BOTONERA DE NAVEGACIÓN COMPUESTA GENERAL (FOOTER ROW)
+           ========================================================================== -->
+        <div class="subprocess-navigation-row">
+          <!-- Botón de retroceso seguro: inhabilitado si el hilo asíncrono está viajando por la red -->
+          <button type="button" class="btn-subprocess-back" routerLink="/dashboard/registro-evidencias" [disabled]="isLoading()">
+            ← Regresar a Evidencias
+          </button>
+          
+          <!-- Botón de disparo: cambia su estado visual y congela eventos mientras procesa la AWS Lambda -->
+          <button type="submit" class="btn-subprocess-save" [disabled]="evaluacionForm.invalid || isLoading()">
+            {{ isLoading() ? 'Guardando en AWS RDS...' : 'Guardar Evaluación y Progreso' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  } @else {
+
+    <!-- ==========================================================================
+       ZONA 3: PÁGINA DE CONFIRMACIÓN DE EVALUACIÓN EXITOSA (PANTALLA CON CLASES CSS PURO)
+       ========================================================================== -->
+    <div class="success-confirmation-screen-block">
+      <div class="fullscreen-success-toast">
+        <div class="fullscreen-toast-check">✓</div>
+        <div class="fullscreen-toast-text">
+          <h3>¡Evaluación cualitativa y progreso registrados exitosamente!</h3>
+          <p>Se ha guardado de forma conforme la redacción descriptiva de logros y puntos de mejora del estudiante en la Bitácora Escolar <strong>N.° {{ idFichaContexto() }}</strong>. Los datos han quedado sellados de manera definitiva en el servidor de base de datos de AWS RDS SQL Server.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta interactiva premium para guiar el avance del flujo académico -->
+      <div class="next-step-action-card">
+        <h4>Siguiente paso del Seguimiento Formativo:</h4>
+        <p>Una vez redactado el diagnóstico del progreso escolar del alumno, proceda al módulo de Retroalimentación para registrar las recomendaciones institucionales y los compromisos obligatorios del entorno familiar.</p>
+        <button type="button" class="btn-proceed-next-subprocess" routerLink="/dashboard/retroalimentacion">
+          Proceder a la Retroalimentación →
+        </button>
+      </div>
+    </div>
+
+  }
+
+</div>
