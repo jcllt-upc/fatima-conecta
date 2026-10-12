@@ -1,0 +1,163 @@
+<!-- =====================================================================================================================
+     1. CONTENEDOR ESTRUCTURAL VERTICAL (MANTIENE TU HOJA DE ESTILOS CSS ORIGINAL)
+     ===================================================================================================================== -->
+<div class="evidencias-page-layout">
+
+  <!-- ===================================================================================================================
+       ZONA 1: BANNER INFORMATIVO SUPERIOR (CONTEXTO CONGELADO) - COMPORTAMIENTO REACTIVO DE TU DISEÑO
+       =================================================================================================================== -->
+  <header class="context-sticky-banner">
+    <div class="banner-avatar-icon">🎓</div>
+    <div class="banner-meta-info">
+      <span class="context-small-tag">Contexto de Evaluación Activo (MP02)</span>
+      <!-- 'nombreEstudiante' se actualiza automáticamente si hay una ficha desonchelada en el OnInit -->
+      <h2>Estudiante: {{ nombreEstudiante() }}</h2>
+      <p>Bitácora Pedagógica N.° <strong>{{ idFichaContexto() }}</strong> | Periodo: <strong>{{ bimestreActivo() }}</strong></p>
+    </div>
+  </header>
+
+  <!-- RECUADRO DE ADVERTENCIAS / EXCEPCIONES EN CALIENTE (Se enciende si falla la red o las llaves de AWS) -->
+  @if (mensajeError()) {
+    <div style="background-color: #fef2f2; border: 1.5px solid #fecaca; color: #991b1b; padding: 14px 20px; border-radius: 12px; font-size: 13.5px; display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+      <span style="font-size: 16px;">❌</span>
+      <div style="font-weight: 500;">{{ mensajeError() }}</div>
+    </div>
+  }
+
+  <!-- ===================================================================================================================
+       ESCENARIO INTERACTIVO 1: MIENTRAS NO SE HAYA COMPLETADO LA CARGA EXITOSA A LA NUBE
+       =================================================================================================================== -->
+  @if (!mostrarAlertaExito()) {
+
+    <!-- ZONA 2: CARD DE LA DROPZONE (ZONA DE ARRASTRE DE ARCHIVOS INTERACTIVA) -->
+    <section class="upload-component-card">
+      <div class="panel-card-header">
+        <h3>Sustento Documental y Multimedia</h3>
+        <p>Adjunte las pruebas físicas (fotografías de trabajos, fichas o archivos PDF de evaluaciones) que respalden el avance pedagógico</p>
+      </div>
+
+      <!-- Zona de carga con efecto hover e inhabilitada si hay un proceso HTTP en curso en AWS -->
+      <div class="advanced-dropzone-box" style="position: relative;">
+        <span class="dropzone-graphic-icon">📤</span>
+        <h4>Arrastre y suelte sus archivos aquí</h4>
+        <p class="dropzone-restrictions-text">Formatos institucionales admitidos: <strong>JPG, PNG o PDF</strong> (Tamaño máximo por archivo: 5 MB)</p>
+        
+        <!-- Botón disparador del explorador físico. Cambia su texto de forma transparente al disparar el POST -->
+        <button 
+          type="button" 
+          class="btn-trigger-explorer" 
+          (click)="fileInput.click()"
+          [attr.disabled]="isLoading() ? true : null">
+          {{ isLoading() ? 'Procesando en AWS...' : 'Seleccionar archivos de la computadora' }}
+        </button>
+
+        <!-- Input nativo oculto para la captura binaria del explorador local -->
+        <input 
+          #fileInput 
+          type="file" 
+          multiple 
+          (change)="onFileSelected($event)" 
+          style="display: none;" />
+      </div>
+    </section>
+
+    <!-- ZONA 3: GALERÍA DE PREVISUALIZACIÓN EN TIEMPO REAL (Múltiples Archivos Soportados) -->
+    @if (evidenciasCargadas().length > 0) {
+      <section class="preview-gallery-section">
+        <div class="panel-card-header">
+          <h3>Archivos Listos para Enlazar ({{ evidenciasCargadas().length }})</h3>
+          <p>Revise la lista de evidencias antes de guardarlas formalmente en la bitácora escolar</p>
+        </div>
+
+        <div class="gallery-cards-grid">
+          <!-- Bucle reactivo: renderiza cada miniatura inyectando la propiedad binary del archivo -->
+          @for (item of evidenciasCargadas(); track item.id) {
+            <div class="preview-media-card">
+              
+              <!-- Botón flotante para remover un archivo antes de enviarlo por internet a AWS -->
+              <button 
+                type="button" 
+                class="btn-remove-preview" 
+                (click)="eliminarEvidencia(item.id)"
+                [attr.disabled]="isLoading() ? true : null">
+                ✖
+              </button>
+
+              <!-- Caja contenedora cuadrada con tu propiedad object-fit proporcional intacta -->
+              <div class="media-thumbnail-box">
+                @if (item.tipo.includes('pdf')) {
+                  <!-- Si es un PDF, inyectamos tu icono oficial con fondo neutro -->
+                  <img [src]="item.urlPreview" alt="PDF Icon" style="width: 50px; height: 50px; object-fit: contain;" />
+                } @else {
+                  <!-- Si es foto (JPG/PNG), renderizamos su Blob local temporal -->
+                  <img [src]="item.urlPreview" [alt]="item.nombre" class="img-fluid-preview" />
+                }
+              </div>
+
+              <!-- Base informativa de la tarjeta con puntos suspensivos si el nombre es extenso -->
+              <div class="media-card-footer-meta">
+                <h4 class="media-file-title" [title]="item.nombre">{{ item.nombre }}</h4>
+                <span class="media-file-size-badge">{{ item.tamano }}</span>
+              </div>
+
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- ZONA 4: BOTONERA DE NAVEGACIÓN COMPUESTA (MANTIENE TUS CLASES CSS INTACTAS) -->
+    <footer class="subprocess-navigation-row">
+      <!-- Botón Cambiar Estudiante: Permite desandar el flujo regresando al paso 1 -->
+      <button 
+        type="button" 
+        class="btn-subprocess-back" 
+        [routerLink]="['/dashboard/contexto-estudiante']"
+        [attr.disabled]="isLoading() ? true : null">
+        ← Cambiar Estudiante
+      </button>
+
+      <!-- Botón Registrar: Ejecuta tu nuevo bucle forkJoin inyectando los archivos en masa -->
+      <button 
+        type="button" 
+        class="btn-subprocess-save" 
+        (click)="guardarEvidencias()"
+        [attr.disabled]="isLoading() ? true : null">
+        {{ isLoading() ? 'Guardando en la Nube...' : 'Guardar y Registrar Evidencias' }}
+      </button>
+    </footer>
+
+  } @else {
+
+    <!-- ===================================================================================================================
+         ESCENARIO INTERACTIVO 2: PÁGINA DE CONFIRMACIÓN COMPLETA (SE ACTIVA AL RECIBIR LOS 201 DE TU SQL SERVER)
+         =================================================================================================================== -->
+    <section class="success-confirmation-screen-block">
+      
+      <!-- Franja verde corporativa expandida de tu CSS intacta -->
+      <div class="fullscreen-success-toast">
+        <div class="fullscreen-toast-check">✓</div>
+        <div class="fullscreen-toast-text">
+          <h3>¡Evidencias registradas con éxito en el sistema escolar!</h3>
+          <p>Se han enlazado y estructurado correctamente los <strong>{{ evidenciasCargadas().length }} archivos de sustento</strong> dentro de la Bitácora Pedagógica de Gestión Académica N.° <strong>{{ idFichaContexto() }}</strong> en tu almacenamiento de AWS.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Guía Interactiva para avanzar de Subproceso (UX Premium) -->
+      <div class="next-step-action-card">
+        <h4>Siguiente paso del Seguimiento Formativo:</h4>
+        <p>Una vez completado el sustento multimedia, proceda a redactar las conclusiones cualitativas de logros y dificultades del alumno en el periodo lectivo activo.</p>
+        <!-- Enlace fluido hacia la pantalla 3 (Evaluación y Progreso) -->
+        <button 
+          type="button" 
+          class="btn-proceed-next-subprocess"
+          [routerLink]="['/dashboard/evaluacion-progreso']">
+          Proceder a la Evaluación Cualitativa →
+        </button>
+      </div>
+
+    </section>
+
+  }
+
+</div>

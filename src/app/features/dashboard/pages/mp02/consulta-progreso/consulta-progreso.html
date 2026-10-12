@@ -1,0 +1,143 @@
+<div class="consulta-page-layout">
+
+  <!-- ==========================================================================
+     ESTADO 1: COMPUERTA DE BLOQUEO (FALLBACK CUANDO LA FICHA NO ESTÁ PUBLICADA)
+     ========================================================================== -->
+  @if (estadoFicha() !== 'Publicado') {
+    <div class="locked-report-fallback-card">
+      <div class="locked-graphic-icon">⏳</div>
+      <h2>Informe en Proceso de Revisión</h2>
+      <div class="locked-card-divider"></div>
+      <p>
+        La Bitácora Pedagógica de Seguimiento Formativo para el periodo seleccionado aún se encuentra en proceso de redacción y validación por parte del docente de aula.
+      </p>
+      <p class="locked-footer-help-text">
+        El sistema le notificará de forma inmediata en este panel en cuanto el tutor presione el botón de cierre institucional.
+      </p>
+      <button type="button" class="btn-fallback-return-dashboard" routerLink="/dashboard/inicio">
+        Regresar al Inicio
+      </button>
+    </div>
+  } @else {
+
+    <!-- ==========================================================================
+       ESTADO 2: EXPEDIENTE O BOLETA DIGITAL LIBERADA (REPORTE COMPLETO)
+       ========================================================================== -->
+    <div class="active-report-full-workspace">
+      
+      <!-- Cabecera de Identidad del Reporte Publicado -->
+      
+        <div class="header-student-avatar">👨‍👩‍👦</div>
+        <div class="header-meta-text-block">
+          <span class="report-badge-status-published">Ficha Oficial Publicada</span>
+          <h2>Reporte de Progreso: {{ nombreAlumno() }}</h2>
+          <p>
+            Ecosistema Centralizado Fátima Conecta | Bitácora N.° <strong>{{ idFicha() }}</strong> | Periodo Lectivo: <strong>{{ bimestreDesc() }}</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- SECCIÓN A: DIAGNÓSTICO DEL PROGRESO ACADÉMICO -->
+      <div class="report-data-block-section">
+        <div class="section-block-title-row">
+          <div class="section-numeric-badge">A</div>
+          <h3>Diagnóstico del Progreso Académico y Competencias</h3>
+        </div>
+        
+        <div class="qualitative-content-two-columns-grid">
+          <!-- Tarjeta Logros -->
+          <div class="qualitative-viewer-card card-style-logros">
+            <h4>🎯 Logros cualitativos alcanzados:</h4>
+            <p class="viewer-text-content-paragraph">{{ observacionesLogros() }}</p>
+          </div>
+
+          <!-- Tarjeta Dificultades -->
+          <div class="qualitative-viewer-card card-style-dificultades">
+            <h4>⚠ Puntos de mejora o dificultades detectadas:</h4>
+            <p class="viewer-text-content-paragraph">{{ observacionesDificultades() }}</p>
+          </div>
+        </div>
+      </div>
+
+      <br><br>
+
+      <!-- SECCIÓN B: PLAN DE ACCIÓN Y ACUERDOS -->
+      <div class="report-data-block-section">
+        <div class="section-block-title-row">
+          <div class="section-numeric-badge">B</div>
+          <h3>Plan de Acción, Recomendaciones y Acuerdos</h3>
+        </div>
+
+        <div class="qualitative-content-two-columns-grid">
+          <!-- Tarjeta Recomendaciones -->
+          <div class="qualitative-viewer-card card-style-recomendaciones">
+            <h4>💡 Recomendaciones pedagógicas del docente:</h4>
+            <p class="viewer-text-content-paragraph">{{ recomendacionesTutor() }}</p>
+          </div>
+
+          <!-- Tarjeta Compromisos -->
+          <div class="qualitative-viewer-card card-style-compromisos">
+            <h4>✍ Compromisos asumidos por el entorno familiar:</h4>
+            <p class="viewer-text-content-paragraph">{{ compromisosFamilia() }}</p>
+          </div>
+        </div>
+      </div>
+
+      <br><br>
+
+      <!-- SECCIÓN C: SUSTENTO DOCUMENTAL (INTEGRACIÓN CON AMAZON S3) -->
+      <div class="report-data-block-section">
+        <div class="section-block-title-row">
+          <div class="section-numeric-badge">C</div>
+          <h3>Sustento Documental y Evidencias Multimedia Adjuntas</h3>
+        </div>
+
+        <div class="family-evidence-viewer-card">
+          @if (evidenciasAdjuntas().length === 0) {
+            <p class="empty-evidence-message-text">
+              📁 No se adjuntaron archivos multimedia adicionales para esta bitácora bimestral.
+            </p>
+          } @else {
+            <p class="evidence-instruction-text">
+              El docente ha enlazado los siguientes <strong>{{ evidenciasAdjuntas().length }} archivos binarios</strong> como sustento físico de las observaciones. Dé clic en el enlace para abrirlos en una pestaña externa segura:
+            </p>
+
+            <div class="family-downloadable-files-list">
+              <!-- Bucle Reactivo para listar los adjuntos recuperados de la BD -->
+              @for (file of evidenciasAdjuntas(); track file.nombre) {
+                <div class="downloadable-file-item-row">
+                  <!-- Icono condicionado por extensión -->
+                  <div class="file-type-icon-indicator" [ngClass]="{'pdf-color': file.tipo === 'pdf'}">
+                    {{ file.tipo === 'pdf' ? '📄' : '🖼' }}
+                  </div>
+                  
+                  <div class="file-item-meta-text">
+                    <h5>{{ file.nombre }}</h5>
+                    <span class="file-item-extension-tag">
+                      {{ file.tipo === 'pdf' ? 'Documento de Evaluación PDF' : 'Sustento Fotográfico JPG' }}
+                    </span>
+                  </div>
+
+                  <!-- Enlace Real para descargar el binario desde Amazon S3 -->
+                  <a [href]="file.url" target="_blank" rel="noopener noreferrer" class="btn-simulated-download-link">
+                    Visualizar Sustento ↑
+                  </a>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <br><br>
+
+      <!-- BOTONERA INFERIOR GENERAL DE PORTAL -->
+      <div class="family-portal-footer-actions-row">
+        <button type="button" class="btn-family-back-dashboard" routerLink="/dashboard/inicio">
+          ← Regresar al Tablero Principal
+        </button>
+      </div>
+
+  }
+
+</div>
