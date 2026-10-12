@@ -20,6 +20,7 @@ import { RegistroEvidenciasComponent } from './features/dashboard/pages/MP02/reg
 import { EvaluacionProgresoComponent } from './features/dashboard/pages/MP02/evaluacion-progreso/evaluacion-progreso';
 import { RetroalimentacionComponent } from './features/dashboard/pages/MP02/retroalimentacion/retroalimentacion';
 import { ConsultaProgresoComponent } from './features/dashboard/pages/MP02/consulta-progreso/consulta-progreso';
+import { MantenimientoEstudianteComponent } from './features/dashboard/pages/mantenimiento/mantenimiento-estudiante/mantenimiento-estudiante';
 
 // ==========================================
   // 1. RUTAS PÚBLICAS (Con diseño PublicLayout)
@@ -124,6 +125,13 @@ export const routes: Routes = [
            // Registramos el camino para el subproceso P02.5 Consulta del Progreso
            path: 'consulta-progreso',
             component: ConsultaProgresoComponent
+          },
+          /* ==========================================================================
+             MÓDULO DE MANTENIMIENTO CORPORATIVO (EXCLUSIVO PARA EL ROL DIRECTOR)
+             ========================================================================== */
+          {
+            path: 'mantenimiento-estudiantes',
+            component: MantenimientoEstudianteComponent
           }
         ]
       }
