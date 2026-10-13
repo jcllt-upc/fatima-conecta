@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Comunicado } from '../../../../../core/services/comunicado';
 
 @Component({
   imports: [RouterLink],
@@ -7,79 +9,51 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
   styleUrl: './comunicado-detalle.css',
   templateUrl: './comunicado-detalle.html',
 })
-export class ComunicadoDetalle {
+export class ComunicadoDetalle implements OnInit {
 
-  id: string | null = null;
+  comunicado = signal<any>(null);
 
-  comunicado: any = null;
+  constructor(
+    private route: ActivatedRoute,
+    private comunicadoService: Comunicado
+  ) {}
 
-  comunicados = [
-    {
-      id: 1,
-      dia: '15',
-      mes: 'SEP',
-      tipo: 'INSTITUCIONAL',
-      titulo: 'Reunión general de padres de familia',
-      descripcion: 'Se comunica a los padres de familia sobre la próxima reunión general de nuestra institución educativa.',
-      contenido: 'La Dirección de la I.E. N.° 20395 Nuestra Señora de Fátima comunica a los padres de familia que se realizará una reunión general con la finalidad de informar sobre las actividades académicas e institucionales del presente periodo. Se solicita la participación puntual de los padres y apoderados para garantizar una adecuada coordinación con la comunidad educativa.'
-    },
-    {
-      id: 2,
-      dia: '10',
-      mes: 'SEP',
-      tipo: 'ACADÉMICO',
-      titulo: 'Entrega de reportes de progreso',
-      descripcion: 'Se informa a la comunidad educativa sobre la entrega de los reportes de progreso correspondientes al periodo académico.',
-      contenido: 'La institución educativa informa a los padres de familia y estudiantes que se realizará la entrega de los reportes de progreso correspondientes al periodo académico. Estos documentos permitirán conocer el avance de los estudiantes y facilitar el seguimiento de su desempeño académico.'
-    },
-    {
-      id: 3,
-      dia: '05',
-      mes: 'SEP',
-      tipo: 'ACTIVIDADES',
-      titulo: 'Jornada deportiva institucional',
-      descripcion: 'Se invita a los estudiantes a participar en la jornada deportiva organizada por nuestra institución educativa.',
-      contenido: 'La I.E. N.° 20395 Nuestra Señora de Fátima invita a los estudiantes a participar en la jornada deportiva institucional, actividad orientada a promover la integración, la participación y la práctica deportiva entre los miembros de la comunidad educativa.'
-    }
-  ];
+  ngOnInit(): void {
 
+    const id = this.route.snapshot.paramMap.get('id');
 
-  constructor(private route: ActivatedRoute) {
-  this.id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
 
-  this.comunicado = this.comunicados.find(
-    comunicado => comunicado.id === Number(this.id)
-  );
+    this.comunicadoService.getComunicadoPorId(id).subscribe({
+      next: (response: any) => {
 
-  if (!this.comunicado) {
-    const comunicadoGuardado = localStorage.getItem('nuevo_comunicado_mp01');
+        const datos = typeof response.body === 'string'
+          ? JSON.parse(response.body)
+          : response.body;
 
-    if (comunicadoGuardado) {
-      const nuevoComunicado = JSON.parse(comunicadoGuardado);
+        if (datos.length > 0) {
 
-      if (
-        nuevoComunicado.estado === 'Publicado' &&
-        nuevoComunicado.id === Number(this.id)
-      ) {
-        const fecha = nuevoComunicado.fechaPublicacion
-          ? new Date(nuevoComunicado.fechaPublicacion)
-          : new Date();
+          const resultado = datos[0];
+          const fecha = new Date(resultado.Fecha_Creacion + 'T00:00:00');
 
-        this.comunicado = {
-          id: nuevoComunicado.id,
-          dia: fecha.getDate().toString().padStart(2, '0'),
-          mes: fecha
-            .toLocaleString('es-PE', { month: 'short' })
-            .replace('.', '')
-            .toUpperCase(),
-          tipo: nuevoComunicado.tipo.toUpperCase(),
-          titulo: nuevoComunicado.titulo,
-          descripcion: nuevoComunicado.descripcion,
-          contenido: nuevoComunicado.contenido
-        };
+          this.comunicado.set({
+            id: resultado.ID_Comunicado,
+            dia: fecha.getDate().toString().padStart(2, '0'),
+            mes: fecha.toLocaleString('es-PE', { month: 'short' })
+              .replace('.', '')
+              .toUpperCase(),
+            tipo: resultado.Tipo_Comunicado.toUpperCase(),
+            titulo: resultado.Titulo,
+            descripcion: resultado.Descripcion_Corta,
+            contenido: resultado.Contenido_Extendido
+          });
+
+          console.log('Detalle desde AWS:', this.comunicado);
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener el comunicado:', error);
       }
-    }
+    });
   }
-}
-
 }

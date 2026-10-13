@@ -20,149 +20,92 @@
       <span>Acciones</span>
     </div>
 
-    <div class="tabla-fila">
-      <div>
-        <strong>Reunión general de padres de familia</strong>
-        <p>Información institucional para padres y apoderados.</p>
-      </div>
+    @if (cargando()) {
+      <p>Cargando comunicados...</p>
+    }
 
-      <div>
-        <span
+    @if (error()) {
+      <p>{{ error() }}</p>
+    }
+
+    @if (!cargando() && comunicados().length === 0) {
+      <p>No hay comunicados registrados.</p>
+    }
+
+    <!-- Recorre todos los comunicados recibidos desde SQL Server -->
+    @for (comunicado of comunicados(); track comunicado.ID_Comunicado) {
+
+      <div class="tabla-fila">
+
+        <!-- DATOS DEL COMUNICADO -->
+        <div>
+          <strong>{{ comunicado.Titulo }}</strong>
+          <p>{{ comunicado.Descripcion_Corta }}</p>
+        </div>
+
+        <!-- ESTADO ACTUAL -->
+        <div>
+          <span
             class="estado"
-            [class.pendiente]="estadoComunicado1 === 'Pendiente'"
-            [class.aprobado]="estadoComunicado1 === 'Aprobado'"
-            [class.publicado]="estadoComunicado1 === 'Publicado'">
-                {{ estadoComunicado1 }}
-        </span>
-      </div>
+            [class.pendiente]="comunicado.Nombre_Estado === 'Pendiente'"
+            [class.aprobado]="comunicado.Nombre_Estado === 'Aprobado'"
+            [class.publicado]="comunicado.Nombre_Estado === 'Publicado'">
 
+            {{ comunicado.Nombre_Estado }}
 
+          </span>
+        </div>
+
+        <!-- ACCIONES SEGÚN ESTADO -->
         <div class="acciones">
 
-        @if (estadoComunicado1 === 'Pendiente') {
+          @if (comunicado.Nombre_Estado === 'Pendiente') {
             <a
-            routerLink="/dashboard/comunicados/revisar/1"
-            class="btn-accion">
-            Revisar
+              [routerLink]="['/dashboard/comunicados/revisar', comunicado.ID_Comunicado]"
+              class="btn-accion">
+              Revisar
             </a>
-        }
+          }
 
-        @if (estadoComunicado1 === 'Aprobado') {
+          @if (comunicado.Nombre_Estado === 'Aprobado') {
             <button
-            class="btn-accion"
-            (click)="publicarComunicado1()">
-            Publicar
+              class="btn-accion"
+              (click)="publicarComunicado(comunicado.ID_Comunicado)">
+              Publicar
             </button>
-        }
+          }
 
-        @if (estadoComunicado1 === 'Publicado') {
+          @if (comunicado.Nombre_Estado !== 'Publicado') {
             <a
-            routerLink="/comunicados/detalle/1"
-            class="btn-accion">
-            Ver
+              [routerLink]="['/dashboard/comunicados/editar', comunicado.ID_Comunicado]"
+              class="btn-accion">
+              Editar
             </a>
-        }
+          }
 
-        @if (estadoComunicado1 !== 'Publicado') {
-            <button class="btn-accion">
-            Editar
+          @if (comunicado.Nombre_Estado === 'Publicado') {
+            <a
+              [routerLink]="['/comunicados/detalle', comunicado.ID_Comunicado]"
+              class="btn-accion">
+              Ver
+            </a>
+          }
+
+          
+            <!-- DELETE: Eliminar comunicado -->
+            <button
+              type="button"
+              class="btn-accion"
+              (click)="eliminarComunicado(comunicado.ID_Comunicado)">
+              Eliminar
             </button>
-        }
+
 
         </div>
-        </div>
-    <div class="tabla-fila">
-      <div>
-        <strong>Entrega de reportes de progreso</strong>
-        <p>Información correspondiente al periodo académico.</p>
+
       </div>
-
-      <div>
-        <span class="estado aprobado">Aprobado</span>
-      </div>
-
-      <div class="acciones">
-        <button class="btn-accion">Publicar</button>
-
-        <a
-            routerLink="/dashboard/comunicados/editar/2"
-            class="btn-accion">
-            Editar
-        </a>
-      </div>
-    </div>
-
-    <div class="tabla-fila">
-      <div>
-        <strong>Jornada deportiva institucional</strong>
-        <p>Actividad deportiva dirigida a los estudiantes.</p>
-      </div>
-
-      <div>
-        <span class="estado publicado">Publicado</span>
-      </div>
-
-      <div class="acciones">
-        <button class="btn-accion">Ver</button>
-      </div>
-    </div>
-        @if (nuevoComunicado) {
-  <div class="tabla-fila">
-
-    <div>
-      <strong>{{ nuevoComunicado.titulo }}</strong>
-      <p>{{ nuevoComunicado.descripcion }}</p>
-    </div>
-
-    <div>
-      <span
-        class="estado"
-        [class.pendiente]="nuevoComunicado.estado === 'Pendiente'"
-        [class.aprobado]="nuevoComunicado.estado === 'Aprobado'"
-        [class.publicado]="nuevoComunicado.estado === 'Publicado'">
-        {{ nuevoComunicado.estado }}
-      </span>
-    </div>
-
-    <div class="acciones">
-      @if (nuevoComunicado.estado === 'Pendiente') {
-        <a
-            routerLink="/dashboard/comunicados/revisar/nuevo"
-            class="btn-accion">
-            Revisar
-        </a>
-      }
-
-      @if (nuevoComunicado.estado === 'Aprobado') {
-        <button
-            class="btn-accion"
-            (click)="publicarNuevoComunicado()">
-            Publicar
-        </button>
-      }
-
-      @if (
-            nuevoComunicado.estado === 'Pendiente' ||
-            nuevoComunicado.estado === 'Aprobado'
-    ) {
-        <a
-            routerLink="/dashboard/comunicados/editar/nuevo"
-            class="btn-accion">
-            Editar
-        </a>
-      }
-
-      @if (nuevoComunicado.estado === 'Publicado') {
-        <a
-            [routerLink]="['/comunicados/detalle', nuevoComunicado.id]"
-            class="btn-accion">
-            Ver
-        </a>
     }
-    </div>
 
-  </div>
-      }
   </div>
 
 </section>

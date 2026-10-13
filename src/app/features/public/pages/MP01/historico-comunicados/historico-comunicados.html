@@ -1,34 +1,48 @@
 <section class="historico-section">
+ 
 
-  <div class="historico-header">
-    <span class="historico-etiqueta">COMUNICACIÓN INSTITUCIONAL</span>
+  <!-- =====2. CABECERA DEL HISTÓRICO Muestra el título y descripción de esta sección ========== -->
+  <div class="historico-header"> 
+    <span class="historico-etiqueta">COMUNICACIÓN INSTITUCIONAL</span> <!-- Etiqueta que identifica la sección -->
     <h1>Histórico de comunicados</h1>
     <p>
       Consulta los comunicados publicados anteriormente por nuestra institución educativa.
     </p>
   </div>
 
+
+  <!-- ======================================================
+       3. LISTA DE COMUNICADOS HISTÓRICOS
+       Contenedor donde se mostrarán los comunicados antiguos
+  ====================================================== -->
   <div class="historico-lista">
 
+
+    <!-- BUCLE @for (Directiva de Control de Angular): 
+         * Recorre uno a uno los elementos del arreglo 'comunicadosHistoricos' de TypeScript.
+         * En cada vuelta, guarda el elemento actual en la variable local 'comunicado'.
+         * 'track comunicado.titulo' le ayuda a Angular a identificar cada tarjeta de forma única 
+           para mejorar el rendimiento visual de la página al renderizar. -->
     @for (comunicado of comunicadosHistoricos; track comunicado.titulo) {
 
-      <article class="historico-card">
+      <article class="historico-card"> <!-- ARTÍCULO COMPONENTE: Representa la tarjeta individual de cada comunicado -->
 
-        <div class="historico-fecha">
-          <span>{{ comunicado.dia }}</span>
-          <small>{{ comunicado.mes }}</small>
+        <div class="historico-fecha"> <!-- BLOQUE DE FECHA: Caja lateral diseñada para resaltar el día y el mes como un calendario -->
+          <span>{{ comunicado.dia }}</span> <!-- Muestra el día formateado (ej: '15') -->
+          <small>{{ comunicado.mes }}</small> <!-- Muestra el mes abreviado (ej: 'AGO') -->
         </div>
 
-        <div class="historico-contenido">
+        <div class="historico-contenido"> <!-- BLOQUE DE CONTENIDO: Datos textuales del comunicado -->
 
-          <span class="historico-tipo">
+          <span class="historico-tipo"> <!-- Tipo de categoría (ej: Académico, Institucional) -->
             {{ comunicado.tipo }}
           </span>
 
-          <h2>{{ comunicado.titulo }}</h2>
+          <h2>{{ comunicado.titulo }}</h2> <!-- Título secundario de la tarjeta (<h2>) para mantener la jerarquía semántica -->
 
           <p>
-            {{ comunicado.descripcion }}
+            {{ comunicado.descripcion }} <!-- Párrafo con la descripción breve o resumen del comunicado -->
+
           </p>
 
         </div>

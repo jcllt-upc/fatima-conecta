@@ -1,53 +1,149 @@
+<!-- ======================================================
+     1. CONTENEDOR PRINCIPAL
+     Contiene toda la página pública de Comunicados
+====================================================== -->
+
 <section class="comunicados-section">
 
+  <!-- ======================================================
+       2. CABECERA DE LA PÁGINA
+       Muestra el título y descripción de la sección
+  ====================================================== -->
+
   <div class="comunicados-header">
-    <span class="comunicados-etiqueta">COMUNICACIÓN INSTITUCIONAL</span>
+
+    <span class="comunicados-etiqueta">
+      COMUNICACIÓN INSTITUCIONAL
+    </span>
+
     <h1>Comunicados</h1>
+
     <p>
       Mantente informado sobre los avisos, actividades y disposiciones
       de nuestra institución educativa.
     </p>
+
   </div>
 
+
+  <!-- ======================================================
+       3. ACCESO AL HISTÓRICO
+       Permite navegar a los comunicados anteriores
+  ====================================================== -->
+
   <div class="acciones-comunicados">
-  <a routerLink="/comunicados/historico" class="btn-historico">
-    Ver histórico de comunicados
-  </a>
+
+    <a
+      routerLink="/comunicados/historico"
+      class="btn-historico">
+      Ver histórico de comunicados
+    </a>
+
   </div>
+
+
+  <!-- ======================================================
+       4. LISTA DE COMUNICADOS
+       Los datos provienen ahora de AWS mediante el signal
+       "comunicados"
+  ====================================================== -->
 
   <div class="comunicados-lista">
 
-  @for (comunicado of comunicados; track comunicado.titulo) {
 
-    <article class="comunicado-card">
+    <!-- ====================================================
+         5. RECORRER LOS COMUNICADOS
 
-      <div class="comunicado-fecha">
-        <span>{{ comunicado.dia }}</span>
-        <small>{{ comunicado.mes }}</small>
-      </div>
+         comunicados() obtiene el valor actual del signal.
 
-      <div class="comunicado-contenido">
-        <span class="comunicado-tipo">
-          {{ comunicado.tipo }}
-        </span>
+         Solo llegarán aquí los comunicados publicados
+         que fueron filtrados en comunicados.ts.
+    ===================================================== -->
 
-        <h2>{{ comunicado.titulo }}</h2>
+    @for (comunicado of comunicados(); track comunicado.id) {
 
-        <p>
-          {{ comunicado.descripcion }}
-        </p>
 
-        <button
+      <!-- ==================================================
+           6. TARJETA DEL COMUNICADO
+      =================================================== -->
+
+      <article class="comunicado-card">
+
+
+        <!-- ================================================
+             7. FECHA DEL COMUNICADO
+        ================================================= -->
+
+        <div class="comunicado-fecha">
+
+          <span>
+            {{ comunicado.dia }}
+          </span>
+
+          <small>
+            {{ comunicado.mes }}
+          </small>
+
+        </div>
+
+
+        <!-- ================================================
+             8. INFORMACIÓN DEL COMUNICADO
+        ================================================= -->
+
+        <div class="comunicado-contenido">
+
+          <span class="comunicado-tipo">
+            {{ comunicado.tipo }}
+          </span>
+
+          <h2>
+            {{ comunicado.titulo }}
+          </h2>
+
+          <p>
+            {{ comunicado.descripcion }}
+          </p>
+
+
+          <!-- ==============================================
+               9. VER DETALLE DEL COMUNICADO
+
+               Utiliza el ID que viene de SQL Server.
+               Ejemplo:
+               /comunicados/detalle/1
+          =============================================== -->
+
+          <button
             type="button"
-            [routerLink]="['/comunicados/detalle', comunicado.id]">
+            [routerLink]="[
+              '/comunicados/detalle',
+              comunicado.id
+            ]">
+
             Ver comunicado
-        </button>
-      </div>
 
-    </article>
+          </button>
 
-  }
+        </div>
 
-</div>
+      </article>
+
+    }
+
+
+    <!-- ====================================================
+         10. MENSAJE SI NO EXISTEN COMUNICADOS PUBLICADOS
+    ===================================================== -->
+
+    @empty {
+
+      <p>
+        No hay comunicados publicados actualmente.
+      </p>
+
+    }
+
+  </div>
 
 </section>
